@@ -6,10 +6,8 @@
                 <h4>Machines</h4>
             </div>
             <div class="col-md-6 pull-right" style="margin-top:1%;">
-                <button type="button" class="btn btn-primary btn-circle btn-sm pull-right" data-toggle="modal" title="Add new Device" data-toggle="Modal" data-ng-click="openAddDeviceModal()"><i class="fa fa-plus" aria-hidden="true" style="padding-right:0.3px"></i>
+                <button type="button" class="btn btn-primary btn-circle btn-sm pull-right" data-toggle="modal" title="Add new Machine" data-toggle="Modal" data-ng-click="openAddMachinePage()"><i class="fa fa-plus" aria-hidden="true" style="padding-right:0.3px"></i>
                 </button>
-
-
             </div>
         </div>
         <br>
@@ -20,29 +18,30 @@
                         <thead>
                             <tr>
                                 <th style="text-align: center;">Sr No.</th>
-
                                 <th>Name</th>
+                                <th>Email</th>
                                 <th>Status</th>
-                                    <th>Username</th>
-                                <th style="text-align: left;" >Action</th>
+                                <th>Machine ON Reason</th>
+                                <th>Machine OFF Reason</th>
+                                <th style="text-align: left;">Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            <tr ng-if="dmc.deviceList.length > 0" ng-repeat="data in dmc.deviceList">
+                            <tr ng-if="mac.machineList.length > 0" ng-repeat="data in mac.machineList">
                                 <td style="text-align: center;" ng-bind="($index + 1)"></td>
-
-                                <td>{{data.device_id}}</td>
+                                
+                                <td>{{data.name}}</td>
+                                <td ng-bind="setEmailIds(data.email_ids)"></td>
                                 <td>{{data.status}}</td>
-                                  <td>{{data.username}}</td>
+                                <td>{{data.on_reason}}</td>
+                                <td>{{data.off_reason}}</td>
                                 <td style="text-align: left;">
-                                    <button class="btn btn-primary btn-xs" title="Edit" ng-click="dmc.getDeviceData(data.id);"><i class="fa fa-pencil" aria-hidden="true" ></i></button>
-                                    <button class="btn btn-primary btn-xs" title="Reset Device" ng-if="data.status=='ENGAGE'" ng-click="resetDevice($index, data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
-                                    
+                                    <button class="btn btn-primary btn-xs" title="Edit"><i class="fa fa-pencil" aria-hidden="true" ></i></button>
                                 </td>
                             </tr>
-                            <tr ng-if="dmc.deviceList == null || dmc.deviceList.length == 0">
-                                <td style="text-align: center;" colspan="5">No Records Found</td>
+                            <tr ng-if="mac.machineList == null || mac.machineList.length == 0">
+                                <td style="text-align: center;" colspan="7">No Records Found</td>
                             </tr>
                         </tbody>
                     </table>
