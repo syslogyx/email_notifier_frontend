@@ -168,6 +168,23 @@
                                 <a href="{{item.Link}}" id="{{item.id}}"  style="outline:0;text-decoration: none;">
                                     <i class="{{item.icon}}"></i> <span>{{item.Title}}</span>
                                 </a>
+
+                                <ul class="treeview-menu menu-open" style="display: block;">
+                                    <li ng-repeat = "item in globalMenu" ng-if="item.menu_name != 'Calendar' && item.menu_name != 'Timesheet' && item.menu_name != 'EOD' && item.menu_name != 'Project Info'  && (item.menu_name != 'MoM List' && item.menu_name != 'MoM Add')  && can(item.permissionTag)" class="{{item.active}}">
+                                      <a href="{{item.url}}/{{item.projectId}}" id="{{item.id}}" style="outline:0;text-decoration: none;" >
+                                        <i class="{{item.icon}}"></i> <span>{{item.menu_name}}</span>
+                                      </a>
+                                    </li>
+
+                                    <li ng-click="subMenuClick(item.id)"  ng-repeat = "item in globalMenu" ng-if="item.permissionTag=='' && item.child.length>0 && item.menu_name == 'Project Info'" class="treeview {{item.active}}">
+                                        <a href="#" style="outline:0;text-decoration: none;">
+                                            <i class="{{item.icon}}"></i> <span>{{item.menu_name}}</span>
+                                            <span class="pull-right-container">
+                                                <i class="fa fa-angle-left pull-right" id="{{item.id}}"></i>
+                                            </span>
+                                        </a>
+                                    </li>
+                                </ul>
                             </li>
                         </ul>
                     </section>
@@ -366,13 +383,9 @@
                                     "homeCtrl",
                                     "loginCtrl",
                                     "deviceCtrl",
-                                    "generateStickerCtrl",
                                     "menuCtrl",
                                     "userCtrl",
-                                    "deviceManagmentCtrl",
-                                    "reportCtrl",
-                                    "settingsCtrl",
-                                    "stickerCtrl"
+                                    "settingsCtrl"
                                   ];
 
             document.write('<script type="text/javascript" src="/resources/js/myapp.js?v='+_c+'"><\/script>');

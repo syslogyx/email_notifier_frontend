@@ -21,7 +21,9 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
       $scope.menuList = [
           {"Title": "Dashboard", "Link": "/home", "icon": "fa fa-dashboard", "active":"active"},
           {"Title": "Assign Device", "Link": "/device/assign_device", "icon": "fa fa fa-check-square-o", "active":"deactive"},
-          {"Title": "Report", "Link": "/report/report_list", "icon": "fa fa-user", "active":"deactive"}
+          {"Title": "User Management", "Link": "/user/user_list", "icon": "fa fa-user", "active":"deactive"},
+          {"Title": "Device Management", "Link": "/device/device_list", "icon": "fa fa-user", "active":"deactive"},
+          {"Title": "Machine Management", "Link": "/device/device_list", "icon": "fa fa-user", "active":"deactive"}
 
 
       ];
