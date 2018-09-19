@@ -333,142 +333,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
                 'Content-Type': RESOURCES.CONTENT_TYPE
             }
         })
-    };
-
-    this.assignDeviceToUser = function (request) {
-        Utility.startAnimation();
-        return $http({
-            method: 'POST',
-            url: RESOURCES.SERVER_API + "assign/deviceToUser",
-            dataType: 'json',
-            data: $.param(request),
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-    this.getReportList = function (request) {
-        Utility.startAnimation();
-        return $http({
-            method: 'POST',
-            url: RESOURCES.SERVER_API + "get/productHistoryByDateAndProductIdNew",
-            dataType: 'json',
-            data: $.param(request),
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-    this.download = function (request) {
-        // var win = 
-        window.open(RESOURCES.SERVER_API +'report/download/'+request.user_id+'/'+request.date+'/'+request.product_id+'/'+request.type);
-        // win.setTimeout(function(){this.close();},1500)
-        // win.focus();
-    };
-
-    this.getProductList = function (req) {
-        Utility.startAnimation();
-        return $http({
-            method: 'GET',
-            url: RESOURCES.SERVER_API + "get/productsByUserId/"+req.id,
-            dataType: 'json',
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
-    this.getPdfSettingList = function () {
-        Utility.startAnimation();
-        return $http({
-            method: 'GET',
-            url: RESOURCES.SERVER_API + "get/pdfSettings",
-            dataType: 'json',
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
-    this.getColumnList = function () {
-        Utility.startAnimation();
-        return $http({
-            method: 'GET',
-            url: RESOURCES.SERVER_API + "get/columnList",
-            dataType: 'json',
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-    this.savePDFSetting = function (request) {
-        Utility.startAnimation();
-        return $http({
-            method: 'POST',
-            url: RESOURCES.SERVER_API + "add/pdfSetting",
-            dataType: 'form-data',
-            data: request,
-            headers: {
-                'Content-Type': undefined
-            }
-        })
-    };
-    this.getSeriesList = function () {
-        Utility.startAnimation();
-        return $http({
-            method: 'GET',
-            url: RESOURCES.SERVER_API + "get/seriesList",
-            dataType: 'json',
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-    this.getStickerList = function (request) {
-        Utility.startAnimation();
-        return $http({
-            method: 'POST',
-            url: RESOURCES.SERVER_API + "get/stickerList",
-            dataType: 'json',
-            data:  $.param(request),
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-    this.generateSticker = function (request) {
-        Utility.startAnimation();
-        return $http({
-            method: 'POST',
-            url: RESOURCES.SERVER_API + "generateId",
-            dataType: 'json',
-            data:  $.param(request),
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
-    this.downloadStickerList = function (request) {
-        Utility.startAnimation();
-        return $http({
-            method: 'POST',
-            url: RESOURCES.SERVER_API + "stickers/download",
-            dataType: 'json',
-            data:  $.param(request),
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
-    this.downloadSticker = function () {
-        // var win = 
-        window.open(RESOURCES.SERVER_API +'stickers/download');
-        // win.setTimeout(function(){this.close();},1500)
-        // win.focus();
-    };
-    
+    };    
 });
 
 app.config(function ($routeProvider, $locationProvider) {
@@ -521,27 +386,6 @@ app.config(function ($routeProvider, $locationProvider) {
                         }]
                 }
             })
-
-            .when('/device/assign_device', {
-                templateUrl: 'views/device/assign_device.html',
-                controller: 'deviceCtrl',
-                controllerAs: 'dev',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
-
-                    }]
-                }
-            })
-            .when('/generate/sticker', {
-                templateUrl: 'views/generateSticker/generate_sticker.html',
-                controller: 'generateStickerCtrl',
-                controllerAs: 'ges',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
-
-                    }]
-                }
-            })
             .when('/user/user_list', {
                 templateUrl: 'views/users/user_list.html',
                 controller: 'userCtrl',
@@ -554,57 +398,28 @@ app.config(function ($routeProvider, $locationProvider) {
             })
             .when('/device/device_list', {
                 templateUrl: 'views/devices/device_list.html',
-                controller: 'deviceManagmentCtrl',
-                controllerAs: 'dmc',
+                controller: 'deviceCtrl',
+                controllerAs: 'dev',
                 resolve: {
                     'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
                     }]
                 }
             })
-            .when('/report/report_list', {
-                templateUrl: 'views/reports/report_list.html',
-                controller: 'reportCtrl',
-                controllerAs: 'rpc',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
-
-                    }]
-                }
-            }).when('/report/report_pdf', {
-                templateUrl: 'views/reports/report_pdf.html',
-                controller: 'reportCtrl',
-                controllerAs: 'rpc',
+            .when('/machine/machine_list', {
+                templateUrl: 'views/machine/machine_list.html',
+                controller: 'machineCtrl',
+                controllerAs: 'mac',
                 resolve: {
                     'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
                     }]
                 }
             })
-            .when('/setting/pdf_setting', {
-                templateUrl: 'views/settings/pdf_setting.html',
-                controller: 'settingsCtrl',
-                controllerAs: 'set',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
-
-                    }]
-                }
-            })
-            .when('/setting/pdf_setting_list', {
-                templateUrl: 'views/settings/pdf_setting_list.html',
-                controller: 'settingsCtrl',
-                controllerAs: 'set',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
-
-                    }]
-                }
-            })
-            .when('/sticker/filter', {
-                templateUrl: 'views/sticker/sticker_list.html',
-                controller: 'stickerCtrl',
-                controllerAs: 'sti',
+            .when('/machine/create_machine', {
+                templateUrl: 'views/machine/create_machine.html',
+                controller: 'createMachineCtrl',
+                controllerAs: 'mac',
                 resolve: {
                     'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 

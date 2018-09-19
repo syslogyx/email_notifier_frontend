@@ -6,7 +6,7 @@
 
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>EITDS</title>
+        <title>Email Notifier</title>
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         <!-- Bootstrap 3.3.6 -->
@@ -385,7 +385,9 @@
                                     "deviceCtrl",
                                     "menuCtrl",
                                     "userCtrl",
-                                    "settingsCtrl"
+                                    "settingsCtrl",
+                                    "machineCtrl",
+                                    "createMachineCtrl"
                                   ];
 
             document.write('<script type="text/javascript" src="/resources/js/myapp.js?v='+_c+'"><\/script>');
