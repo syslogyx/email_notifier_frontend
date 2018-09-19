@@ -333,7 +333,19 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
                 'Content-Type': RESOURCES.CONTENT_TYPE
             }
         })
-    };    
+    };
+    
+    this.getMachineList = function () {
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/machines",
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
 });
 
 app.config(function ($routeProvider, $locationProvider) {
