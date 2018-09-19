@@ -1,6 +1,6 @@
 var Utility = {
-    apiBaseUrl: "http://172.16.1.36:8000/api/",
-    imgBaseUrl: "http://172.16.1.36:8000/img/",
+    apiBaseUrl: "http://172.16.1.36:8080/api/",
+    imgBaseUrl: "http://172.16.1.36:8080/img/",
     formatDate: function (date, format) {
         var tDate = null;
         if (format == "Y/m/d") {
