@@ -1,0 +1,112 @@
+<section class="content" ng-cloak>
+<br><br>
+    <form role="form" name="addForm" id="deviceForm" >
+        <div class="box box-default" >
+            <div class="row">
+                <div class="col-md-6">
+
+                    <button type="button" value="Reset" data-ng-click="resetDevice()" class="btn" style="outline: 0;margin-left:2%;margin-top:2%" ng-disabled="!dev.deviceId">Reset</button>
+
+                </div>
+            </div>
+            <hr>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <label class="mandatory" style="text-align:center;">Name</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <select id="userName" ng-model="dev.userName" name="userName" class="form-control s2mn" style="width:100%;" disabled >
+                                 <option value="{{user.id}}" ng-repeat="user in dev.userList">{{user.name}}</option>
+                             </select>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            <label class="mandatory" style="text-align:center;">Device ID</label>
+                        </div>
+                        <div class="col-sm-6">
+                            <select id="deviceId" ng-model="dev.deviceId" name="deviceId" class="form-control s2mn" style="width:100%;"  >
+                                <option value="">Select device</option>
+                                 <option value="{{device.id}}" ng-repeat="device in dev.deviceList">{{device.device_id}}</option>
+                             </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer" style="margin-right:30px!important">
+                <div class="pull pull-right">
+                    <input type="submit" value="Assign" data-ng-click="dev.assignDevice()" class="btn btn-success" style="outline: 0;"/>
+                    <input type="button" value="Clear" ng-click="dev.clearForm()" class="btn" style="outline: 0;"/>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+<script>
+            $("#deviceForm").validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error',
+                errorPlacement: function (error, element) {
+
+                    var type = $(element).attr("type");
+                    if ($(element).attr("id") === "")
+                    {
+                        element.parent().append(error);
+
+                    } else if ($(element).attr("id") === "deviceId")
+                    {
+
+                        element.parent().append(error);
+                    }
+                    else {
+                        error.insertAfter(element);
+                    }
+                },
+                rules: {
+                    userName: {
+                        required: true
+                    },
+                    deviceId: {
+                        required: true
+                    }
+                },
+                messages: {
+                    userName: {
+                        required: "Username is required."
+                    },
+                    deviceId: {
+                        required: "Device is required."
+                    }
+                },
+                highlight: function (element) { // hightlight error inputs
+                    $(element).closest('.form-group').addClass('has-error');
+
+                    $(element).next().children().children().attr('style', 'border-color:#dd4b39!important');
+                    // set error class to the control group
+                },
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element)
+                            .closest('.form-group').removeClass('has-error');
+                    $(element)
+                            .next().children().children().attr('style', 'border-color:'); // set error class to the control group
+                },
+                success: function (label) {
+                    label
+                            .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                }
+            });
+
+            $(".s2mn").on("change", function () { $(this).valid(); });
+</script>
+<script>
+            $(document).ready(function () {
+                $("html, body").animate({scrollTop: 0}, "fast");
+            });
+</script>

@@ -1,26 +1,69 @@
 app.controller('createMachineCtrl', function ($scope,menuService,services,$cookieStore,$location) {
 
-	var mac = this;
-	mac.userId=$location.search()['id'];
-	mac.userDeviceId=null;
-	mac.userDeviceName=null;
+	var macc = this;
+	macc.userId=$location.search()['id'];
+	macc.userDeviceId=null;
+	macc.userDeviceName=null;
     var loggedInUser = JSON.parse(services.getIdentity());
 
-	mac.init = function () {
+    $scope.deviceList = [{
+    	"id":1,
+    	"name":"device1"
+    },{
+    	"id":2,
+    	"name":"device2"
+    },{
+    	"id":3,
+    	"name":"device3"
+    },];
+
+	macc.init = function () {
 		var promise = services.getAllUserList();
 		promise.success(function (result) {
 			if(result.status_code == 200){
 				Utility.stopAnimation();
-					mac.userList = result.data;
-					mac.userName=mac.userId!=undefined?mac.userId:loggedInUser.id.toString();
+					$scope.userList = result.data;
+					$scope.userName=macc.userId!=undefined?macc.userId:loggedInUser.id.toString();
 			}else{
 				Utility.stopAnimation();
-					mac.userList = [];
-					toastr.error(result.message, 'Sorry!');
+				$scope.userList = [];
+				toastr.error(result.message, 'Sorry!');
 			}
 		});
 	}
 
-	mac.init();
+	macc.init();
+
+	$scope.saveMachine = function(){
+		if ($("#machineAddForm").valid()) {
+			console.log('true');
+		}
+	}
+	$scope.resetForm = function () {
+		$("#machineAddForm")[0].reset();
+        $("div.form-group").each(function () {
+            $(this).removeClass('has-error');
+            $('span.help-block-error').remove();
+            applySelect2();
+        });
+    };
+    $scope.openAddCustomReasonOnModal = function(){
+    	$("#addCustomReason_on").modal('show');
+    }
+    $scope.addCustomReasonForOn = function(){
+    	if($("#formAddCustomReason_on").valid()){
+    		$("#addCustomReason_on").modal('hide');
+    	}
+    	
+    }
+    $scope.openAddCustomReasonOffModal = function(){
+    	$("#addCustomReason_off").modal('show');
+    }
+    $scope.addCustomReasonForOff = function(){
+    	if($("#formAddCustomReason_off").valid()){
+	    	$("#addCustomReason_off").modal('hide');
+	    }
+    }
+    
 
 });

@@ -419,7 +419,27 @@ app.config(function ($routeProvider, $locationProvider) {
             .when('/machine/create_machine', {
                 templateUrl: 'views/machine/create_machine.html',
                 controller: 'createMachineCtrl',
-                controllerAs: 'mac',
+                controllerAs: 'macc',
+                resolve: {
+                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+
+                    }]
+                }
+            })
+            .when('/device/assign_device', {
+                templateUrl: 'views/device/assign_device.html',
+                controller: 'deviceCtrl',
+                controllerAs: 'dev',
+                resolve: {
+                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+
+                    }]
+                }
+            })
+            .when('/device/device_list', {
+                templateUrl: 'views/devices/device_list.html',
+                controller: 'deviceManagmentCtrl',
+                controllerAs: 'dmc',
                 resolve: {
                     'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
