@@ -1,0 +1,283 @@
+<!-- Control Sidebar -->
+<style>
+.tooltip1 {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    font-family: 'Montserrat' ,Helvetica,Arial,sans-serif; 
+}
+
+.tooltip1 .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color:#000000;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 10px;
+}
+
+.tooltip1 .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #000000 transparent transparent transparent;
+    font-size: 10px;
+}
+
+.tooltip1:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.sm_body {
+            height: 80%;
+            /*width: 200px;*/
+            overflow: auto;
+          }
+</style>
+
+
+
+
+<aside class="sm_container pmct demo animated" style="top: 52px;" id = "aside_container">
+    <!-- Create the tabs -->
+    <div class="sm_head"> 
+        <h4 class="">{{templateData.data[0].data.name}}
+            <a href="#" class="pm_close"><i  ng-click="closeComp();" class="mdi mdi-close"></i></a>
+        </h4>
+        <span>[{{templateData.data[0].data.designation}}]</span>
+    </div>
+
+    <!-- Tab panes -->
+    <div class="sm_body" style="overflow-y: unset;"> 
+        <!--  {{templateData}} -->
+        <div class="tab-content" >
+            <div id="userInfoId"   ng-if="(showTemp == 'mdi mdi-account-circle')" style="width: 80%;">
+                <h5>Basic Information</h5>
+
+                <div class="row">
+                    <div class="col-md-5">
+                        <span><strong>Email :</strong></span><br>
+                        <span><strong>Department :</strong></span><br>
+                        <span><strong>Designation :</strong></span>
+                    </div>
+                    <div class="col-md-7">
+                        <span>{{templateData.data[0].data.email}}</span><br>
+                        <span> {{templateData.data[0].data.department}}</span><br>
+                        <span> {{templateData.data[0].data.designation}}</span>
+                    </div>
+                </div>
+
+            </div>
+            <div id="projectsId"   ng-if="(showTemp == 'fa fa-file-powerpoint-o')">
+                <!-- {{templateData.data[0].data.project}} -->
+                <table class="table">
+
+                    <thead class="thead-default"> 
+                        <tr>
+                            <th>Project list</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="data in templateData.data[0].data.project" ng-if="data.id">
+
+                            <td>{{data.name}}
+                            <td><span>[{{data.work_end_date}}]</span></td>
+                            <td><button type="button" id = "viewTimeAllocLog_{{$index}}" class="btn btn-default btn-sm" title="View activity log" data-ng-click="viewTimeAllocLog(data, $index);"  style="border:white;"><a ng-href=""><i class="fa fa-eye" aria-hidden="true"></i></a>
+                                </button>
+                            </td>
+
+
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+            <div id="technologyId"   ng-if="(showTemp == 'fa fa-code')">
+                <table class="table">
+
+                    <thead class="thead-default"> 
+                        <tr>
+                            <th>Technology list</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="data in templateData.data[0].data.technology">
+
+                            <td>{{data.name}}</td>
+                            <!--<td>{{data.duration_years}} years & {{data.duration_months}} months</td>-->
+                            <td>{{data.duration == "" ? "-" : data.duration}}</td>
+
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div id="activityLog"   ng-if="(showTemp == 'mdi mdi-view-headline')">
+                <h4>
+                    Activity Log
+                </h4>
+                <div ng-repeat="data1 in templateData.data[0].data.project">
+                    <div class="row col-md-12 ">
+                        <h4>
+                            Project :
+
+                            <span>
+                                {{data1.name}}
+                            </span>
+
+
+                            <button type="button" data-toggle="collapse" data-target="#moreInfo_{{$index}}" class="btn btn-default btn-xs pull pull-right"  title="More" ><i class="mdi mdi-information-outline" aria-hidden="true"></i>
+                            </button>
+                        </h4>
+
+                        <div class="row collapse" id="moreInfo_{{$index}}" style="border: 1px solid black;padding: 12px;margin-left: 2px;">
+                            <span ng-if="data1.time_allocation_log.length < 1"><i class="mdi mdi-emoticon-sad"></i> &nbsp;&nbsp;Log is empty!!</span>
+                            <div ng-repeat="data in data1.time_allocation_log">
+                                <div>
+                                    <label>
+                                        End Date :
+                                    </label>
+                                    <span>
+                                        {{data.due_date}}
+                                    </span>
+                                </div>
+                                <div>
+                                    <label>
+                                        Updated by :
+                                    </label>
+                                    <span>
+                                        {{data.created_by_name}}
+                                    </span>
+                                </div>
+                                <div>
+                                    <label>
+                                        Remark :
+                                    </label>
+                                    <span>
+                                        {{data.remark}}
+                                    </span>
+                                </div>
+                                <br>
+                            </div>
+                        </div>
+
+                    </div> <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sm_footer">
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+
+        <li class="tooltip1" role="presentation" ng-click="showTab(templateData.data[0].icon);" ng-class="templateData.title == 'User Info' ? 'active' : ''">
+        <span class="tooltiptext">User Information</span>
+            <a href="#" data-toggle="tab" aria-expanded="false">
+                <!-- <span class="tooltiptext">Tooltip text</span> -->
+                <i class="{{templateData.data[0].icon}}"  aria-hidden="true"></i>
+            </a>
+        </li>
+
+        <li class="tooltip1" role="presentation"  ng-click="showTab(templateData.data[1].icon);" ng-class="templateData.title == 'Project' ? 'active' : ''">
+        <span class="tooltiptext">Project Information</span>
+            <a href="#" data-toggle="tab" aria-expanded="false">
+                <i class="{{templateData.data[1].icon}}"  aria-hidden="true"></i>
+            </a>
+        </li>
+
+        <li class="tooltip1" role="presentation" ng-click="showTab(templateData.data[2].icon);"  ng-class="templateData.title == 'Technology' ? 'active' : ''">
+        <span class="tooltiptext">Technology Information</span>
+            <a href="#" data-toggle="tab" aria-expanded="false">
+                <i class="{{templateData.data[2].icon}}"  aria-hidden="true"></i>
+            </a>
+        </li>
+
+        <!--   <li role="presentation" ng-click="showTab(templateData.data[3].icon);"  ng-class="templateData.title == 'Activity Log' ? 'active' : ''">
+              <a href="#" data-toggle="tab" aria-expanded="false">
+                  <i class="{{templateData.data[3].icon}}"  aria-hidden="true"></i>
+              </a>
+          </li> -->
+
+    </ul> 
+</div>
+</aside>
+
+
+
+<!-- Modal -->
+<div class="modal fade viewActivityLogModal" id="viewActivityLogModal" role="dialog">
+    <div class="modal-dialog modal-md">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="dismissViewTimeAllocLogModal();">&times;</button>
+                <h4 class="modal-title"><center>Activity log</center></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12" >
+                        <div>
+                            <label>Project Name :</label>&nbsp;<span>{{projectNameTimeAlloc}}</span>
+                        </div><br>
+                        <span ng-if="dataArray.length < 1"><i class="mdi mdi-emoticon-sad"></i> &nbsp;&nbsp;Log is empty!!</span>
+                        <div ng-repeat="data in dataArray | orderBy:'eDate':true"" ng-init="eDate = data.due_date.split(' ')[0]">
+                            <div>
+                                <label>End date :  </label>&nbsp;<span ng-bind="eDate | date :'dd - MM - yyyy'"></span>
+                            </div>
+                            <div>
+                                <label>Updated by :</label>&nbsp;<span>{{data.created_by_name}}</span>
+                            </div>
+                            <div>
+                                <label>Remark :</label>&nbsp;<span>{{data.remark}}</span>
+                            </div> <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="closeModal" type="button" class="btn btn-default" ng-click="dismissViewTimeAllocLogModal();">Ok</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script >
+
+    $("#ref").click(function (e) {
+        e.preventDefault();
+        $(".sm_container").show();
+    })
+
+    $(".pm_close").click(function (e) {
+        e.preventDefault();
+        $('li.active').removeClass('active');
+        $(this).parents(".pmct").hide();
+        console.log("gfdgdfgdf");
+    })
+
+    $('#viewActivityLogModal').on('hidden.bs.modal', function () {
+        $("#closeModal").click();
+    });
+</script>

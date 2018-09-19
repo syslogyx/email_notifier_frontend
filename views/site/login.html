@@ -1,0 +1,127 @@
+ <style>
+  header,.main-sidebar,.control-sidebar,footer{
+    display: none
+  }
+ .wrapper,html{
+  background-color: #ecf0f5 !important;
+ }
+ .content-wrapper, .right-side, .main-footer {
+    margin-left: 0px;
+}
+ .login-page, .register-page {
+    background: #ecf0f5;
+}
+</style>
+
+
+<div class="wrapper">
+<div class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo" ng-controller="loginCtrl">
+    <a href="/login"><b>Email Notifier</b></a>
+  </div>
+  <!-- /.login-logo -->
+  <div class="login-box-body">
+    <!-- <p class="login-box-msg">Sign in to start</p> -->
+
+    <form id="loginForm" method="POST">
+
+                <div class="form-group has-feedback">
+                    <label  class="sr-only"></label>
+                    <input type="email" class="form-control" placeholder="Email" name="email" ng-model="lgc.email">
+                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                </div>
+
+                <div class="form-group has-feedback">
+                    <label  class="sr-only"></label>        
+                    <input type="password" class="form-control" placeholder="Password" name="password" ng-model="lgc.password">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="checkbox icheck">
+                            <label>
+                                <!-- <input type="checkbox" ng-model="lgc.remember"> Remember Me -->
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+
+                    <div class="col-xs-4 row"> 
+                        <button  type="submit" class="btn btn-primary btn-block btn-flat" name="submit-btn" ng-click="lgc.login()">
+                            <span class="glyphicon glyphicon-log-in"></span> &nbsp; Sign In
+                        </button>
+                    </div>
+                    <!-- /.col -->
+
+                </div>
+            </form>
+  </div>
+  <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+</div>
+</div>
+
+<script>
+
+            function validateloginForm() {
+                $("#loginForm").validate({
+                    rules: {
+                        email: {
+                            required: true,
+                            customEmail: true
+                        },
+                        password: {
+                            required: true,
+                            minlength: 5
+                        }
+                    }, messages: {
+                        email: {
+                            required: "Email is required."
+                        },
+                        password: {
+                            required: "Password is required."
+                        }
+                    },
+                    highlight: function (element) { // hightlight error inputs
+                        $(element)
+                                .closest('.form-group').addClass('has-error'); // set error class to the control group
+                    },
+                    unhighlight: function (element) { // revert the change done by hightlight
+                        $(element)
+                                .closest('.form-group').removeClass('has-error'); // set error class to the control group
+                    },
+                    success: function (label) {
+                        label
+                                .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                    }
+                });
+            }
+            validateloginForm();
+</script>
+
+<!-- iCheck --> 
+<script src="../resources/plugins/iCheck/icheck.min.js"></script>
+<script>
+
+            $(function () {
+                $('input').iCheck({
+                    checkboxClass: 'icheckbox_square-blue',
+                    radioClass: 'iradio_square-blue',
+                    increaseArea: '20%' // optional
+                });
+            });
+</script>
+<script>
+            $(document).ready(function () {
+                $("html, body").animate({scrollTop: 0}, "fast");
+                $('body').css('overflow','hidden');
+
+            });
+            $(window).scroll(function () {
+                scroll(0, 0);
+            });
+</script>

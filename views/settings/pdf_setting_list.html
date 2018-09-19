@@ -1,0 +1,53 @@
+<section class="content">
+    <div class="container-fluid">
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>PDF Setting</h4>
+            </div>
+            <div class="col-md-6 pull-right" style="margin-top:1%;">
+                <button type="button" class="btn btn-primary btn-circle btn-sm pull-right" title="Add new" data-ng-click="set.addPdfSetting()"><i class="fa fa-plus" aria-hidden="true" style="padding-right:0.3px"></i>
+                </button>
+            </div>
+        </div>
+        <br>
+        <div>
+            <div class="row" >
+                <div class="col-md-12">
+                    <table class="table table-responsive">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">Sr No.</th>
+                                <th>Logo</th>
+                                <th>Header</th>
+                                <th>Footer</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-if="set.pdfSettingList.length > 0" ng-repeat="data in set.pdfSettingList">
+                                <td style="text-align: center;" ng-bind="($index + 1)"></td>
+                                <td>
+                                  <img style="width:50px;height:50px" src="{{set.imgURL}}{{data.logo}}" />
+                                </td>
+                                <td>{{data.header_heading}}</td>
+                                <td>{{data.footer_heading}}</td>
+                                <td>{{data.status}}</td>
+                            </tr>
+                            <tr ng-if="set.pdfSettingList == null || set.pdfSettingList.length == 0">
+                                <td style="text-align: center;" colspan="5">No Records Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+        $("html, body").animate({scrollTop: 0}, "fast");
+    });
+</script>
