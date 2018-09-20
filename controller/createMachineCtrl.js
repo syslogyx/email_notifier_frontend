@@ -41,7 +41,7 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
             if(result.status_code == 200){
                 Utility.stopAnimation();
 				macc.reasonList = result.data;
-				console.log(macc.reasonList);
+				// console.log(macc.reasonList);
             }else{
 				Utility.stopAnimation();
 				macc.reasonList = [];
@@ -64,10 +64,13 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
             $('span.help-block-error').remove();
             applySelect2();
         });
-    };
+	};
+	
     $scope.openAddCustomReasonOnModal = function(){
     	$("#addCustomReason_on").modal('show');
-    }
+	}
+	
+	// save custom reason for on
     $scope.addCustomReasonForOn = function(){
 		console.log($scope.new_on_reason);
     	if($("#formAddCustomReason_on").valid()){
@@ -78,33 +81,54 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 			var promise = services.saveReason(req);
 			promise.then(function mySuccess(result) {
 				Utility.stopAnimation();
-				console.log(result);
-                // if(result.data.status_code == 200){
-                //     $("#addUserModal").modal("toggle");
-                //     usc.init();
-                //     toastr.success('User' + operationMessage +  'successfully..');
-                // }else{
-                //     toastr.error(result.data.errors.email[0], 'Sorry!');
-                // }
-                // $location.url('/user/user_list', false);
+				// console.log(result);
+                if(result.data.status_code == 200){                    
+					macc.getReasonList();
+					$("#addCustomReason_on").modal('hide');
+                    toastr.success(result.data.message);
+                }else{
+                    toastr.error(result.data.errors.email[0], 'Sorry!');
+                }
 
             }, function myError(r) {
-                toastr.error(r.data.errors.email[0], 'Sorry!');
+				toastr.error(r.data.errors.email[0], 'Sorry!');
                 Utility.stopAnimation();
-
+				$("#addCustomReason_on").modal('show');
             });
-    		$("#addCustomReason_on").modal('hide');
+    		
     	}
     	
-    }
+	}
+	
     $scope.openAddCustomReasonOffModal = function(){
     	$("#addCustomReason_off").modal('show');
-    }
+	}
+	
+	// save custom reason for off
     $scope.addCustomReasonForOff = function(){
     	if($("#formAddCustomReason_off").valid()){
-	    	$("#addCustomReason_off").modal('hide');
+			var req = {
+				"status":"OFF",
+				"reason": $scope.new_off_reason
+			}
+			var promise = services.saveReason(req);
+			promise.then(function mySuccess(result) {
+				Utility.stopAnimation();
+				// console.log(result);
+                if(result.data.status_code == 200){                    
+					macc.getReasonList();					
+	    			$("#addCustomReason_off").modal('hide');
+                    toastr.success(result.data.message);
+                }else{
+                    toastr.error(result.data.errors.email[0], 'Sorry!');
+                }
+
+            }, function myError(r) {
+				toastr.error(r.data.errors.email[0], 'Sorry!');
+                Utility.stopAnimation();
+				$("#addCustomReason_off").modal('show');
+            });
 	    }
-    }
-    
+    }    
 
 });

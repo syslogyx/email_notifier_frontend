@@ -363,7 +363,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         Utility.startAnimation();
         return $http({
             method: 'POST',
-            url: RESOURCES.SERVER_API + "add/reasons",
+            url: RESOURCES.SERVER_API + "add/reason",
             dataType: 'json',
             data: $.param(request),
             headers: {

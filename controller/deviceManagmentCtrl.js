@@ -18,10 +18,8 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
             	toastr.error(result.message, 'Sorry!');
         	}
         });
+        dmc.getReasonList();
     }
-
-    dmc.init();
-
 
 
     dmc.getDeviceData = function (id) {
@@ -126,22 +124,87 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
         })
     }
 
+    dmc.getReasonList = function () {
+        var promise = services.getOffReasonList();
+        promise.success(function (result) {
+			console.log(result);
+            if(result.status_code == 200){
+                Utility.stopAnimation();
+				dmc.reasonList = result.data;
+				// console.log(macc.reasonList);
+            }else{
+				Utility.stopAnimation();
+				dmc.reasonList = [];
+                toastr.error(result.message, 'Sorry!');
+            }
+        });
+    }
+
     $scope.openAddCustomReasonOnModal = function(){
     	$("#addCustomReason_on").modal('show');
-    }
+	}
+	
+	// save custom reason for on
     $scope.addCustomReasonForOn = function(){
+		console.log($scope.new_on_reason);
     	if($("#formAddCustomReason_on").valid()){
-    		$("#addCustomReason_on").modal('hide');
+			var req = {
+				"status":"ON",
+				"reason": $scope.new_on_reason
+			}
+			var promise = services.saveReason(req);
+			promise.then(function mySuccess(result) {
+				Utility.stopAnimation();
+				// console.log(result);
+                if(result.data.status_code == 200){                    
+					dmc.getReasonList();
+					$("#addCustomReason_on").modal('hide');
+                    toastr.success(result.data.message);
+                }else{
+                    toastr.error(result.data.errors.email[0], 'Sorry!');
+                }
+
+            }, function myError(r) {
+				toastr.error(r.data.errors.email[0], 'Sorry!');
+                Utility.stopAnimation();
+				$("#addCustomReason_on").modal('show');
+            });
+    		
     	}
     	
-    }
+	}
+	
     $scope.openAddCustomReasonOffModal = function(){
     	$("#addCustomReason_off").modal('show');
-    }
+	}
+	
+	// save custom reason for off
     $scope.addCustomReasonForOff = function(){
     	if($("#formAddCustomReason_off").valid()){
-	    	$("#addCustomReason_off").modal('hide');
+			var req = {
+				"status":"OFF",
+				"reason": $scope.new_off_reason
+			}
+			var promise = services.saveReason(req);
+			promise.then(function mySuccess(result) {
+				Utility.stopAnimation();
+				// console.log(result);
+                if(result.data.status_code == 200){                    
+					dmc.getReasonList();				
+	    			$("#addCustomReason_off").modal('hide');
+                    toastr.success(result.data.message);
+                }else{
+                    toastr.error(result.data.errors.email[0], 'Sorry!');
+                }
+
+            }, function myError(r) {
+				toastr.error(r.data.errors.email[0], 'Sorry!');
+                Utility.stopAnimation();
+				$("#addCustomReason_off").modal('show');
+            });
 	    }
-    }
+    }  
+
+    dmc.init();
 
 });

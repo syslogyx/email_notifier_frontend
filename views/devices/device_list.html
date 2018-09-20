@@ -78,7 +78,7 @@
                                     <div class="col-md-5">
                                         <div class="form-group">
                                             <label class="mandatory">Machine ON Reason</label>
-                                            <select id="on_reason" name="on_reason" class="form-control s2mn" ng-model="on_reason" data-placeholder="Select reason" ng-options="x.id as x.name for x in reasonList">
+                                            <select id="on_reason" name="on_reason" class="form-control s2mn" ng-model="on_reason" data-placeholder="Select reason" ng-options="x.id as x.reason for x in dmc.reasonList | filter: { status: 'ON'}">
                                                 <option value="">Select reason </option>
                                             </select>
                                         </div>
@@ -91,7 +91,7 @@
                                     <div class="col-md-5">
                                         <div class="form-group">
                                             <label class="mandatory">Machine OFF Reason</label>
-                                            <select id="off_reason" name="off_reason" class="form-control s2mn" ng-model="off_reason" data-placeholder="Select reason" ng-options="x.id as x.name for x in reasonList">
+                                            <select id="off_reason" name="off_reason" class="form-control s2mn" ng-model="off_reason" data-placeholder="Select reason" ng-options="x.id as x.reason for x in dmc.reasonList | filter: { status: 'OFF'}">
                                                 <option value="">Select reason </option>
                                             </select>
                                         </div>
@@ -108,7 +108,7 @@
                         <div class="modal-footer">
                             <div class="pull pull-right">
                                 <input type="submit" value="Save" data-ng-click="dmc.saveDevice()" class="btn btn-success"/>
-                                <input type="button" value="Reset" ng-click="resetForm()" class="btn" />
+                                <input type="button" value="Clear" ng-click="resetForm()" class="btn" />
                             </div>
                         </div>
 
@@ -173,6 +173,12 @@
 
 <script>
     $(document).ready(function () {
+        $('.modal').on('hidden.bs.modal', function (e) {
+            console.log("Modal is closed");            
+            $('#addDeviceForm')[0].reset();
+            $("#formAddCustomReason_off")[0].reset();
+            $("#formAddCustomReason_on")[0].reset();
+        });
         $("html, body").animate({scrollTop: 0}, "fast");
 
         $.validator.addMethod('regex', function (value, element, regexp) {
