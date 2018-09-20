@@ -346,6 +346,31 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
+
+    this.getOffReasonList = function(){
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/reasons",
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    }
+
+    this.saveReason = function (request) {
+        Utility.startAnimation();
+        return $http({
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "add/reasons",
+            dataType: 'json',
+            data: $.param(request),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
 });
 
 app.config(function ($routeProvider, $locationProvider) {

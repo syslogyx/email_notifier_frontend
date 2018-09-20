@@ -3,6 +3,7 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
 	var dmc = this;
 
     dmc.id = null;
+    dmc.deviceName = '';
 
     var loggedInUser = JSON.parse(services.getIdentity());
     dmc.init = function () {
@@ -10,7 +11,8 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
         promise.success(function (result) {
         	if(result.status_code == 200){
         		Utility.stopAnimation();
-            	dmc.deviceList = result.data;
+                dmc.deviceList = result.data;
+                console.log(dmc.deviceList);
         	}else{
         		Utility.stopAnimation();
             	toastr.error(result.message, 'Sorry!');
@@ -26,7 +28,6 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
         var promise = services.getDeviceById(id);
         promise.success(function (result) {
             Utility.stopAnimation();
-            ;
             if(result.status_code == 200){
                 dmc.id = result.data.id;
                 dmc.deviceName = result.data.name;
@@ -123,6 +124,24 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
              // alert("no");
             //window.location.href = "/all-projects";
         })
+    }
+
+    $scope.openAddCustomReasonOnModal = function(){
+    	$("#addCustomReason_on").modal('show');
+    }
+    $scope.addCustomReasonForOn = function(){
+    	if($("#formAddCustomReason_on").valid()){
+    		$("#addCustomReason_on").modal('hide');
+    	}
+    	
+    }
+    $scope.openAddCustomReasonOffModal = function(){
+    	$("#addCustomReason_off").modal('show');
+    }
+    $scope.addCustomReasonForOff = function(){
+    	if($("#formAddCustomReason_off").valid()){
+	    	$("#addCustomReason_off").modal('hide');
+	    }
     }
 
 });

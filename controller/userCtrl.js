@@ -4,8 +4,6 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
 
     usc.id = null;
 
-
-
     var loggedInUser = JSON.parse(services.getIdentity());
     usc.init = function () {
         var promise = services.getAllUserList();

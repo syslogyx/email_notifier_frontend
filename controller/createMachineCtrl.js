@@ -4,7 +4,8 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 	macc.userId=$location.search()['id'];
 	macc.userDeviceId=null;
 	macc.userDeviceName=null;
-    var loggedInUser = JSON.parse(services.getIdentity());
+	var loggedInUser = JSON.parse(services.getIdentity());
+	
 
     $scope.deviceList = [{
     	"id":1,
@@ -30,7 +31,24 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 				toastr.error(result.message, 'Sorry!');
 			}
 		});
+		macc.getReasonList();
 	}
+
+	macc.getReasonList = function () {
+        var promise = services.getOffReasonList();
+        promise.success(function (result) {
+			console.log(result);
+            if(result.status_code == 200){
+                Utility.stopAnimation();
+				macc.reasonList = result.data;
+				console.log(macc.reasonList);
+            }else{
+				Utility.stopAnimation();
+				macc.reasonList = [];
+                toastr.error(result.message, 'Sorry!');
+            }
+        });
+    }
 
 	macc.init();
 
@@ -51,7 +69,30 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
     	$("#addCustomReason_on").modal('show');
     }
     $scope.addCustomReasonForOn = function(){
+		console.log($scope.new_on_reason);
     	if($("#formAddCustomReason_on").valid()){
+			var req = {
+				"status":"ON",
+				"reason": $scope.new_on_reason
+			}
+			var promise = services.saveReason(req);
+			promise.then(function mySuccess(result) {
+				Utility.stopAnimation();
+				console.log(result);
+                // if(result.data.status_code == 200){
+                //     $("#addUserModal").modal("toggle");
+                //     usc.init();
+                //     toastr.success('User' + operationMessage +  'successfully..');
+                // }else{
+                //     toastr.error(result.data.errors.email[0], 'Sorry!');
+                // }
+                // $location.url('/user/user_list', false);
+
+            }, function myError(r) {
+                toastr.error(r.data.errors.email[0], 'Sorry!');
+                Utility.stopAnimation();
+
+            });
     		$("#addCustomReason_on").modal('hide');
     	}
     	
