@@ -29,7 +29,7 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
             ;
             if(result.status_code == 200){
                 dmc.id = result.data.id;
-                dmc.deviceName = result.data.device_id;
+                dmc.deviceName = result.data.name;
                 dmc.title = "Update Device";
                 $("#addDeviceModal").modal("toggle");
             }else{
@@ -41,7 +41,7 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
     dmc.saveDevice = function () {
         if ($("#addDeviceForm").valid()) {
             var req = {
-                "device_id": dmc.deviceName
+                "name": dmc.deviceName
             }
 
             if (dmc.id) {
