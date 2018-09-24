@@ -146,7 +146,7 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
 	
 	// save custom reason for on
     $scope.addCustomReasonForOn = function(){
-		console.log($scope.new_on_reason);
+		// console.log($scope.new_on_reason);
     	if($("#formAddCustomReason_on").valid()){
 			var req = {
 				"status":"ON",

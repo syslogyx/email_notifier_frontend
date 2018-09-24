@@ -151,11 +151,11 @@
             $("#formAddCustomReason_off")[0].reset();
             $("#formAddCustomReason_on")[0].reset();
             $("div.form-group").each(function () {
-            $(this).removeClass('has-error');
-            $('span.help-block-error').remove();
-            // applySelect2();
+                $(this).removeClass('has-error');
+                $('span.help-block-error').remove();
+                // applySelect2();
+            });
         });
-        })
         $('#device').select2();
 
         $.validator.addMethod('regex', function (value, element, regexp) {
