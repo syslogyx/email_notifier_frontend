@@ -202,11 +202,23 @@
             rules: {
                 deviceName: {
                     required: true
-                }
+                },
+                on_reason: {
+                    required: true
+                },
+                off_reason: {
+                    required: true
+                },
             },
             messages: {
                 userName: {
                     required: "Device name is required."
+                },
+                on_reason: {
+                    required: "Machine ON Reason is required."
+                },
+                off_reason: {
+                    required: "Machine OFF Reason is required."
                 }
             },
             highlight: function (element) { // hightlight error inputs
@@ -227,5 +239,84 @@
                         .closest('.form-group').removeClass('has-error'); // set success class to the control group
             }
         });
+
+        $("#formAddCustomReason_on").validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'help-block help-block-error',
+            errorPlacement: function (error, element) {
+
+                var type = $(element).attr("type");                
+                error.insertAfter(element);
+            },
+            focusInvalid: true, // set focus the last invalid input
+            ignore: [], // validate all fields including form hidden input
+            rules: {
+                new_on_reason: {
+                    required: true
+                }
+            },
+            messages: {
+                new_on_reason: {
+                    required: "Reason is required."
+                }
+            },
+            highlight: function (element) { // hightlight error inputs
+                $(element)
+                        .closest('.form-group').addClass('has-error');
+                $(element)
+                        .next().children().children().attr('style', 'border-color:#dd4b39!important');
+                // set error class to the control group
+            },
+            unhighlight: function (element) { // revert the change done by hightlight
+                $(element)
+                        .closest('.form-group').removeClass('has-error');
+                $(element)
+                        .next().children().children().attr('style', 'border-color:'); // set error class to the control group
+            },
+            success: function (label) {
+                label
+                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+            }
+        });
+        
+        $("#formAddCustomReason_off").validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'help-block help-block-error',
+            errorPlacement: function (error, element) {
+
+                var type = $(element).attr("type");                
+                error.insertAfter(element);
+            },
+            focusInvalid: true, // set focus the last invalid input
+            ignore: [], // validate all fields including form hidden input
+            rules: {
+                new_off_reason: {
+                    required: true
+                }
+            },
+            messages: {
+                new_off_reason: {
+                    required: "Reason is required."
+                }
+            },
+            highlight: function (element) { // hightlight error inputs
+                $(element)
+                        .closest('.form-group').addClass('has-error');
+                $(element)
+                        .next().children().children().attr('style', 'border-color:#dd4b39!important');
+                // set error class to the control group
+            },
+            unhighlight: function (element) { // revert the change done by hightlight
+                $(element)
+                        .closest('.form-group').removeClass('has-error');
+                $(element)
+                        .next().children().children().attr('style', 'border-color:'); // set error class to the control group
+            },
+            success: function (label) {
+                label
+                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+            }
+        });
+        
     });
 </script>
