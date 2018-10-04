@@ -6,7 +6,7 @@
                 <h4>Devices</h4>
             </div>
             <div class="col-md-6 pull-right" style="margin-top:1%;">
-                <button type="button" class="btn btn-primary btn-circle btn-sm pull-right" data-toggle="modal" title="Add new Device" data-toggle="Modal" data-ng-click="resetForm();openAddDeviceModal()"><i class="fa fa-plus" aria-hidden="true" style="padding-right:0.3px"></i>
+                <button type="button" class="btn btn-primary btn-circle btn-sm pull-right" data-toggle="modal" title="Add new Device" data-toggle="Modal" data-ng-click="resetForm();openAddDevicePage()"><i class="fa fa-plus" aria-hidden="true" style="padding-right:0.3px"></i>
                 </button>
 
 
@@ -35,7 +35,7 @@
                                 <td>{{data.status}}</td>
                                 <td></td>
                                 <td style="text-align: left;">
-                                    <button class="btn btn-primary btn-xs" title="Edit" ng-click="dmc.getDeviceData(data.id);"><i class="fa fa-pencil" aria-hidden="true" ></i></button>
+                                    <a class="btn btn-primary btn-xs" title="Edit" ng-href="/device/update_device/{{data.id}}"><i class="fa fa-pencil" aria-hidden="true" ></i></a>
                                     <button class="btn btn-primary btn-xs" title="Reset Device" ng-if="data.status=='ENGAGE'" ng-click="resetDevice($index, data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
                                     
                                 </td>
@@ -73,34 +73,102 @@
                                     </div>
                                 </div>
                             </div>
+                            <hr>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <div class="col-md-5">
-                                        <div class="form-group">
-                                            <label class="mandatory">Machine ON Reason</label>
+                                    <div class="col-md-2">
+                                        <label class="">Port 1</label>
+                                    </div>
+                                    <div class="col-md-10">
+
+                                        <div class="col-md-2">
+                                            <label class="mandatory">0</label>
+                                        </div>
+                                        <div class="col-md-8">
                                             <select id="on_reason" name="on_reason" class="form-control s2mn" ng-model="on_reason" data-placeholder="Select reason" ng-options="x.id as x.reason for x in dmc.reasonList | filter: { status: 'ON'}">
                                                 <option value="">Select reason </option>
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <div class="form-group" style="margin-top: 27px;">
-                                            <button type="button" value="Add custom" data-ng-click="openAddCustomReasonOnModal()" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Add custom"><i class="fa fa-plus"></i></button>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button type="button" value="Add custom" data-ng-click="openAddCustomReasonOnModal()" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Add custom"><i class="fa fa-plus"></i></button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-5">
-                                        <div class="form-group">
-                                            <label class="mandatory">Machine OFF Reason</label>
-                                            <select id="off_reason" name="off_reason" class="form-control s2mn" ng-model="off_reason" data-placeholder="Select reason" ng-options="x.id as x.reason for x in dmc.reasonList | filter: { status: 'OFF'}">
+                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-2">
+                                        
+                                    </div>
+                                    <div class="col-md-10">
+                                    
+                                        <div class="col-md-2">
+                                            <label class="mandatory">1</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select id="on_reason" name="on_reason" class="form-control s2mn" ng-model="on_reason" data-placeholder="Select reason" ng-options="x.id as x.reason for x in dmc.reasonList | filter: { status: 'ON'}">
                                                 <option value="">Select reason </option>
                                             </select>
                                         </div>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <div class="form-group" style="margin-top: 27px;">
-                                            <button type="button" value="Add custom" data-ng-click="openAddCustomReasonOffModal()" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Add custom"><i class="fa fa-plus"></i></button>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button type="button" value="Add custom" data-ng-click="openAddCustomReasonOnModal()" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Add custom"><i class="fa fa-plus"></i></button>
+                                            </div>
                                         </div>
                                     </div>
+                                    
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-2">
+                                        <label class="">Port 2</label>
+                                    </div>
+                                    <div class="col-md-10">
+
+                                        <div class="col-md-2">
+                                            <label class="mandatory">0</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select id="on_reason" name="on_reason" class="form-control s2mn" ng-model="on_reason" data-placeholder="Select reason" ng-options="x.id as x.reason for x in dmc.reasonList | filter: { status: 'ON'}">
+                                                <option value="">Select reason </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button type="button" value="Add custom" data-ng-click="openAddCustomReasonOnModal()" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Add custom"><i class="fa fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-2">
+                                        
+                                    </div>
+                                    <div class="col-md-10">
+                                    
+                                        <div class="col-md-2">
+                                            <label class="mandatory">1</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select id="on_reason" name="on_reason" class="form-control s2mn" ng-model="on_reason" data-placeholder="Select reason" ng-options="x.id as x.reason for x in dmc.reasonList | filter: { status: 'ON'}">
+                                                <option value="">Select reason </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <button type="button" value="Add custom" data-ng-click="openAddCustomReasonOnModal()" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Add custom"><i class="fa fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>

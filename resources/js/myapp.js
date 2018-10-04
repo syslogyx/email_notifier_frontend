@@ -1,6 +1,6 @@
 var Utility = {
-    apiBaseUrl: "http://172.16.1.36:8080/api/",
-    imgBaseUrl: "http://172.16.1.36:8080/img/",
+    apiBaseUrl: "http://172.16.2.37:8000/api/",
+    imgBaseUrl: "http://172.16.2.37:8000/img/",
     formatDate: function (date, format) {
         var tDate = null;
         if (format == "Y/m/d") {
@@ -477,6 +477,26 @@ app.config(function ($routeProvider, $locationProvider) {
                 templateUrl: 'views/devices/device_list.html',
                 controller: 'deviceManagmentCtrl',
                 controllerAs: 'dmc',
+                resolve: {
+                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+
+                    }]
+                }
+            })
+            .when('/device/create_device', {
+                templateUrl: 'views/devices/create_device.html',
+                controller: 'createDeviceCtrl',
+                controllerAs: 'dmcc',
+                resolve: {
+                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+
+                    }]
+                }
+            })
+            .when('/device/update_device/:id', {
+                templateUrl: 'views/devices/create_device.html',
+                controller: 'createDeviceCtrl',
+                controllerAs: 'dmcc',
                 resolve: {
                     'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 

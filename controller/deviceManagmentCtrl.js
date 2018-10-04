@@ -83,9 +83,13 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
     };
 
     $scope.openAddDeviceModal=function(){
-			  dmc.title = "Add New Device";
+              dmc.title = "Add New Device";
         $("#addDeviceModal").modal("toggle");
         $("#Devicepassword").prop("required",true);
+    }
+    
+    $scope.openAddDevicePage=function(){
+      window.location = '/device/create_device';
     }
 
     $scope.resetDevice=function(index,device_id){

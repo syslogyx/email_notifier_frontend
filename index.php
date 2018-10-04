@@ -372,7 +372,8 @@
                                     "settingsCtrl",
                                     "machineCtrl",
                                     "createMachineCtrl",
-                                    "deviceManagmentCtrl"
+                                    "deviceManagmentCtrl",
+                                    "createDeviceCtrl"
                                   ];
 
             document.write('<script type="text/javascript" src="/resources/js/myapp.js?v='+_c+'"><\/script>');
