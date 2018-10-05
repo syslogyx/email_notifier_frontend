@@ -347,6 +347,18 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         })
     };
 
+    this.getALLMachineList = function () {
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/allMachines",
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+
     this.getOffReasonList = function(){
         Utility.startAnimation();
         return $http({
@@ -364,6 +376,19 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         return $http({
             method: 'POST',
             url: RESOURCES.SERVER_API + "add/reason",
+            dataType: 'json',
+            data: $.param(request),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+
+    this.assignMachineToUser = function (request) {
+        Utility.startAnimation();
+        return $http({
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "assign/userToMachine",
             dataType: 'json',
             data: $.param(request),
             headers: {
@@ -457,6 +482,16 @@ app.config(function ($routeProvider, $locationProvider) {
                 templateUrl: 'views/machine/create_machine.html',
                 controller: 'createMachineCtrl',
                 controllerAs: 'macc',
+                resolve: {
+                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+
+                    }]
+                }
+            })
+            .when('/machine/assign_machine', {
+                templateUrl: 'views/machine/assign_machine.html',
+                controller: 'assignMachineCtrl',
+                controllerAs: 'amc',
                 resolve: {
                     'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 

@@ -19,6 +19,7 @@
         <link rel="stylesheet" href="/resources/lib/sweetalert2-6.6.0/sweetalert2.min.css">
         <!--iCheck -->
         <link rel="stylesheet" href="/resources/plugins/iCheck/square/blue.css">
+        <link rel="stylesheet" href="/resources/plugins/easyAutoComplete/easyAutocomplete.min.css">
 
         <!-- Theme style -->
         <link rel="stylesheet" href="/resources/css/AdminLTE.min.css">
@@ -358,7 +359,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
 
-
+         <script src="/resources/plugins/easyAutoComplete/easyAutocomplete.min.js"></script>
 
         <script src="/resources/js/myapp.js"></script>
         <script type="text/javascript">
@@ -373,7 +374,8 @@
                                     "machineCtrl",
                                     "createMachineCtrl",
                                     "deviceManagmentCtrl",
-                                    "createDeviceCtrl"
+                                    "createDeviceCtrl",
+                                    "assignMachineCtrl"
                                   ];
 
             document.write('<script type="text/javascript" src="/resources/js/myapp.js?v='+_c+'"><\/script>');
