@@ -1,37 +1,63 @@
-app.controller('createMachineCtrl', function ($scope,menuService,services,$cookieStore,$location) {
+app.controller('createMachineCtrl', function ($scope,menuService,services,$cookieStore,$location,$routeParams) {
 
 	var macc = this;
-	macc.userId=$location.search()['id'];
+	macc.userId=null;
 	macc.userDeviceId=null;
 	macc.userDeviceName=null;
+	macc.title = "Create Machine";
 	var loggedInUser = JSON.parse(services.getIdentity());
 	
-
-    $scope.deviceList = [{
-    	"id":1,
-    	"name":"device1"
-    },{
-    	"id":2,
-    	"name":"device2"
-    },{
-    	"id":3,
-    	"name":"device3"
-    },];
+	macc.userId = $routeParams.id || "Unknown";
+    // console.log(macc.userId);
 
 	macc.init = function () {
-		var promise = services.getAllUserList();
-		promise.success(function (result) {
-			if(result.status_code == 200){
-				Utility.stopAnimation();
-					$scope.userList = result.data;
-					$scope.userName=macc.userId!=undefined?macc.userId:loggedInUser.id.toString();
-			}else{
-				Utility.stopAnimation();
-				$scope.userList = [];
-				toastr.error(result.message, 'Sorry!');
-			}
-		});
+		// var promise = services.getAllUserList();
+		// promise.success(function (result) {
+		// 	if(result.status_code == 200){
+		// 		Utility.stopAnimation();
+		// 			$scope.userList = result.data;
+		// 			$scope.userName=macc.userId!=undefined?macc.userId:loggedInUser.id.toString();
+		// 	}else{
+		// 		Utility.stopAnimation();
+		// 		$scope.userList = [];
+		// 		toastr.error(result.message, 'Sorry!');
+		// 	}
+		// });
+		if(macc.userId > 0){
+            var promise = services.getMachineById(macc.userId);
+            promise.success(function (result) {
+                Utility.stopAnimation();
+                if(result.status_code == 200){
+                    macc.id = result.data.id;
+                    macc.machine_name = result.data.name;
+                    macc.machine_email_ids = result.data.email_ids;
+                    macc.device = result.data.devices;
+                    macc.oldDevice = result.data.device_list;
+                    macc.status = result.data.status;
+                    macc.title = "Update Device";
+                }else{
+                    toastr.error(result.message, 'Sorry!');
+                }
+            });
+			
+		}
 		macc.getReasonList();
+		macc.getDeviceList();
+	}
+
+	macc.getDeviceList = function () {
+		var promise = services.getNotEngageDeviceList();
+        promise.success(function (result) {
+			console.log(result);
+            if(result.status_code == 200){
+                //Utility.stopAnimation();
+                macc.deviceList = result.data;
+            }else{
+            	//Utility.stopAnimation();
+				macc.deviceList = [];
+                toastr.error(result.message, 'Sorry!');
+            }
+        })
 	}
 
 	macc.getReasonList = function () {
@@ -54,12 +80,33 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 
 	$scope.saveMachine = function(){
 		if ($("#machineAddForm").valid()) {
-			// console.log('true');
-			// var req = {
-			// 	"name":"machine_name7",
-			// 	"email_ids":"test@syslogyx.com, test1@syslogyx.com, test@syslogyx.com",
-			// 	"device_list":[2]
-			// }
+			var req = {
+				"name":macc.machine_name,
+				"email_ids":macc.machine_email_ids,
+				"device_list":macc.device
+			}
+			// console.log(req);
+			 if (macc.userId != 'Unknown') {    
+            	req.id = macc.userId;	
+				req.old_device_list = macc.oldDevice;
+				req.new_device_list = macc.device;    
+                var operationMessage = " updated ";
+                 var promise = services.updateMachine(req);
+
+             } else {
+                var promise = services.saveMachine(req);
+                operationMessage = " created ";
+            }
+
+			promise.then(function mySuccess(result) {
+				console.log(result);
+				Utility.stopAnimation();
+                if(result.data.status_code == 200){
+                    toastr.success(result.data.message);
+                }else{
+                    toastr.error(result.data.message, 'Sorry!');
+                }
+			});
 		}
 	}
 	$scope.resetForm = function () {

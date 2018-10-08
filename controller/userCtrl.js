@@ -44,6 +44,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
                 usc.userPassword = result.data.password;
                 usc.userEmail = result.data.email;
                 usc.userRole = result.data.role_id;
+                usc.mobileno = result.data.mobile;
                 applySelect2();
 
                 $("#userpassword").removeAttr("required");
@@ -62,6 +63,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
                 "email": usc.userEmail,
                 "password":usc.userpassword,
                 "role_id": usc.userRole,
+                "mobile":usc.mobileno
             }
 
             if (usc.id) {
@@ -103,6 +105,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         usc.userName = '';
         usc.userEmail = '';
         usc.userRole = '';
+        usc.mobileno = '';
         usc.userRoleList = '';
         usc.userPassword = '';
         $scope.user = angular.copy($scope.usc);
