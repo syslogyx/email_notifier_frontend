@@ -371,6 +371,18 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         })
     }
 
+    this.getNotEngageDeviceList = function(){
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/devices",
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    }
+
     this.saveReason = function (request) {
         Utility.startAnimation();
         return $http({
@@ -391,6 +403,44 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             url: RESOURCES.SERVER_API + "assign/userToMachine",
             dataType: 'json',
             data: $.param(request),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+
+    this.saveMachine = function (request) {
+        Utility.startAnimation();
+        return $http({
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "create/machine",
+            dataType: 'json',
+            data: $.param(request),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+
+    this.updateMachine = function (request) {
+        Utility.startAnimation();
+        return $http({
+            method: 'PUT',
+            url: RESOURCES.SERVER_API + "update/machine",
+            dataType: 'json',
+            data: $.param(request),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+
+    this.getMachineById = function (id) {
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/machine/"+id,
+            dataType: 'json',
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
             }
@@ -532,6 +582,16 @@ app.config(function ($routeProvider, $locationProvider) {
                 templateUrl: 'views/devices/create_device.html',
                 controller: 'createDeviceCtrl',
                 controllerAs: 'dmcc',
+                resolve: {
+                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+
+                    }]
+                }
+            })
+            .when('/machine/update_machine/:id', {
+                templateUrl: 'views/machine/create_machine.html',
+                controller: 'createMachineCtrl',
+                controllerAs: 'macc',
                 resolve: {
                     'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 

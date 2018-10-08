@@ -100,6 +100,18 @@
                                     </div>
                                  </div>
                             </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <!-- text input -->
+                                        <div class="form-group">
+                                            <label class="mandatory" for="">Mobile</label>
+                                            <input type="text" class="form-control" name="mobile" ng-model="usc.mobileno" placeholder="Enter mobile number">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="modal-footer">
@@ -151,10 +163,15 @@
                     required: true,
                     regex: /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i
                 },
-
                 userRole: {
                     required: true
-                }
+                },
+                mobile:{
+                    required:true,
+                    number: true,
+                    minlength: 10,
+                    maxlength: 12,
+                },
             },
             messages: {
                 userName: {
@@ -168,6 +185,9 @@
                 },
                 userRole: {
                     required: "Role is required"
+                },
+                mobile:{
+                    required: "Mobile number is required."
                 }
             },
             highlight: function (element) { // hightlight error inputs
