@@ -33,4 +33,39 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
 	
 	mac.init();
 
+	mac.resetAllDevices=function(machineID){
+        swal({
+            title: 'Rset Devices',
+            text: "Are you sure you want to reset all device?",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            cancelButtonText: "No",
+            confirmButtonText: "Yes",
+        }).then(function () {
+            var promise = services.restDevicesByMachineID(machineID);
+            promise.success(function (result) {
+                if(result.status_code == 200){
+                    Utility.stopAnimation();
+                    // dev.deviceId = null;
+                    // if(loggedInUser.identity.device_id != undefined){
+
+                    //     delete loggedInUser.identity.device_id;
+                    //     delete loggedInUser.identity.device_name;
+                    //     services.setIdentity(loggedInUser);
+                    // }
+
+                    toastr.success(result.message, 'Congratulation!!!');
+                }else{
+                    Utility.stopAnimation();
+                    toastr.error(result.message, 'Sorry!');
+                }
+            });
+        }, function (dismiss) {
+             // alert("no");
+            //window.location.href = "/all-projects";
+        })
+    }
+
 });

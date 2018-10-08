@@ -24,7 +24,7 @@
                                 <th style="text-align: left;">Action</th>
                             </tr>
                         </thead>
-
+                        <!-- <pre>{{mac.machineList|json}}</pre> -->
                         <tbody>
                             <tr ng-if="mac.machineList.length > 0" ng-repeat="data in mac.machineList">
                                 <td style="text-align: center;" ng-bind="($index + 1)"></td>
@@ -33,7 +33,9 @@
                                 <td ng-bind="data.email_ids"></td>
                                 <td>{{data.status}}</td>
                                 <td style="text-align: left;">
-                                    <button class="btn btn-primary btn-xs" title="Edit"><i class="fa fa-pencil" aria-hidden="true" ></i></button>
+                                    <!-- <button class="btn btn-primary btn-xs" title="Edit"><i class="fa fa-pencil" aria-hidden="true" ></i></button> -->
+                                    <a ng-href="/machine/update_machine/{{data.id}}" class="btn btn-primary btn-xs" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a> 
+                                    <button class="btn btn-primary btn-xs" title="Reset Device" ng-click="mac.resetAllDevices(data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
                                 </td>
                             </tr>
                             <tr ng-if="mac.machineList == null || mac.machineList.length == 0">
