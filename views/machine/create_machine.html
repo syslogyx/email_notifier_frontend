@@ -33,14 +33,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                         <div class="form-group">
                             <label class="mandatory">Assign To</label>
                             <select id="assign_to" name="assign_to" class="form-control s2mn" ng-model="assign_to" data-placeholder="Select User" ng-options="x.id as x.name for x in userList | filter: { role_id: '2'}">
                                 <option value="">Select user</option>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="mandatory">Device</label>
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
                             <label class="mandatory">Machine ON Reason</label>
@@ -77,7 +77,7 @@
                             <button type="button" value="Add custom" data-ng-click="openAddCustomReasonOffModal()" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Add custom"><i class="fa fa-plus"></i></button>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <!-- /.box-body -->
         </form>
@@ -156,6 +156,7 @@
                 // applySelect2();
             });
         });
+        
         $('#device').select2();
 
         $.validator.addMethod('regex', function (value, element, regexp) {
@@ -237,6 +238,7 @@
                 label.closest('.form-group').removeClass('has-error'); 
             }
         });
+
         $("#formAddCustomReason_off").validate({
             errorElement: 'span', 
             errorClass: 'help-block help-block-error',
@@ -273,6 +275,7 @@
                 label.closest('.form-group').removeClass('has-error'); 
             }
         });
+
         $("#formAddCustomReason_on").validate({
             errorElement: 'span', 
             errorClass: 'help-block help-block-error',

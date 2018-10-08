@@ -54,7 +54,12 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 
 	$scope.saveMachine = function(){
 		if ($("#machineAddForm").valid()) {
-			console.log('true');
+			// console.log('true');
+			// var req = {
+			// 	"name":"machine_name7",
+			// 	"email_ids":"test@syslogyx.com, test1@syslogyx.com, test@syslogyx.com",
+			// 	"device_list":[2]
+			// }
 		}
 	}
 	$scope.resetForm = function () {

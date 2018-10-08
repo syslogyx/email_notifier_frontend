@@ -94,7 +94,7 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
 
     $scope.resetDevice=function(index,device_id){
         swal({
-            title: 'Rset Device',
+            title: 'Reset Device',
             text: "Are you sure you want to reset device?",
             type: 'warning',
             showCancelButton: true,
