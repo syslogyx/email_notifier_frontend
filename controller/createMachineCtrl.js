@@ -31,8 +31,9 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
                     macc.id = result.data.id;
                     macc.machine_name = result.data.name;
                     macc.machine_email_ids = result.data.email_ids;
-                    macc.device = result.data.devices;
-                    macc.oldDevice = result.data.device_list;
+                    macc.deviceList = result.data.devices;
+                    console.log(JSON.stringify(macc.deviceList));
+                    // macc.oldDevice = result.data.device_list;
                     macc.status = result.data.status;
                     macc.title = "Update Device";
                 }else{
@@ -85,7 +86,7 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 				"email_ids":macc.machine_email_ids,
 				"device_list":macc.device
 			}
-			// console.log(req);
+			console.log(req);
 			 if (macc.userId != 'Unknown') {    
             	req.id = macc.userId;	
 				req.old_device_list = macc.oldDevice;
