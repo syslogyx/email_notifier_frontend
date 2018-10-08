@@ -35,7 +35,7 @@
                                 <td style="text-align: left;">
                                     <!-- <button class="btn btn-primary btn-xs" title="Edit"><i class="fa fa-pencil" aria-hidden="true" ></i></button> -->
                                     <a ng-href="/machine/update_machine/{{data.id}}" class="btn btn-primary btn-xs" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a> 
-                                    <button class="btn btn-primary btn-xs" title="Reset Device" ng-click="mac.resetAllDevices(data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
+                                    <button class="btn btn-primary btn-xs" title="Reset Device" ng-if="data.status=='ENGAGE'" ng-click="mac.resetAllDevices(data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
                                 </td>
                             </tr>
                             <tr ng-if="mac.machineList == null || mac.machineList.length == 0">

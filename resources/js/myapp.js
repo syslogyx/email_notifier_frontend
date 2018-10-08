@@ -446,6 +446,18 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
+
+    this.restDevicesByMachineID = function (id) {
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "reset/machineById/"+id,
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
 });
 
 app.config(function ($routeProvider, $locationProvider) {
