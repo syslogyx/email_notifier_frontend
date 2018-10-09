@@ -112,11 +112,11 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 								if(req.user_id==loggedInUser.id){
 									services.setIdentity(loggedInUser);
 								}
-
+                                
             }else{
                 toastr.error(result.data.message, 'Sorry!');
             }
-            // $location.url('/user/user_list', false);
+            $location.url('/user/user_list', false);
 
         }, function myError(r) {
             toastr.error(r.data.errors.email[0], 'Sorry!');

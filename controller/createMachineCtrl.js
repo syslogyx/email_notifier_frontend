@@ -106,11 +106,12 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 				console.log(result);
 				Utility.stopAnimation();
                 if(result.data.status_code == 200){
-                	window.location = '/machine/machine_list';
+                	// window.location = '/machine/machine_list';
                     toastr.success(result.data.message);
                 }else{
                     toastr.error(result.data.message, 'Sorry!');
                 }
+                $location.url('/machine/machine_list', false);
 			});
 		}
 	}
