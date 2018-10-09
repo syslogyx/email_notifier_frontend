@@ -1,11 +1,11 @@
 <section class="content" ng-cloak>
 <br><br>
-    <form role="form" name="addForm" id="deviceForm" >
+    <form role="form" name="addForm" id="machineAssignForm" >
         <div class="box box-default" >
             <div class="row">
                 <div class="col-md-6">
 
-                    <button type="button" value="Reset" data-ng-click="resetDevice()" class="btn" style="outline: 0;margin-left:2%;margin-top:2%" ng-disabled="!amc.deviceId">Reset</button>
+                    <button type="button" value="Reset" data-ng-click="resetDevice()" class="btn" style="outline: 0;margin-left:2%;margin-top:2%" ng-disabled="!amc.machineId">Reset</button>
 
                 </div>
             </div>
@@ -31,7 +31,7 @@
                             <label class="mandatory" style="text-align:center;">Machine ID</label>
                         </div>
                         <div class="col-sm-6">
-                            <select id="deviceId" ng-model="amc.machineId" name="machineId" class="form-control s2mn" style="width:100%;"  >
+                            <select id="machineId" ng-model="amc.machineId" name="machineId" class="form-control s2mn" style="width:100%;"  >
                                 <option value="">Select Machine</option>
                                  <option value="{{machine.id}}" ng-repeat="machine in amc.machineList">{{machine.name}}</option>
                              </select>
@@ -42,7 +42,7 @@
             <!-- /.box-body -->
             <div class="box-footer" style="margin-right:30px!important">
                 <div class="pull pull-right">
-                    <input type="submit" value="Assign" data-ng-click="amc.assignDevice()" class="btn btn-success" style="outline: 0;"/>
+                    <input type="submit" value="Assign" data-ng-click="amc.assignMachine()" class="btn btn-success" style="outline: 0;"/>
                     <input type="button" value="Clear" ng-click="amc.clearForm()" class="btn" style="outline: 0;"/>
                 </div>
             </div>
@@ -50,7 +50,7 @@
     </form>
 </section>
 <script>
-            $("#deviceForm").validate({
+            $("#machineAssignForm").validate({
                 errorElement: 'span', //default input error message container
                 errorClass: 'help-block help-block-error',
                 errorPlacement: function (error, element) {
@@ -60,7 +60,7 @@
                     {
                         element.parent().append(error);
 
-                    } else if ($(element).attr("id") === "deviceId")
+                    } else if ($(element).attr("id") === "machineId")
                     {
 
                         element.parent().append(error);
@@ -73,7 +73,7 @@
                     userName: {
                         required: true
                     },
-                    deviceId: {
+                    machineId: {
                         required: true
                     }
                 },
@@ -81,7 +81,7 @@
                     userName: {
                         required: "Username is required."
                     },
-                    deviceId: {
+                    machineId: {
                         required: "Device is required."
                     }
                 },

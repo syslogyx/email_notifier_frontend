@@ -4,7 +4,7 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
 	// mac.userId=$location.search()['id'];
 	// mac.userDeviceId=null;
 	// mac.userDeviceName=null;
-    // var loggedInUser = JSON.parse(services.getIdentity());
+    var loggedInUser = JSON.parse(services.getIdentity());
 
 	mac.init = function () {		
 		var promise = services.getALLMachineList();
@@ -33,7 +33,7 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
 	
 	mac.init();
 
-	mac.resetAllDevices=function(machineID){
+	mac.resetAllDevices=function(index,machineID){
         swal({
             title: 'Rset Devices',
             text: "Are you sure you want to reset all device?",
@@ -48,13 +48,13 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
             promise.success(function (result) {
                 if(result.status_code == 200){
                     Utility.stopAnimation();
-                    // dev.deviceId = null;
-                    // if(loggedInUser.identity.device_id != undefined){
+                     mac.machineList[index]['status']='NOT ENGAGE';
+                    if(loggedInUser.identity.device_id != undefined && loggedInUser.identity.device_id==device_id){
 
-                    //     delete loggedInUser.identity.device_id;
-                    //     delete loggedInUser.identity.device_name;
-                    //     services.setIdentity(loggedInUser);
-                    // }
+                        delete loggedInUser.identity.device_id;
+                        delete loggedInUser.identity.device_name;
+                        services.setIdentity(loggedInUser);
+                    }
 
                     toastr.success(result.message, 'Congratulation!!!');
                 }else{

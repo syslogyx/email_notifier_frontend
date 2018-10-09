@@ -12,7 +12,7 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
         	if(result.status_code == 200){
         		Utility.stopAnimation();
                 dmc.deviceList = result.data;
-                console.log(dmc.deviceList);
+                // console.log(dmc.deviceList);
         	}else{
         		Utility.stopAnimation();
             	toastr.error(result.message, 'Sorry!');

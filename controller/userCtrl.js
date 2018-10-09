@@ -119,9 +119,10 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         $("#userpassword").prop("required",true);
     }
 
-    $scope.resetDevice=function(index,device_id){
+    $scope.resetMachine=function(index,userId){
+        console.log(userId);
         swal({
-            title: 'Rset Device',
+            title: 'Reset Device',
             text: "Are you sure you want to reset device?",
             type: 'warning',
             showCancelButton: true,
@@ -131,18 +132,19 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
             confirmButtonText: "Yes",
         }).then(function () {
             // alert("yes");
-            var promise = services.restDevice(device_id);
+            var promise = services.resetMachine(userId);
             promise.success(function (result) {
                 if(result.status_code == 200){
                     Utility.stopAnimation();
-                    delete usc.userList[index]['device_id'];
+                    delete usc.userList[index]['machine']['machine_name'];
+                    delete usc.userList[index]['machine']['id'];
 
-                    if(loggedInUser.identity.device_id != undefined && loggedInUser.identity.device_id==device_id){
+                    // if(loggedInUser.identity.id != undefined && loggedInUser.identity.id==userId){
                         
-                        delete loggedInUser.identity.device_id;
-                        delete loggedInUser.identity.device_name;
-                        services.setIdentity(loggedInUser);
-                    }
+                    //     delete loggedInUser.identity.id;
+                    //     delete loggedInUser.identity.name;
+                    //     services.setIdentity(loggedInUser);
+                    // }
 
                     toastr.success(result.message, 'Congratulation!!!');
                 }else{

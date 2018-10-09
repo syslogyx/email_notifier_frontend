@@ -3,33 +3,44 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 	var amc = this;
 	amc.userList = [];
 
-		amc.userId=$location.search()['id'];
-		amc.userDeviceId=null;
-		amc.userDeviceName=null;
-		console.log('userId',amc.userId);
+	amc.userId=$location.search()['id'];
+	amc.userDeviceId=null;
+	amc.userDeviceName=null;
+	console.log('userId',amc.userId);
+
     var loggedInUser = JSON.parse(services.getIdentity());
 
     // amc.userName = loggedInUser.identity.name;
 
 		if(amc.userId!=undefined && loggedInUser.identity.role==1){
-			var promise = services.getDeviceIdByUserId(amc.userId);
+			var promise = services.getMachineIdByUserId(amc.userId);
 			promise.success(function (result) {
+                console.log(result.data);
 				if(result.status_code == 200){
 					Utility.stopAnimation();
-
 					if(result.data.status=='ENGAGE'){
-						amc.userDeviceId=result.data.device_id.toString();
-						amc.userDeviceName=result.data.device_name;
+						amc.userMachineId=result.data.machine_id.toString();
+						amc.userMachineName=result.data.machine_name;
 					}else{
-
-						amc.userDeviceId='';
+						amc.userMachineId='';
 					}
+                    // amc.machineList = result.data;
+
+                    var devicesArr = [];
+                    if (amc.machineList) {
+                        for ($i = 0; $i < amc.machineList.length; $i++) {
+                            if (amc.machineList[$i]['id']) {
+                                devicesArr.push(amc.machineList[$i]['id']);
+                            }
+                        }
+                    }
+                    amc.machineId = devicesArr;
 
 				}else{
 					Utility.stopAnimation();
-						amc.userDeviceId='';
-							amc.userId=loggedInUser.id.toString();
-						// toastr.error(result.message, 'Sorry!');
+					//amc.userMachineId='';
+					amc.userId=loggedInUser.id.toString();
+					// toastr.error(result.message, 'Sorry!');
 				}
 			});
 		}else{
@@ -59,16 +70,19 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     	if(result.status_code == 200){
     		Utility.stopAnimation();
         	amc.machineList = result.data;
-            if(loggedInUser.identity.device_id != undefined){
-					if(amc.userDeviceId!=null){
-						if(amc.userDeviceId!=''){
-							amc.deviceList.push({id:amc.userDeviceId,device_id:amc.userDeviceName});
-						}
+            console.log(amc.machineList);
+            if(loggedInUser.identity.machine_id != undefined){
+					if(amc.machineList!=null){
+                        console.log("hello1");
+						// if(amc.userMachineId!=''){
+						// 	amc.machineList.push({id:amc.userMachineId,machine_id:amc.userMachineName});
+						// }
 					}else{
-						amc.deviceList.push({id:loggedInUser.identity.device_id,device_id:loggedInUser.identity.device_name});
+                        console.log("hello");
+						amc.machineList.push({id:loggedInUser.identity.machine_id,device_id:loggedInUser.identity.machine_name});
 					}
 
-                amc.machineId = amc.userDeviceId!=null?amc.userDeviceId:loggedInUser.identity.device_id.toString();
+                amc.machineId = amc.userMachineId!=null?amc.userMachineId:loggedInUser.identity.machine_id.toString();
             }
     	}else{
     		Utility.stopAnimation();
@@ -77,15 +91,15 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 
     });
 
-    amc.assignDevice = function(){
+    amc.assignMachine = function(){
         var req = {
             "machine_id":amc.machineId,
             "user_id":amc.userName
         };
-				if(!$('#deviceForm').valid()){
-					return false;
-				}
-        var device_name = $("#deviceId option:selected").text();
+		if(!$('#machineAssignForm').valid()){
+			return false;
+		}
+        var machine_name = $("#machineId option:selected").text();
         var promise = services.assignMachineToUser(req);
         promise.then(function mySuccess(result) {
 
@@ -93,8 +107,8 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
             if(result.data.status_code == 200){
                 toastr.success(result.data.message, 'Congratulation!!!');
 
-                loggedInUser.identity.device_id = amc.machineId;
-                loggedInUser.identity.device_name = device_name;
+                loggedInUser.identity.machine_id = amc.machineId;
+                loggedInUser.identity.machine_name = machine_name;
 								if(req.user_id==loggedInUser.id){
 									services.setIdentity(loggedInUser);
 								}
@@ -128,10 +142,10 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
                 if(result.status_code == 200){
                     Utility.stopAnimation();
                     amc.machineId = null;
-                    if(loggedInUser.identity.device_id != undefined){
+                    if(loggedInUser.identity.machine_id != undefined){
 
-                        delete loggedInUser.identity.device_id;
-                        delete loggedInUser.identity.device_name;
+                        delete loggedInUser.identity.machine_id;
+                        delete loggedInUser.identity.machine_name;
                         services.setIdentity(loggedInUser);
                     }
 

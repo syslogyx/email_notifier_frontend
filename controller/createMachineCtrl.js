@@ -8,21 +8,11 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 	var loggedInUser = JSON.parse(services.getIdentity());
 	
 	macc.userId = $routeParams.id || "Unknown";
-    // console.log(macc.userId);
 
 	macc.init = function () {
-		// var promise = services.getAllUserList();
-		// promise.success(function (result) {
-		// 	if(result.status_code == 200){
-		// 		Utility.stopAnimation();
-		// 			$scope.userList = result.data;
-		// 			$scope.userName=macc.userId!=undefined?macc.userId:loggedInUser.id.toString();
-		// 	}else{
-		// 		Utility.stopAnimation();
-		// 		$scope.userList = [];
-		// 		toastr.error(result.message, 'Sorry!');
-		// 	}
-		// });
+
+		macc.getDeviceList();
+
 		if(macc.userId > 0){
             var promise = services.getMachineById(macc.userId);
             promise.success(function (result) {
@@ -32,13 +22,28 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
                     macc.machine_name = result.data.name;
                     macc.machine_email_ids = result.data.email_ids;
                     // to set device pre-populated
-                    macc.deviceList = result.data.devices;
+                    console.log(macc.deviceList);
+                    var newdeviceList = result.data.devices;
+                    // console.log(newdeviceList);
+                    // var arrMergeDeviceList = $.merge(macc.deviceList,newdeviceList);
+
+                 	//console.log(deviceList);
+
+
 	                var devicesArr = [];
-	                if (macc.deviceList) {
-	                    for ($i = 0; $i < macc.deviceList.length; $i++) {
-	                        if (macc.deviceList[$i]['id']) {
-	                            devicesArr.push(macc.deviceList[$i]['id']);
-	                        }
+
+	                var finalArray = [];
+	                if (newdeviceList) {
+	                    // for ($i = 0; $i < arrMergeDeviceList.length; $i++) {
+	                    //     if (arrMergeDeviceList[$i]['id']) {
+	                    //         devicesArr.push(arrMergeDeviceList[$i]['id']);	                            
+	                    //     }
+	                    // }
+
+	                    for (var i = 0; i < newdeviceList.length; i++) {
+	                    	if (arrMergeDeviceList[$i]['id']) {
+	                    		devicesArr.push(arrMergeDeviceList[$i]['id']);
+	                    	}
 	                    }
 	                }
 
@@ -55,15 +60,15 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
                 }
             });
 			
-		}else{
-			macc.getDeviceList();
 		}
+
+		
 	}
 
 	macc.getDeviceList = function () {
 		var promise = services.getNotEngageDeviceList();
         promise.success(function (result) {
-			console.log(result);
+			// console.log(result);
             if(result.status_code == 200){
                 //Utility.stopAnimation();
                 macc.deviceList = result.data;

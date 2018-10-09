@@ -64,13 +64,12 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 if(result.status_code == 200){
                     dmcc.id = result.data.id;
                     dmcc.deviceName = result.data.name;
-                    // to set device pre-populated
-                    var deviceList = result.data.devices;
-                    //debugger; 
-                    dmcc.port_one_0_reason = result.data.port_one_0_reason;
-                    dmcc.port_one_1_reason = result.data.port_one_1_reason;
-                    dmcc.port_two_0_reason = result.data.port_two_0_reason;
-                    dmcc.port_two_1_reason = result.data.port_two_1_reason;
+                    // to set pre-populated port numbers
+
+                    dmcc.port_one_0_reason = result.data.status_reason_port_one_0.id;
+                    // dmcc.port_one_1_reason = result.data.status_reason_port_one_1.id;
+                    // dmcc.port_two_0_reason = result.data.port_two_0_reason;
+                    // dmcc.port_two_1_reason = result.data.port_two_1_reason;
                     dmcc.title = "Update Device";
                 }else{
                     toastr.error(result.message, 'Sorry!');
@@ -99,8 +98,8 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 "port_two_0_reason":dmcc.port_two_0_reason,
                 "port_two_1_reason":dmcc.port_two_1_reason
             }
-            console.log(req);
-            debugger;
+            // console.log(req);
+            // debugger;
             if (dmcc.userId != 'Unknown') {    
             	req.id = dmcc.userId;            
                 var operationMessage = " updated ";
@@ -150,6 +149,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 onSelectItemEvent: function() {
                     dmcc.port_one_0_reason = null;
                     var selectedId = $("#port_1_0").getSelectedItemData().id;
+                    console.log(selectedId);
                     if(selectedId){                        
                         dmcc.port_one_0_reason = selectedId;
                     }

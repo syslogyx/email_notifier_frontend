@@ -21,7 +21,7 @@
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                               <th>Assigned Device</th>
+                               <th>Assigned Machine</th>
                                 <th style="text-align: left;" >Action</th>
                             </tr>
                         </thead>
@@ -33,11 +33,13 @@
                                 <td>{{data.email}}</td>
                                 <!--<td>{{data.total_experience}}</td>-->
                                 <td>{{data.role.name}}</td>
-                                <td>{{data.device_name}}</td>
+                                <td>{{data.machine.machine_name}}</td>
                                 <td style="text-align: left;">
-                                    <button class="btn btn-primary btn-xs" title="Edit" ng-click="resetForm(); usc.getUserData(data.id);"><i class="fa fa-pencil" aria-hidden="true" ></i></button>
-                                    <button class="btn btn-primary btn-xs" title="Reset Device" ng-if="data.machine_id" ng-click="resetDevice($index, data.machine_id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
-                                    <a class="btn btn-primary btn-xs" title="Assign Device" ng-if="!data.machine_id" ng-href="/machine/assign_machine?id={{data.id}}"><i class="fa fa-cog" aria-hidden="true" ></i></a>
+                                    <button type="button" class="btn btn-primary btn-xs" title="Edit" ng-click="resetForm(); usc.getUserData(data.id);"><i class="fa fa-pencil" aria-hidden="true" ></i></button>
+
+                                    <button type="button" class="btn btn-primary btn-xs" title="Reset Machine" ng-if="data.machine.id" ng-click="resetMachine($index, data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
+
+                                    <a class="btn btn-primary btn-xs" title="Assign Machine" ng-if="!data.machine.id" ng-href="/machine/assign_machine?id={{data.id}}"><i class="fa fa-cog" aria-hidden="true" ></i></a>
                                 </td>
                             </tr>
                             <tr ng-if="usc.userList == null || usc.userList.length == 0">

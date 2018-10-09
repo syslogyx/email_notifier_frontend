@@ -1,6 +1,6 @@
 var Utility = {
-    apiBaseUrl: "http://172.16.2.37:8000/api/",
-    imgBaseUrl: "http://172.16.2.37:8000/img/",
+    apiBaseUrl: "http://172.16.1.97:9000/api/",
+    imgBaseUrl: "http://172.16.1.97:9000/img/",
     formatDate: function (date, format) {
         var tDate = null;
         if (format == "Y/m/d") {
@@ -237,6 +237,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
+
     this.getAllRoleList = function () {
         Utility.startAnimation();
         return $http({
@@ -287,6 +288,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
+
     this.updateDevice = function (request) {
         Utility.startAnimation();
         return $http({
@@ -311,6 +313,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
+
     this.getDeviceById = function (id) {
         Utility.startAnimation();
         return $http({
@@ -328,6 +331,18 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         return $http({
             method: 'GET',
             url: RESOURCES.SERVER_API + "reset/deviceById/"+id,
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+
+    this.resetMachine = function (id) {
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "reset/machineByUserId/"+id,
             dataType: 'json',
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
@@ -452,6 +467,18 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         return $http({
             method: 'GET',
             url: RESOURCES.SERVER_API + "reset/machineById/"+id,
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+
+    this.getMachineIdByUserId= function (id) {
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/machineIdByUserId/"+id,
             dataType: 'json',
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
