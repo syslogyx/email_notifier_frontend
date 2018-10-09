@@ -18,23 +18,29 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
                 console.log(result.data);
 				if(result.status_code == 200){
 					Utility.stopAnimation();
-					if(result.data.status=='ENGAGE'){
-						amc.userMachineId=result.data.machine_id.toString();
-						amc.userMachineName=result.data.machine_name;
-					}else{
-						amc.userMachineId='';
-					}
-                    // amc.machineList = result.data;
-
-                    var devicesArr = [];
-                    if (amc.machineList) {
-                        for ($i = 0; $i < amc.machineList.length; $i++) {
-                            if (amc.machineList[$i]['id']) {
-                                devicesArr.push(amc.machineList[$i]['id']);
+					// if(result.data.status=='ENGAGE'){
+					// 	amc.userMachineId=result.data.machine_id.toString();
+					// 	amc.userMachineName=result.data.machine_name;
+					// }else{
+					// 	amc.userMachineId='';
+					// }
+                    // console.log(amc.machineList);
+                    var newdeviceList = result.data; 
+                    // amc.machineList.push(newdeviceList);
+                    // console.log(amc.machineList);
+                    var machineArry = [];
+                    if (newdeviceList) {
+                        for (var i = 0; i < newdeviceList.length; i++) {
+                            if (newdeviceList[i]['id']) {
+                                machineArry.push(newdeviceList[i]['id']);
                             }
                         }
                     }
-                    amc.machineId = devicesArr;
+
+                    console.log(machineArry);
+
+                    amc.machineId = machineArry;
+                    console.log(amc.machineId);
 
 				}else{
 					Utility.stopAnimation();
