@@ -34,28 +34,6 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         console.log(dmcc.port_two_1_reason);
     });
 
-        // dmcc.getReasonList = function (id) {
-        //     var promise = services.getOffReasonList();
-        //     promise.success(function (result) {
-        //         console.log(result);
-        //         if(result.status_code == 200){
-        //             // Utility.stopAnimation();
-        //          dmcc.reasonList = result.data;
-        //          for (var i = 0; i < dmcc.reasonList.length; i++) {
-        //             if(dmcc.reasonList[i].id == id){
-        //                  console.log("true");
-        //                 return dmcc.reasonList[i].reason;
-        //             }
-        //          }
-        //          // console.log(macc.reasonList);
-        //         // }else{
-        //         //  Utility.stopAnimation();
-        //         //  dmcc.reasonList = [];
-        //         //     toastr.error(result.message, 'Sorry!');
-        //         }
-        //     });
-        // }
-
     dmcc.init = function(){
 		if(dmcc.userId > 0){
             var promise = services.getDeviceById(dmcc.userId);
@@ -83,11 +61,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         dmcc.getReasonListForPort_two_0();
         dmcc.getReasonListForPort_two_1();
 
-	}
-
-
-
-    
+	}    
 
 	dmcc.saveDevice = function () {
         if ($("#addDeviceForm").valid()) {
@@ -113,7 +87,8 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
             promise.then(function mySuccess(result) {
                 Utility.stopAnimation();
                 if(result.data.status_code == 200){
-                    dmcc.init();
+                    //dmcc.init();
+                    window.location = '/device/device_list';
                     toastr.success('Device' + operationMessage +  'successfully..');
                 }else{
                     toastr.error(result.data.message, 'Sorry!');
@@ -138,10 +113,10 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 method: "GET"
             },
             categories: [{
-                listLocation: "data",
-                maxNumberOfElements: 2
+                listLocation: "data"
             }],
-            getValue: function(element) {             
+            getValue: function(element) { 
+                console.log(element);            
                 return element.reason;               
             },
 
@@ -176,8 +151,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 method: "GET"
             },
             categories: [{
-                listLocation: "data",
-                maxNumberOfElements: 2
+                listLocation: "data"
             }],
             getValue: function(element) {
                 // console.log(element);                
@@ -214,8 +188,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 method: "GET"
             },
             categories: [{
-                listLocation: "data",
-                maxNumberOfElements: 2
+                listLocation: "data"
             }],
             getValue: function(element) {
                 // console.log(element);                
@@ -252,8 +225,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 method: "GET"
             },
             categories: [{
-                listLocation: "data",
-                maxNumberOfElements: 2
+                listLocation: "data"
             }],
             getValue: function(element) {
                 //console.log(element);                
@@ -289,31 +261,6 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         dmcc.id = null;
         dmcc.deviceName = '';
     };
-
-    dmcc.addCustomReason = function(){
-        console.log("test");
-        // var req = {
-        //         "status":statusType,
-        //         "reason": $scope.new_on_reason
-        //     }
-        //     var promise = services.saveReason(req);
-        //     promise.then(function mySuccess(result) {
-        //         Utility.stopAnimation();
-        //         // console.log(result);
-        //         if(result.data.status_code == 200){                    
-        //             dmc.getReasonList();
-        //             // $("#addCustomReason_on").modal('hide');
-        //             toastr.success(result.data.message);
-        //         }else{
-        //             toastr.error(result.data.errors.email[0], 'Sorry!');
-        //         }
-
-        //     }, function myError(r) {
-        //         toastr.error(r.data.errors.email[0], 'Sorry!');
-        //         Utility.stopAnimation();
-        //         // $("#addCustomReason_on").modal('show');
-        //     });
-    }
 
     dmcc.init();
 	   
