@@ -31,19 +31,33 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
                     macc.id = result.data.id;
                     macc.machine_name = result.data.name;
                     macc.machine_email_ids = result.data.email_ids;
+                    // to set device pre-populated
                     macc.deviceList = result.data.devices;
-                    console.log(JSON.stringify(macc.deviceList));
-                    // macc.oldDevice = result.data.device_list;
+	                var devicesArr = [];
+	                if (macc.deviceList) {
+	                    for ($i = 0; $i < macc.deviceList.length; $i++) {
+	                        if (macc.deviceList[$i]['id']) {
+	                            devicesArr.push(macc.deviceList[$i]['id']);
+	                        }
+	                    }
+	                }
+
+	                console.log(devicesArr);
+
+	                macc.device = devicesArr;
+	                macc.oldDevice = devicesArr;
+
                     macc.status = result.data.status;
                     macc.title = "Update Device";
+                    // applySelect2();
                 }else{
                     toastr.error(result.message, 'Sorry!');
                 }
             });
 			
+		}else{
+			macc.getDeviceList();
 		}
-		macc.getReasonList();
-		macc.getDeviceList();
 	}
 
 	macc.getDeviceList = function () {
@@ -61,22 +75,6 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
         })
 	}
 
-	macc.getReasonList = function () {
-        var promise = services.getOffReasonList();
-        promise.success(function (result) {
-			console.log(result);
-            if(result.status_code == 200){
-                Utility.stopAnimation();
-				macc.reasonList = result.data;
-				// console.log(macc.reasonList);
-            }else{
-				Utility.stopAnimation();
-				macc.reasonList = [];
-                toastr.error(result.message, 'Sorry!');
-            }
-        });
-    }
-
 	macc.init();
 
 	$scope.saveMachine = function(){
@@ -84,7 +82,6 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 			var req = {
 				"name":macc.machine_name,
 				"email_ids":macc.machine_email_ids,
-				"device_list":macc.device
 			}
 			console.log(req);
 			 if (macc.userId != 'Unknown') {    
@@ -92,9 +89,10 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 				req.old_device_list = macc.oldDevice;
 				req.new_device_list = macc.device;    
                 var operationMessage = " updated ";
-                 var promise = services.updateMachine(req);
+                var promise = services.updateMachine(req);
 
              } else {
+             	req.device_list = macc.device;  
                 var promise = services.saveMachine(req);
                 operationMessage = " created ";
             }
@@ -117,71 +115,6 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
             $('span.help-block-error').remove();
             applySelect2();
         });
-	};
-	
-    $scope.openAddCustomReasonOnModal = function(){
-    	$("#addCustomReason_on").modal('show');
-	}
-	
-	// save custom reason for on
-    $scope.addCustomReasonForOn = function(){
-		console.log($scope.new_on_reason);
-    	if($("#formAddCustomReason_on").valid()){
-			var req = {
-				"status":"ON",
-				"reason": $scope.new_on_reason
-			}
-			var promise = services.saveReason(req);
-			promise.then(function mySuccess(result) {
-				Utility.stopAnimation();
-				// console.log(result);
-                if(result.data.status_code == 200){                    
-					macc.getReasonList();
-					$("#addCustomReason_on").modal('hide');
-                    toastr.success(result.data.message);
-                }else{
-                    toastr.error(result.data.errors.email[0], 'Sorry!');
-                }
-
-            }, function myError(r) {
-				toastr.error(r.data.errors.email[0], 'Sorry!');
-                Utility.stopAnimation();
-				$("#addCustomReason_on").modal('show');
-            });
-    		
-    	}
-    	
-	}
-	
-    $scope.openAddCustomReasonOffModal = function(){
-    	$("#addCustomReason_off").modal('show');
-	}
-	
-	// save custom reason for off
-    $scope.addCustomReasonForOff = function(){
-    	if($("#formAddCustomReason_off").valid()){
-			var req = {
-				"status":"OFF",
-				"reason": $scope.new_off_reason
-			}
-			var promise = services.saveReason(req);
-			promise.then(function mySuccess(result) {
-				Utility.stopAnimation();
-				// console.log(result);
-                if(result.data.status_code == 200){                    
-					macc.getReasonList();					
-	    			$("#addCustomReason_off").modal('hide');
-                    toastr.success(result.data.message);
-                }else{
-                    toastr.error(result.data.errors.email[0], 'Sorry!');
-                }
-
-            }, function myError(r) {
-				toastr.error(r.data.errors.email[0], 'Sorry!');
-                Utility.stopAnimation();
-				$("#addCustomReason_off").modal('show');
-            });
-	    }
-    }    
+	};     
 
 });

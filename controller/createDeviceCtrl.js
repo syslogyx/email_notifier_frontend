@@ -64,6 +64,9 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 if(result.status_code == 200){
                     dmcc.id = result.data.id;
                     dmcc.deviceName = result.data.name;
+                    // to set device pre-populated
+                    var deviceList = result.data.devices;
+                    //debugger; 
                     dmcc.port_one_0_reason = result.data.port_one_0_reason;
                     dmcc.port_one_1_reason = result.data.port_one_1_reason;
                     dmcc.port_two_0_reason = result.data.port_two_0_reason;
