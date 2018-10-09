@@ -88,11 +88,11 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 Utility.stopAnimation();
                 if(result.data.status_code == 200){
                     //dmcc.init();
+                    $location.url('/device/device_list', false);
                     toastr.success('Device' + operationMessage +  'successfully..');
                 }else{
                     toastr.error(result.data.message, 'Sorry!');
                 }
-                $location.url('/Device/Device_list', false);
 
             }, function myError(r) {
                 toastr.error(r.data.errors.email[0], 'Sorry!');

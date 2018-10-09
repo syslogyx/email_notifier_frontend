@@ -10,10 +10,11 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 	macc.userId = $routeParams.id || "Unknown";
 
 	macc.init = function () {
-
+		// to fetch not engage devices
 		macc.getDeviceList();
 
 		if(macc.userId > 0){
+			macc.title = "Update Device";
             var promise = services.getMachineById(macc.userId);
             promise.success(function (result) {
                 Utility.stopAnimation();
@@ -22,27 +23,17 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
                     macc.machine_name = result.data.name;
                     macc.machine_email_ids = result.data.email_ids;
                     // to set device pre-populated
-                    console.log(macc.deviceList);
                     var newdeviceList = result.data.devices;
-                    // console.log(newdeviceList);
-                    // var arrMergeDeviceList = $.merge(macc.deviceList,newdeviceList);
-
-                 	//console.log(deviceList);
-
+                    
+                    for ($i = 0; $i < newdeviceList.length; $i++) {	                        
+                        macc.deviceList.push(newdeviceList[$i]);
+                    }
 
 	                var devicesArr = [];
-
-	                var finalArray = [];
 	                if (newdeviceList) {
-	                    // for ($i = 0; $i < arrMergeDeviceList.length; $i++) {
-	                    //     if (arrMergeDeviceList[$i]['id']) {
-	                    //         devicesArr.push(arrMergeDeviceList[$i]['id']);	                            
-	                    //     }
-	                    // }
-
 	                    for (var i = 0; i < newdeviceList.length; i++) {
-	                    	if (arrMergeDeviceList[$i]['id']) {
-	                    		devicesArr.push(arrMergeDeviceList[$i]['id']);
+	                    	if (newdeviceList[i]['id']) {
+	                    		devicesArr.push(newdeviceList[i]['id']);
 	                    	}
 	                    }
 	                }
@@ -53,7 +44,7 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 	                macc.oldDevice = devicesArr;
 
                     macc.status = result.data.status;
-                    macc.title = "Update Device";
+                    
                     // applySelect2();
                 }else{
                     toastr.error(result.message, 'Sorry!');
@@ -107,11 +98,11 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 				Utility.stopAnimation();
                 if(result.data.status_code == 200){
                 	// window.location = '/machine/machine_list';
+                	$location.url('/machine/machine_list', false);
                     toastr.success(result.data.message);
                 }else{
                     toastr.error(result.data.message, 'Sorry!');
                 }
-                $location.url('/machine/machine_list', false);
 			});
 		}
 	}
