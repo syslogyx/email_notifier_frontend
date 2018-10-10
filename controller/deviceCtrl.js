@@ -11,48 +11,47 @@ app.controller('deviceCtrl', function ($scope,menuService,services,$cookieStore,
 
     //dev.userName = loggedInUser.identity.name;
 
-		if(dev.userId!=undefined && loggedInUser.identity.role==1){
-			var promise = services.getDeviceIdByUserId(dev.userId);
+	if(dev.userId!=undefined && loggedInUser.identity.role==1){
+		var promise = services.getDeviceIdByUserId(dev.userId);
+		promise.success(function (result) {
+			if(result.status_code == 200){
+				Utility.stopAnimation();
+
+				if(result.data.status=='ENGAGE'){
+					dev.userDeviceId=result.data.device_id.toString();
+					dev.userDeviceName=result.data.device_name;
+				}else{
+
+					dev.userDeviceId='';
+				}
+
+			}else{
+				Utility.stopAnimation();
+					dev.userDeviceId='';
+						dev.userId=loggedInUser.id.toString();
+					// toastr.error(result.message, 'Sorry!');
+			}
+		});
+	}else{
+		dev.userId=undefined;
+	}
+
+	dev.init = function () {
+			var promise = services.getAllUserList();
 			promise.success(function (result) {
 				if(result.status_code == 200){
 					Utility.stopAnimation();
-
-					if(result.data.status=='ENGAGE'){
-						dev.userDeviceId=result.data.device_id.toString();
-						dev.userDeviceName=result.data.device_name;
-					}else{
-
-						dev.userDeviceId='';
-					}
-
+						dev.userList = result.data;
+						dev.userName=dev.userId!=undefined?dev.userId:loggedInUser.id.toString();
 				}else{
 					Utility.stopAnimation();
-						dev.userDeviceId='';
-							dev.userId=loggedInUser.id.toString();
-						// toastr.error(result.message, 'Sorry!');
+						dev.userList = [];
+						toastr.error(result.message, 'Sorry!');
 				}
 			});
-		}else{
-				dev.userId=undefined;
-		}
+	}
 
-		dev.init = function () {
-				var promise = services.getAllUserList();
-				promise.success(function (result) {
-					if(result.status_code == 200){
-						Utility.stopAnimation();
-							dev.userList = result.data;
-							dev.userName=dev.userId!=undefined?dev.userId:loggedInUser.id.toString();
-					}else{
-						Utility.stopAnimation();
-							dev.userList = [];
-							toastr.error(result.message, 'Sorry!');
-					}
-				});
-		}
-
-		dev.init();
-
+	dev.init();
 
     var promise = services.getAllDeviceList();
     promise.success(function (result) {
@@ -146,8 +145,9 @@ app.controller('deviceCtrl', function ($scope,menuService,services,$cookieStore,
             //window.location.href = "/all-projects";
         })
     }
-		dev.clearForm=function(){
-			dev.deviceId='';
-		}
+	
+    dev.clearForm=function(){
+		dev.deviceId='';
+	}
 
 });
