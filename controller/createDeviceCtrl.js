@@ -12,27 +12,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
     var loggedInUser = JSON.parse(services.getIdentity());
 
     dmcc.userId = $routeParams.id || "Unknown";
-    console.log(dmcc.userId);
-
-    $('#port_1_0').change(function(){
-        dmcc.port_one_0_reason = $("#port_1_0").val();
-        console.log(dmcc.port_one_0_reason);
-    });
-
-    $('#port_1_1').change(function(){
-        dmcc.port_one_1_reason = $("#port_1_1").val();
-        console.log(dmcc.port_one_1_reason);
-    });
-
-    $('#port_2_0').change(function(){
-        dmcc.port_two_0_reason = $("#port_2_0").val();
-        console.log(dmcc.port_two_0_reason);
-    });
-
-    $('#port_2_1').change(function(){
-        dmcc.port_two_1_reason = $("#port_2_1").val();
-        console.log(dmcc.port_two_1_reason);
-    });
+    //console.log(dmcc.userId);    
 
     dmcc.init = function(){
 		if(dmcc.userId > 0){
@@ -44,17 +24,19 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                     dmcc.id = result.data.id;
                     dmcc.deviceName = result.data.name;
                     // to set pre-populated port numbers
-                    // debugger;
-                    dmcc.port_one_0_reason = result.data.status_reason_port_one_0.reason;
-                    dmcc.port_one_1_reason = result.data.status_reason_port_one_1.reason;
-                    dmcc.port_two_0_reason = result.data.status_reason_port_two_0.reason;
-                    dmcc.port_two_1_reason = result.data.status_reason_port_two_1.reason;
+                    $("#port_1_0").val(result.data.status_reason_port_one_0.reason);
+                    $("#port_1_0_id").val(result.data.status_reason_port_one_0.id);
 
-                    // console.log(dmcc.port_one_0_reason);
-                    // console.log(dmcc.port_one_1_reason);
-                    // console.log(dmcc.port_two_0_reason);
-                    // console.log(dmcc.port_two_1_reason);
+                    $("#port_1_1").val(result.data.status_reason_port_one_1.reason);
+                    $("#port_1_1_id").val(result.data.status_reason_port_one_1.id);
 
+                    $("#port_2_0").val(result.data.status_reason_port_two_0.reason);
+                    $("#port_2_0_id").val(result.data.status_reason_port_two_0.id);
+
+                    $("#port_2_1").val(result.data.status_reason_port_two_1.reason);
+                    $("#port_2_1_id").val(result.data.status_reason_port_two_1.id);
+
+                    dmcc.title = "Update Device";
                 }else{
                     toastr.error(result.message, 'Sorry!');
                 }
@@ -66,8 +48,32 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
 		dmcc.getReasonListForPort_one_1();
         dmcc.getReasonListForPort_two_0();
         dmcc.getReasonListForPort_two_1();
-
+        dmcc.initializeChangeEvents();
 	}    
+
+    dmcc.initializeChangeEvents = function(){
+
+        $('#port_1_0').on('keyup',function(e){
+            dmcc.port_one_0_reason = $("#port_1_0").val();
+            $("#port_1_0_id").val('');
+        });
+
+        $('#port_1_1').on('keyup',function(e){
+            dmcc.port_one_1_reason = $("#port_1_1").val();
+            $("#port_1_1_id").val('');
+        });
+
+        $('#port_2_0').on('keyup',function(e){
+            dmcc.port_two_0_reason = $("#port_2_0").val();
+            $("#port_2_0_id").val('');
+        });
+
+        $('#port_2_1').on('keyup',function(e){
+            dmcc.port_two_1_reason = $("#port_2_1").val();
+            $("#port_2_1_id").val('');
+        });
+    }
+    
 
 	dmcc.saveDevice = function () {
         if ($("#addDeviceForm").valid()) {
@@ -78,8 +84,8 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 "port_two_0_reason":dmcc.port_two_0_reason,
                 "port_two_1_reason":dmcc.port_two_1_reason
             }
-            console.log(req);
-            debugger;
+            // console.log(req);
+            // debugger;
             if (dmcc.userId != 'Unknown') {    
             	req.id = dmcc.userId;            
                 var operationMessage = " updated ";
@@ -121,17 +127,15 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 listLocation: "data"
             }],
             getValue: function(element) { 
-                console.log(element);            
+                // console.log(element);            
                 return element.reason;               
             },
 
             list: {
-                onSelectItemEvent: function() {
-                    dmcc.port_one_0_reason = null;
+                onChooseEvent: function() {
                     var selectedId = $("#port_1_0").getSelectedItemData().id;
-                    console.log(selectedId);
                     if(selectedId){                        
-                        dmcc.port_one_0_reason = selectedId;
+                        $("#port_1_0_id").val(selectedId);
                     }
                 },
                 match: {
@@ -149,7 +153,6 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
     dmcc.getReasonListForPort_one_1 = function () {
 
         var options = {
-
             url: RESOURCES.SERVER_API + "get/reasons",
             ajaxSettings: {
                 dataType: "json",
@@ -158,24 +161,21 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
             categories: [{
                 listLocation: "data"
             }],
-            getValue: function(element) {
-                // console.log(element);                
+            getValue: function(element) {               
                 return element.reason;               
             },
 
             list: {
-                onSelectItemEvent: function() {
-                    dmcc.port_one_1_reason = null;
+                onChooseEvent: function() {
                     var selectedId = $("#port_1_1").getSelectedItemData().id;
                     if(selectedId){                        
-                        dmcc.port_one_1_reason = selectedId;
+                        $("#port_1_1_id").val(selectedId);
                     }
                 },
                 match: {
                     enabled: true
                 }
             },
-
             requestDelay: 200,
             theme: "square"
         };
@@ -201,11 +201,10 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
             },
 
             list: {
-                onSelectItemEvent: function() {
-                    dmcc.port_two_0_reason = null;
-                    var selectedId = $("#port_2_0").getSelectedItemData().id;                  
+                onChooseEvent: function() {
+                    var selectedId = $("#port_2_0").getSelectedItemData().id;
                     if(selectedId){                        
-                        dmcc.port_two_0_reason = selectedId;
+                        $("#port_2_0_id").val(selectedId);
                     }
                 },
                 match: {
@@ -238,11 +237,10 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
             },
 
             list: {
-                onSelectItemEvent: function() {
-                    dmcc.port_two_1_reason = null;
+                onChooseEvent: function() {
                     var selectedId = $("#port_2_1").getSelectedItemData().id;
                     if(selectedId){                        
-                        dmcc.port_two_1_reason = selectedId;
+                        $("#port_2_1_id").val(selectedId);
                     }
                 },
                 match: {
