@@ -136,8 +136,8 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
             promise.success(function (result) {
                 if(result.status_code == 200){
                     Utility.stopAnimation();
-                    delete usc.userList[index]['machine']['machine_name'];
-                    delete usc.userList[index]['machine']['id'];
+                    usc.userList[index]['machine'] = null;
+                    //delete usc.userList[index]['machine']['id'];
 
                     // if(loggedInUser.identity.id != undefined && loggedInUser.identity.id==userId){
                         
