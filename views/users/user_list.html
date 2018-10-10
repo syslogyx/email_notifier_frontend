@@ -29,11 +29,10 @@
                         <tbody>
                             <tr ng-if="usc.userList.length > 0" ng-repeat="data in usc.userList | orderBy:'name' track by data.id">
                                 <td style="text-align: center;" ng-bind="($index + 1)"></td>
-                                <td>{{data.name}}</td>
-                                <td>{{data.email}}</td>
-                                <!--<td>{{data.total_experience}}</td>-->
-                                <td>{{data.role.name}}</td>
-                                <td>{{data.machine.machine_name}}</td>
+                                <td ng-bind="data.name"></td>
+                                <td ng-bind="data.email"></td>
+                                <td ng-bind="data.role.name"></td>
+                                <td ng-bind="data.machine == null ? '---' : data.machine.machine_name "></td>
                                 <td style="text-align: left;">
                                     <button type="button" class="btn btn-primary btn-xs" title="Edit" ng-click="resetForm(); usc.getUserData(data.id);"><i class="fa fa-pencil" aria-hidden="true" ></i></button>
 
@@ -96,7 +95,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="mandatory" for="">Role</label>
-                                            <select id="userRole" ng-model="usc.userRole" name="userRole" class="form-control s2mn" style="width:100%;" ng-options="x.id as x.name for x in usc.userRoleList" >
+                                            <select id="user_role" ng-model="usc.userRole" name="userRole" class="form-control s2mn" style="width:100%;" ng-options="x.id as x.name for x in usc.userRoleList" >
                                             <option value="" style="color:#ccc;">Select role</option></select>
                                         </div>
                                     </div>
@@ -132,6 +131,10 @@
 <script>
     $(document).ready(function () {
         $("html, body").animate({scrollTop: 0}, "fast");
+        
+        $('#user_role').on('change', function() {  // when the value changes
+            $(this).valid(); // trigger validation on this element
+        });
 
         $.validator.addMethod('regex', function (value, element, regexp) {
             if (regexp.constructor != RegExp)
@@ -147,7 +150,7 @@
             errorPlacement: function (error, element) {
 
                 var type = $(element).attr("type");
-                if ($(element).attr("id") === "userRole")
+                if ($(element).attr("id") === "user_role")
                 {
                     // custom placement
                     element.parent().append(error);

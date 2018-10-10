@@ -12,63 +12,63 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 
     // amc.userName = loggedInUser.identity.name;
 
-		if(amc.userId!=undefined && loggedInUser.identity.role==1){
-			var promise = services.getMachineIdByUserId(amc.userId);
+	// if(amc.userId!=undefined && loggedInUser.identity.role==1){
+	// 	var promise = services.getMachineIdByUserId(amc.userId);
+	// 	promise.success(function (result) {
+ //            console.log(result.data);
+	// 		if(result.status_code == 200){
+	// 			Utility.stopAnimation();
+	// 			// if(result.data.status=='ENGAGE'){
+	// 			// 	amc.userMachineId=result.data.machine_id.toString();
+	// 			// 	amc.userMachineName=result.data.machine_name;
+	// 			// }else{
+	// 			// 	amc.userMachineId='';
+	// 			// }
+ //                // console.log(amc.machineList);
+ //                var newdeviceList = result.data; 
+ //                amc.machineList.push(newdeviceList);
+ //                console.log(amc.machineList);
+ //                var machineArry = [];
+ //                if (newdeviceList) {
+ //                    for (var i = 0; i < newdeviceList.length; i++) {
+ //                        if (newdeviceList[i]['id']) {
+ //                            machineArry.push(newdeviceList[i]['id']);
+ //                        }
+ //                    }
+ //                }
+
+ //                console.log(machineArry);
+
+ //                amc.machineId = machineArry;
+ //                console.log(amc.machineId);
+
+	// 		}else{
+	// 			Utility.stopAnimation();
+	// 			//amc.userMachineId='';
+	// 			amc.userId=loggedInUser.id.toString();
+	// 			// toastr.error(result.message, 'Sorry!');
+	// 		}
+	// 	});
+	// }else{
+	// 		amc.userId=undefined;
+	// }
+
+	amc.init = function () {
+			var promise = services.getAllUserList();
 			promise.success(function (result) {
-                console.log(result.data);
 				if(result.status_code == 200){
 					Utility.stopAnimation();
-					// if(result.data.status=='ENGAGE'){
-					// 	amc.userMachineId=result.data.machine_id.toString();
-					// 	amc.userMachineName=result.data.machine_name;
-					// }else{
-					// 	amc.userMachineId='';
-					// }
-                    // console.log(amc.machineList);
-                    var newdeviceList = result.data; 
-                    // amc.machineList.push(newdeviceList);
-                    // console.log(amc.machineList);
-                    var machineArry = [];
-                    if (newdeviceList) {
-                        for (var i = 0; i < newdeviceList.length; i++) {
-                            if (newdeviceList[i]['id']) {
-                                machineArry.push(newdeviceList[i]['id']);
-                            }
-                        }
-                    }
-
-                    console.log(machineArry);
-
-                    amc.machineId = machineArry;
-                    console.log(amc.machineId);
-
+						amc.userList = result.data;
+						amc.userName=amc.userId!=undefined?amc.userId:loggedInUser.id.toString();
 				}else{
 					Utility.stopAnimation();
-					//amc.userMachineId='';
-					amc.userId=loggedInUser.id.toString();
-					// toastr.error(result.message, 'Sorry!');
+						amc.userList = [];
+						toastr.error(result.message, 'Sorry!');
 				}
 			});
-		}else{
-				amc.userId=undefined;
-		}
+	}
 
-		amc.init = function () {
-				var promise = services.getAllUserList();
-				promise.success(function (result) {
-					if(result.status_code == 200){
-						Utility.stopAnimation();
-							amc.userList = result.data;
-							amc.userName=amc.userId!=undefined?amc.userId:loggedInUser.id.toString();
-					}else{
-						Utility.stopAnimation();
-							amc.userList = [];
-							toastr.error(result.message, 'Sorry!');
-					}
-				});
-		}
-
-		amc.init();
+	amc.init();
 
 
     var promise = services.getMachineList();
