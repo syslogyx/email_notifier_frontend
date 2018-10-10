@@ -1,4 +1,4 @@
-app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$cookieStore,$routeParams) {
+app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$cookieStore,$routeParams,$location) {
 
 	var dmc = this;
 
@@ -87,7 +87,8 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
     }
     
     $scope.openAddDevicePage=function(){
-        window.location = '/device/create_device';
+        // window.location = '/device/create_device';
+        $location.path('/device/create_device');
     }
 
     $scope.resetDevice=function(index,device_id){

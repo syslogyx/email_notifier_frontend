@@ -36,6 +36,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
 
     dmcc.init = function(){
 		if(dmcc.userId > 0){
+            dmcc.title = "Update Device";
             var promise = services.getDeviceById(dmcc.userId);
             promise.success(function (result) {
                 Utility.stopAnimation();
@@ -43,12 +44,17 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                     dmcc.id = result.data.id;
                     dmcc.deviceName = result.data.name;
                     // to set pre-populated port numbers
+                    // debugger;
+                    dmcc.port_one_0_reason = result.data.status_reason_port_one_0.reason;
+                    dmcc.port_one_1_reason = result.data.status_reason_port_one_1.reason;
+                    dmcc.port_two_0_reason = result.data.status_reason_port_two_0.reason;
+                    dmcc.port_two_1_reason = result.data.status_reason_port_two_1.reason;
 
-                    dmcc.port_one_0_reason = result.data.status_reason_port_one_0.id;
-                    // dmcc.port_one_1_reason = result.data.status_reason_port_one_1.id;
-                    // dmcc.port_two_0_reason = result.data.port_two_0_reason;
-                    // dmcc.port_two_1_reason = result.data.port_two_1_reason;
-                    dmcc.title = "Update Device";
+                    // console.log(dmcc.port_one_0_reason);
+                    // console.log(dmcc.port_one_1_reason);
+                    // console.log(dmcc.port_two_0_reason);
+                    // console.log(dmcc.port_two_1_reason);
+
                 }else{
                     toastr.error(result.message, 'Sorry!');
                 }
@@ -72,8 +78,8 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 "port_two_0_reason":dmcc.port_two_0_reason,
                 "port_two_1_reason":dmcc.port_two_1_reason
             }
-            // console.log(req);
-            // debugger;
+            console.log(req);
+            debugger;
             if (dmcc.userId != 'Unknown') {    
             	req.id = dmcc.userId;            
                 var operationMessage = " updated ";
@@ -95,7 +101,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 }
 
             }, function myError(r) {
-                toastr.error(r.data.errors.email[0], 'Sorry!');
+                toastr.error(r.data.errors.name[0], 'Sorry!');
                 Utility.stopAnimation();
 
             });

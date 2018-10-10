@@ -14,7 +14,7 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 		macc.getDeviceList();
 
 		if(macc.userId > 0){
-			macc.title = "Update Device";
+			macc.title = "Update Machine";
             var promise = services.getMachineById(macc.userId);
             promise.success(function (result) {
                 Utility.stopAnimation();
@@ -38,7 +38,7 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 	                    }
 	                }
 
-	                console.log(devicesArr);
+	                //console.log(devicesArr);
 
 	                macc.device = devicesArr;
 	                macc.oldDevice = devicesArr;

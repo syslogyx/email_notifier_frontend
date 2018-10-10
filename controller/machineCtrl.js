@@ -35,7 +35,7 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
 
 	mac.resetAllDevices=function(index,machineID){
         swal({
-            title: 'Rset Devices',
+            title: 'Reset Devices',
             text: "Are you sure you want to reset all device?",
             type: 'warning',
             showCancelButton: true,
