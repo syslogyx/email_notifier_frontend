@@ -12,27 +12,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
     var loggedInUser = JSON.parse(services.getIdentity());
 
     dmcc.userId = $routeParams.id || "Unknown";
-    console.log(dmcc.userId);
-
-    $('#port_1_0').change(function(){
-        dmcc.port_one_0_reason = $("#port_1_0").val();
-        console.log(dmcc.port_one_0_reason);
-    });
-
-    $('#port_1_1').change(function(){
-        dmcc.port_one_1_reason = $("#port_1_1").val();
-        console.log(dmcc.port_one_1_reason);
-    });
-
-    $('#port_2_0').change(function(){
-        dmcc.port_two_0_reason = $("#port_2_0").val();
-        console.log(dmcc.port_two_0_reason);
-    });
-
-    $('#port_2_1').change(function(){
-        dmcc.port_two_1_reason = $("#port_2_1").val();
-        console.log(dmcc.port_two_1_reason);
-    });
+    //console.log(dmcc.userId);    
 
     dmcc.init = function(){
 		if(dmcc.userId > 0){
@@ -44,7 +24,9 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                     dmcc.deviceName = result.data.name;
                     // to set pre-populated port numbers
 
-                    dmcc.port_one_0_reason = result.data.status_reason_port_one_0.id;
+                    // dmcc.port_one_0_reason = result.data.status_reason_port_one_0.reason;
+                    $("#port_1_0").val(result.data.status_reason_port_one_0.reason);
+                    $("#port_1_0_id").val(result.data.status_reason_port_one_0.id);
                     // dmcc.port_one_1_reason = result.data.status_reason_port_one_1.id;
                     // dmcc.port_two_0_reason = result.data.port_two_0_reason;
                     // dmcc.port_two_1_reason = result.data.port_two_1_reason;
@@ -57,11 +39,37 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
 		}
 
         dmcc.getReasonListForPort_one_0();
-		dmcc.getReasonListForPort_one_1();
-        dmcc.getReasonListForPort_two_0();
-        dmcc.getReasonListForPort_two_1();
-
+		// dmcc.getReasonListForPort_one_1();
+  //       dmcc.getReasonListForPort_two_0();
+  //       dmcc.getReasonListForPort_two_1();
+        dmcc.initializeChangeEvents();
 	}    
+
+    dmcc.initializeChangeEvents = function(){
+
+        $('#port_1_0').on('keyup',function(e){
+            dmcc.port_one_0_reason = $("#port_1_0").val();
+            console.log("helloeeee");
+            $("#port_1_0_id").val('');
+            //console.log(dmcc.port_one_0_reason);
+        });
+
+        $('#port_1_1').on('change',function(){
+            dmcc.port_one_1_reason = $("#port_1_1").val();
+            //console.log(dmcc.port_one_1_reason);
+        });
+
+        $('#port_2_0').on('change',function(){
+            dmcc.port_two_0_reason = $("#port_2_0").val();
+            // console.log(dmcc.port_two_0_reason);
+        });
+
+        $('#port_2_1').on('change',function(){
+            dmcc.port_two_1_reason = $("#port_2_1").val();
+            // console.log(dmcc.port_two_1_reason);
+        });
+    }
+    
 
 	dmcc.saveDevice = function () {
         if ($("#addDeviceForm").valid()) {
@@ -115,17 +123,17 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 listLocation: "data"
             }],
             getValue: function(element) { 
-                console.log(element);            
+                // console.log(element);            
                 return element.reason;               
             },
 
             list: {
                 onSelectItemEvent: function() {
-                    dmcc.port_one_0_reason = null;
+                    // dmcc.port_one_0_reason = null;
                     var selectedId = $("#port_1_0").getSelectedItemData().id;
-                    console.log(selectedId);
+                    //console.log(selectedId);
                     if(selectedId){                        
-                        dmcc.port_one_0_reason = selectedId;
+                        $("#port_1_0_id").val(selectedId);
                     }
                 },
                 match: {
@@ -140,116 +148,116 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         $("#port_1_0").easyAutocomplete(options);
     }
 
-    dmcc.getReasonListForPort_one_1 = function () {
+    // dmcc.getReasonListForPort_one_1 = function () {
 
-        var options = {
+    //     var options = {
 
-            url: RESOURCES.SERVER_API + "get/reasons",
-            ajaxSettings: {
-                dataType: "json",
-                method: "GET"
-            },
-            categories: [{
-                listLocation: "data"
-            }],
-            getValue: function(element) {
-                // console.log(element);                
-                return element.reason;               
-            },
+    //         url: RESOURCES.SERVER_API + "get/reasons",
+    //         ajaxSettings: {
+    //             dataType: "json",
+    //             method: "GET"
+    //         },
+    //         categories: [{
+    //             listLocation: "data"
+    //         }],
+    //         getValue: function(element) {
+    //             // console.log(element);                
+    //             return element.reason;               
+    //         },
 
-            list: {
-                onSelectItemEvent: function() {
-                    dmcc.port_one_1_reason = null;
-                    var selectedId = $("#port_1_1").getSelectedItemData().id;
-                    if(selectedId){                        
-                        dmcc.port_one_1_reason = selectedId;
-                    }
-                },
-                match: {
-                    enabled: true
-                }
-            },
+    //         list: {
+    //             onSelectItemEvent: function() {
+    //                 dmcc.port_one_1_reason = null;
+    //                 var selectedId = $("#port_1_1").getSelectedItemData().id;
+    //                 if(selectedId){                        
+    //                     dmcc.port_one_1_reason = selectedId;
+    //                 }
+    //             },
+    //             match: {
+    //                 enabled: true
+    //             }
+    //         },
 
-            requestDelay: 200,
-            theme: "square"
-        };
+    //         requestDelay: 200,
+    //         theme: "square"
+    //     };
 
-        $("#port_1_1").easyAutocomplete(options);
-    }
+    //     $("#port_1_1").easyAutocomplete(options);
+    // }
 
-    dmcc.getReasonListForPort_two_0 = function () {
+    // dmcc.getReasonListForPort_two_0 = function () {
 
-        var options = {
+    //     var options = {
 
-            url: RESOURCES.SERVER_API + "get/reasons",
-            ajaxSettings: {
-                dataType: "json",
-                method: "GET"
-            },
-            categories: [{
-                listLocation: "data"
-            }],
-            getValue: function(element) {
-                // console.log(element);                
-                return element.reason;               
-            },
+    //         url: RESOURCES.SERVER_API + "get/reasons",
+    //         ajaxSettings: {
+    //             dataType: "json",
+    //             method: "GET"
+    //         },
+    //         categories: [{
+    //             listLocation: "data"
+    //         }],
+    //         getValue: function(element) {
+    //             // console.log(element);                
+    //             return element.reason;               
+    //         },
 
-            list: {
-                onSelectItemEvent: function() {
-                    dmcc.port_two_0_reason = null;
-                    var selectedId = $("#port_2_0").getSelectedItemData().id;                  
-                    if(selectedId){                        
-                        dmcc.port_two_0_reason = selectedId;
-                    }
-                },
-                match: {
-                    enabled: true
-                }
-            },
+    //         list: {
+    //             onSelectItemEvent: function() {
+    //                 dmcc.port_two_0_reason = null;
+    //                 var selectedId = $("#port_2_0").getSelectedItemData().id;                  
+    //                 if(selectedId){                        
+    //                     dmcc.port_two_0_reason = selectedId;
+    //                 }
+    //             },
+    //             match: {
+    //                 enabled: true
+    //             }
+    //         },
 
-            requestDelay: 200,
-            theme: "square"
-        };
+    //         requestDelay: 200,
+    //         theme: "square"
+    //     };
 
-        $("#port_2_0").easyAutocomplete(options);
-    }
+    //     $("#port_2_0").easyAutocomplete(options);
+    // }
 
-    dmcc.getReasonListForPort_two_1 = function () {
+    // dmcc.getReasonListForPort_two_1 = function () {
 
-        var options = {
+    //     var options = {
 
-            url: RESOURCES.SERVER_API + "get/reasons",
-            ajaxSettings: {
-                dataType: "json",
-                method: "GET"
-            },
-            categories: [{
-                listLocation: "data"
-            }],
-            getValue: function(element) {
-                //console.log(element);                
-                return element.reason;               
-            },
+    //         url: RESOURCES.SERVER_API + "get/reasons",
+    //         ajaxSettings: {
+    //             dataType: "json",
+    //             method: "GET"
+    //         },
+    //         categories: [{
+    //             listLocation: "data"
+    //         }],
+    //         getValue: function(element) {
+    //             //console.log(element);                
+    //             return element.reason;               
+    //         },
 
-            list: {
-                onSelectItemEvent: function() {
-                    dmcc.port_two_1_reason = null;
-                    var selectedId = $("#port_2_1").getSelectedItemData().id;
-                    if(selectedId){                        
-                        dmcc.port_two_1_reason = selectedId;
-                    }
-                },
-                match: {
-                    enabled: true
-                }
-            },
+    //         list: {
+    //             onSelectItemEvent: function() {
+    //                 dmcc.port_two_1_reason = null;
+    //                 var selectedId = $("#port_2_1").getSelectedItemData().id;
+    //                 if(selectedId){                        
+    //                     dmcc.port_two_1_reason = selectedId;
+    //                 }
+    //             },
+    //             match: {
+    //                 enabled: true
+    //             }
+    //         },
 
-            requestDelay: 200,
-            theme: "square"
-        };
+    //         requestDelay: 200,
+    //         theme: "square"
+    //     };
 
-        $("#port_2_1").easyAutocomplete(options);
-    }
+    //     $("#port_2_1").easyAutocomplete(options);
+    // }
 
     $scope.resetForm = function() {
         $('#addDeviceForm')[0].reset();
