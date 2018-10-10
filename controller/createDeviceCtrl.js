@@ -75,10 +75,10 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
     
 
 	dmcc.saveDevice = function () {
-            console.log($("#port_1_0_id").val());
-            console.log($("#port_1_1_id").val());
-            console.log($("#port_2_0_id").val());
-            console.log($("#port_2_1_id").val());
+            // console.log($("#port_1_0_id").val());
+            // console.log($("#port_1_1_id").val());
+            // console.log($("#port_2_0_id").val());
+            // console.log($("#port_2_1_id").val());
         if ($("#addDeviceForm").valid()) {
             var req = {
                 "name": dmcc.deviceName,
@@ -264,6 +264,10 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         });
         dmcc.id = null;
         dmcc.deviceName = '';
+        $("#port_1_0_id").val('');
+        $("#port_1_1_id").val('');
+        $("#port_2_0_id").val('');
+        $("#port_2_1_id").val('');
     };
 
     dmcc.init();	   

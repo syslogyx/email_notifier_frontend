@@ -23,12 +23,10 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
                     macc.machine_name = result.data.name;
                     macc.machine_email_ids = result.data.email_ids;
                     // to set device pre-populated
-                    var newdeviceList = result.data.devices;
-                    
+                    var newdeviceList = result.data.devices;                    
                     for ($i = 0; $i < newdeviceList.length; $i++) {	                        
                         macc.deviceList.push(newdeviceList[$i]);
                     }
-
 	                var devicesArr = [];
 	                if (newdeviceList) {
 	                    for (var i = 0; i < newdeviceList.length; i++) {
@@ -38,33 +36,25 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 	                    }
 	                }
 
-	                //console.log(devicesArr);
-
 	                macc.device = devicesArr;
 	                macc.oldDevice = devicesArr;
-
                     macc.status = result.data.status;
-                    
-                    // applySelect2();
                 }else{
                     toastr.error(result.message, 'Sorry!');
                 }
             });
 			
-		}
-
-		
+		}		
 	}
 
 	macc.getDeviceList = function () {
 		var promise = services.getNotEngageDeviceList();
         promise.success(function (result) {
 			// console.log(result);
+            Utility.stopAnimation();
             if(result.status_code == 200){
-                //Utility.stopAnimation();
                 macc.deviceList = result.data;
             }else{
-            	//Utility.stopAnimation();
 				macc.deviceList = [];
                 toastr.error(result.message, 'Sorry!');
             }
@@ -106,8 +96,11 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 			});
 		}
 	}
+
 	$scope.resetForm = function () {
 		$("#machineAddForm")[0].reset();
+		macc.deviceList = '';
+		macc.getDeviceList();
         $("div.form-group").each(function () {
             $(this).removeClass('has-error');
             $('span.help-block-error').remove();

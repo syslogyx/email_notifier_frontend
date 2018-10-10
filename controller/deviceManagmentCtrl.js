@@ -87,7 +87,6 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
     }
     
     $scope.openAddDevicePage=function(){
-        // window.location = '/device/create_device';
         $location.path('/device/create_device');
     }
 

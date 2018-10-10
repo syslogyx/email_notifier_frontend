@@ -1,4 +1,4 @@
-app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore,$location) {
+app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore,$routeParams,$location) {
 
 	var mac = this;
 	// mac.userId=$location.search()['id'];
@@ -27,11 +27,13 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
 		return emailIds;
 	}
 
-	$scope.openAddMachinePage = function(){
-		window.location = '/machine/create_machine';
-	}
+    
+    mac.init();
 	
-	mac.init();
+    $scope.openAddMachinePage = function(){
+		// window.location = '/machine/create_machine';
+        $location.path('/machine/create_machine');
+	}
 
 	mac.resetAllDevices=function(index,machineID){
         swal({
