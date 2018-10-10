@@ -96,14 +96,11 @@
                     // set error class to the control group
                 },
                 unhighlight: function (element) { // revert the change done by hightlight
-                    $(element)
-                            .closest('.form-group').removeClass('has-error');
-                    $(element)
-                            .next().children().children().attr('style', 'border-color:'); // set error class to the control group
+                    $(element).closest('.form-group').removeClass('has-error');
+                    $(element).next().children().children().attr('style', 'border-color:'); // set error class to the control group
                 },
                 success: function (label) {
-                    label
-                            .closest('.form-group').removeClass('has-error'); // set success class to the control group
+                    label.closest('.form-group').removeClass('has-error'); // set success class to the control group
                 }
             });
 

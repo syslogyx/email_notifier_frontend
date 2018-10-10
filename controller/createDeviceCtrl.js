@@ -12,7 +12,6 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
     var loggedInUser = JSON.parse(services.getIdentity());
 
     dmcc.userId = $routeParams.id || "Unknown";
-    //console.log(dmcc.userId);    
 
     dmcc.init = function(){
 		if(dmcc.userId > 0){
@@ -76,16 +75,18 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
     
 
 	dmcc.saveDevice = function () {
+            console.log($("#port_1_0_id").val());
+            console.log($("#port_1_1_id").val());
+            console.log($("#port_2_0_id").val());
+            console.log($("#port_2_1_id").val());
         if ($("#addDeviceForm").valid()) {
             var req = {
                 "name": dmcc.deviceName,
-                "port_one_0_reason":dmcc.port_one_0_reason,
-                "port_one_1_reason":dmcc.port_one_1_reason,
-                "port_two_0_reason":dmcc.port_two_0_reason,
-                "port_two_1_reason":dmcc.port_two_1_reason
-            }
-            // console.log(req);
-            // debugger;
+                "port_one_0_reason":$("#port_1_0_id").val() == '' ? dmcc.port_one_0_reason : $("#port_1_0_id").val(),
+                "port_one_1_reason":$("#port_1_1_id").val() == '' ? dmcc.port_one_1_reason : $("#port_1_1_id").val(),
+                "port_two_0_reason":$("#port_1_1_id").val() == '' ? dmcc.port_two_0_reason : $("#port_1_1_id").val(),
+                "port_two_1_reason":$("#port_1_1_id").val() == '' ? dmcc.port_two_1_reason : $("#port_1_1_id").val(),
+            }            
             if (dmcc.userId != 'Unknown') {    
             	req.id = dmcc.userId;            
                 var operationMessage = " updated ";
@@ -265,7 +266,6 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         dmcc.deviceName = '';
     };
 
-    dmcc.init();
-	   
+    dmcc.init();	   
 
 });
