@@ -119,11 +119,12 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         $("#userpassword").prop("required",true);
     }
 
+debugger;
     $scope.resetMachine=function(index,userId){
         console.log(userId);
         swal({
-            title: 'Reset Device',
-            text: "Are you sure you want to reset device?",
+            title: 'Reset Machine',
+            text: "Are you sure you want to reset Machine?",
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -136,15 +137,19 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
             promise.success(function (result) {
                 if(result.status_code == 200){
                     Utility.stopAnimation();
-                    usc.userList[index]['machine'] = null;
-                    //delete usc.userList[index]['machine']['id'];
+                    console.log(loggedInUser);
+                    console.log(usc.userList[index]);
+                    // usc.userList[index]['machine'] = null;
+                    delete usc.userList[index]['machine']['id'];
+                    usc.userList[index]['machine']['machine_name'] = '---';
 
-                    // if(loggedInUser.identity.id != undefined && loggedInUser.identity.id==userId){
-                        
-                    //     delete loggedInUser.identity.id;
-                    //     delete loggedInUser.identity.name;
-                    //     services.setIdentity(loggedInUser);
-                    // }
+                    if(loggedInUser.identity.id != undefined && loggedInUser.id==userId){
+                        console.log(loggedInUser);
+                        delete loggedInUser.identity.id;
+                        delete loggedInUser.identity.machine_name;
+                        console.log(loggedInUser);
+                        services.setIdentity(loggedInUser);
+                    }
 
                     toastr.success(result.message, 'Congratulation!!!');
                 }else{

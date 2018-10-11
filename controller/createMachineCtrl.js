@@ -72,9 +72,9 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 				"email_ids":macc.machine_email_ids,
 			}
 			console.log(req);
-			 if (macc.userId != 'Unknown') {    
+			 if (macc.userId != 'Unknown') { 
             	req.id = macc.userId;	
-				req.old_device_list = macc.oldDevice;
+				req.old_device_list = macc.oldDevice.length > 0 ? macc.oldDevice : null;
 				req.new_device_list = macc.device;    
                 var operationMessage = " updated ";
                 var promise = services.updateMachine(req);
@@ -89,7 +89,6 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 				console.log(result);
 				Utility.stopAnimation();
                 if(result.data.status_code == 200){
-                	// window.location = '/machine/machine_list';
                 	$location.url('/machine/machine_list', false);
                     toastr.success(result.data.message);
                 }else{
