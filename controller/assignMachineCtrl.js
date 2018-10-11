@@ -2,56 +2,40 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 
 	var amc = this;
 	amc.userList = [];
-
-	amc.userId=$location.search()['id'];
-	amc.userDeviceId=null;
-	amc.userDeviceName=null;
-	console.log('userId',amc.userId);
+    amc.userId=$location.search()['id'];
+    amc.userMachineId=null;
+    amc.userMachineName=null;
+    // console.log('userId',amc.userId);
 
     var loggedInUser = JSON.parse(services.getIdentity());
+    // console.log(loggedInUser);
 
     // amc.userName = loggedInUser.identity.name;
 
-	// if(amc.userId!=undefined && loggedInUser.identity.role==1){
-	// 	var promise = services.getMachineIdByUserId(amc.userId);
-	// 	promise.success(function (result) {
- //            console.log(result.data);
-	// 		if(result.status_code == 200){
-	// 			Utility.stopAnimation();
-	// 			// if(result.data.status=='ENGAGE'){
-	// 			// 	amc.userMachineId=result.data.machine_id.toString();
-	// 			// 	amc.userMachineName=result.data.machine_name;
-	// 			// }else{
-	// 			// 	amc.userMachineId='';
-	// 			// }
- //                // console.log(amc.machineList);
- //                var newdeviceList = result.data; 
- //                amc.machineList.push(newdeviceList);
- //                console.log(amc.machineList);
- //                var machineArry = [];
- //                if (newdeviceList) {
- //                    for (var i = 0; i < newdeviceList.length; i++) {
- //                        if (newdeviceList[i]['id']) {
- //                            machineArry.push(newdeviceList[i]['id']);
- //                        }
- //                    }
- //                }
-
- //                console.log(machineArry);
-
- //                amc.machineId = machineArry;
- //                console.log(amc.machineId);
-
-	// 		}else{
-	// 			Utility.stopAnimation();
-	// 			//amc.userMachineId='';
-	// 			amc.userId=loggedInUser.id.toString();
-	// 			// toastr.error(result.message, 'Sorry!');
-	// 		}
-	// 	});
-	// }else{
-	// 		amc.userId=undefined;
-	// }
+	if(amc.userId!=undefined && loggedInUser.identity.role==1){
+		var promise = services.getMachineIdByUserId(amc.userId);
+		promise.success(function (result) {            
+            console.log(result.data);
+			if(result.status_code == 200){
+				Utility.stopAnimation();
+				if(result.data.status=='ENGAGE'){
+					amc.userMachineId=result.data.machine.machine_id.toString();
+					amc.userMachineName=result.data.machine.machine_name;
+				}else{
+					amc.userMachineId='';
+				}
+            }else if(result.status_code == 404){
+                amc.userId=$location.search()['id'];
+            }else{
+                Utility.stopAnimation();
+                amc.userMachineId='';
+                amc.userId=loggedInUser.id.toString();
+				// toastr.error(result.message, 'Sorry!');
+			}
+		});
+	}else{
+			amc.userId=undefined;
+	}
 
 	amc.init = function () {
 			var promise = services.getAllUserList();
@@ -59,7 +43,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 				if(result.status_code == 200){
 					Utility.stopAnimation();
 						amc.userList = result.data;
-						amc.userName=amc.userId!=undefined?amc.userId:loggedInUser.id.toString();
+                        amc.userName=amc.userId!=undefined ? amc.userId : loggedInUser.id.toString();
 				}else{
 					Utility.stopAnimation();
 						amc.userList = [];
@@ -75,19 +59,15 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     promise.success(function (result) {
     	if(result.status_code == 200){
     		Utility.stopAnimation();
-        	amc.machineList = result.data;
-            console.log(amc.machineList);
+            amc.machineList = result.data;
             if(loggedInUser.identity.machine_id != undefined){
 					if(amc.machineList!=null){
-                        console.log("hello1");
-						// if(amc.userMachineId!=''){
-						// 	amc.machineList.push({id:amc.userMachineId,machine_id:amc.userMachineName});
-						// }
+						if(amc.userMachineId!=''){
+							amc.machineList.push({id:amc.userMachineId,name:amc.userMachineName});
+						}
 					}else{
-                        console.log("hello");
-						amc.machineList.push({id:loggedInUser.identity.machine_id,device_id:loggedInUser.identity.machine_name});
+						amc.machineList.push({id:loggedInUser.identity.machine_id,name:loggedInUser.identity.machine_name});
 					}
-
                 amc.machineId = amc.userMachineId!=null?amc.userMachineId:loggedInUser.identity.machine_id.toString();
             }
     	}else{

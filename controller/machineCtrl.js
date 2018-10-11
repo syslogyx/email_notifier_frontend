@@ -51,13 +51,12 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
                 if(result.status_code == 200){
                     Utility.stopAnimation();
                      mac.machineList[index]['status']='NOT ENGAGE';
-                    if(loggedInUser.identity.device_id != undefined && loggedInUser.identity.device_id==device_id){
+                    // if(loggedInUser.identity.device_id != undefined && loggedInUser.identity.device_id==device_id){
 
-                        delete loggedInUser.identity.device_id;
-                        delete loggedInUser.identity.device_name;
-                        services.setIdentity(loggedInUser);
-                    }
-
+                    //     delete loggedInUser.identity.device_id;
+                    //     delete loggedInUser.identity.device_name;
+                    //     services.setIdentity(loggedInUser);
+                    // }
                     toastr.success(result.message, 'Congratulation!!!');
                 }else{
                     Utility.stopAnimation();

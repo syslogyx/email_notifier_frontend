@@ -33,7 +33,7 @@
                                 <td style="text-align: center;" ng-bind="($index + 1)"></td>
                                 <td ng-bind="data.name"></td>
                                 <td ng-bind="data.status"></td>
-                                <td ng-bind="data.machine == null ? '---' : data.machine.machine_name"></td>
+                                <td ng-bind="data.machine_data == null ? '---' : data.machine_data.name"></td>
                                 <td style="text-align: left;">
                                     <a class="btn btn-primary btn-xs" title="Edit" ng-href="/device/update_device/{{data.id}}"><i class="fa fa-pencil" aria-hidden="true" ></i></a>
                                     <button class="btn btn-primary btn-xs" title="Reset Device" ng-if="data.status=='ENGAGE'" ng-click="resetDevice($index, data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>

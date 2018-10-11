@@ -17,16 +17,17 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 			macc.title = "Update Machine";
             var promise = services.getMachineById(macc.userId);
             promise.success(function (result) {
-                Utility.stopAnimation();
                 if(result.status_code == 200){
                     macc.id = result.data.id;
                     macc.machine_name = result.data.name;
                     macc.machine_email_ids = result.data.email_ids;
                     // to set device pre-populated
-                    var newdeviceList = result.data.devices;                    
+                    // debugger;
+                    var newdeviceList = result.data.device_data;                    
                     for ($i = 0; $i < newdeviceList.length; $i++) {	                        
                         macc.deviceList.push(newdeviceList[$i]);
                     }
+                    
 	                var devicesArr = [];
 	                if (newdeviceList) {
 	                    for (var i = 0; i < newdeviceList.length; i++) {
@@ -42,6 +43,7 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
                 }else{
                     toastr.error(result.message, 'Sorry!');
                 }
+                Utility.stopAnimation();
             });
 			
 		}		

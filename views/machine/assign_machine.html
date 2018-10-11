@@ -1,6 +1,6 @@
 <section class="content" ng-cloak>
 <br><br>
-    <form role="form" name="addForm" id="machineAssignForm" >
+    <form role="form" name="addForm" id="machineAssignForm">
         <div class="box box-default" >
             <div class="row">
                 <div class="col-md-12">
@@ -34,6 +34,7 @@
                         <div class="col-sm-4">
                             <label class="mandatory" style="text-align:center;">Machine ID</label>
                         </div>
+                        {{amc.machineList|json}}
                         <div class="col-sm-6">
                             <select id="machineId" ng-model="amc.machineId" name="machineId" class="form-control s2mn" style="width:100%;"  >
                                 <option value="">Select Machine</option>

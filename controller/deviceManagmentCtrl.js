@@ -106,7 +106,7 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
             promise.success(function (result) {
                 if(result.status_code == 200){
                     Utility.stopAnimation();
-                    dmc.deviceList[index]['machine'] = null;
+                    dmc.deviceList[index]['machine_data'] = null;
                     dmc.deviceList[index]['status']='NOT ENGAGE';
                     // if(loggedInUser.identity.device_id != undefined && loggedInUser.identity.device_id==device_id){
 
@@ -114,7 +114,6 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
                     //     delete loggedInUser.identity.device_name;
                     //     services.setIdentity(loggedInUser);
                     // }
-
                     toastr.success(result.message, 'Congratulation!!!');
                 }else{
                     Utility.stopAnimation();
