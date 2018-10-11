@@ -119,7 +119,6 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         $("#userpassword").prop("required",true);
     }
 
-debugger;
     $scope.resetMachine=function(index,userId){
         console.log(userId);
         swal({
@@ -137,17 +136,12 @@ debugger;
             promise.success(function (result) {
                 if(result.status_code == 200){
                     Utility.stopAnimation();
-                    console.log(loggedInUser);
-                    console.log(usc.userList[index]);
-                    // usc.userList[index]['machine'] = null;
                     delete usc.userList[index]['machine']['id'];
                     usc.userList[index]['machine']['machine_name'] = '---';
 
                     if(loggedInUser.identity.id != undefined && loggedInUser.id==userId){
-                        console.log(loggedInUser);
                         delete loggedInUser.identity.id;
                         delete loggedInUser.identity.machine_name;
-                        console.log(loggedInUser);
                         services.setIdentity(loggedInUser);
                     }
 

@@ -52,34 +52,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="row">
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label class="mandatory">Machine ON Reason</label>
-                            <select id="on_reason" name="on_reason" class="form-control s2mn" ng-model="on_reason" data-placeholder="Select reason" ng-options="x.id as x.reason for x in macc.reasonList | filter: { status: 'ON'}">
-                                <option value="">Select reason</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="form-group text-right" style="margin-top: 50%;">
-                            <button type="button" value="Add custom" data-ng-click="openAddCustomReasonOnModal()" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Add custom"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label class="mandatory">Machine OFF Reason</label>
-                            <select id="off_reason" name="off_reason" class="form-control s2mn" ng-model="off_reason" data-placeholder="Select reason" ng-options="x.id as x.reason for x in macc.reasonList | filter: { status: 'OFF'}">
-                                <option value="">Select reason</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="form-group text-right" style="margin-top: 50%;">
-                            <button type="button" value="Add custom" data-ng-click="openAddCustomReasonOffModal()" class="btn btn-sm btn-primary" data-toggle="tooltip" title="Add custom"><i class="fa fa-plus"></i></button>
-                        </div>
-                    </div>
-                </div> -->
             </div>
             <!-- /.box-body -->
         </form>
@@ -158,9 +130,11 @@
                 // applySelect2();
             });
         });
-
         $('#device').select2();
 
+        $('#device').on('change', function() {  // when the value changes
+            $(this).valid(); // trigger validation on this element
+        });
         $.validator.addMethod('regex', function (value, element, regexp) {
             if (regexp.constructor != RegExp)
                 regexp = new RegExp(regexp);

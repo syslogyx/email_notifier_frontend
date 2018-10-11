@@ -474,6 +474,18 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         })
     };
 
+    this.resetALLDevicesByMachineID = function (id) {
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "reset/devicesByMachineId/"+id,
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+
     this.getMachineIdByUserId= function (id) {
         Utility.startAnimation();
         return $http({

@@ -60,7 +60,6 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     	if(result.status_code == 200){
     		Utility.stopAnimation();
             amc.machineList = result.data;
-            console.log(loggedInUser.identity);
             if(loggedInUser.identity.id != undefined){
 					if(amc.machineList!=null){
                         console.log(amc.userMachineId);
@@ -149,7 +148,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
             //window.location.href = "/all-projects";
         })
     }
-    
+
 	amc.clearForm=function(){
 		amc.machineId='';
 	}

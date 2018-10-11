@@ -21,8 +21,6 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
                     macc.id = result.data.id;
                     macc.machine_name = result.data.name;
                     macc.machine_email_ids = result.data.email_ids;
-                    // to set device pre-populated
-                    // debugger;
                     var newdeviceList = result.data.device_data;                    
                     for ($i = 0; $i < newdeviceList.length; $i++) {	                        
                         macc.deviceList.push(newdeviceList[$i]);
