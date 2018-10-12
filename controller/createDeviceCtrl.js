@@ -84,8 +84,8 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 "name": dmcc.deviceName,
                 "port_one_0_reason":$("#port_1_0_id").val() == '' ? dmcc.port_one_0_reason : $("#port_1_0_id").val(),
                 "port_one_1_reason":$("#port_1_1_id").val() == '' ? dmcc.port_one_1_reason : $("#port_1_1_id").val(),
-                "port_two_0_reason":$("#port_1_1_id").val() == '' ? dmcc.port_two_0_reason : $("#port_1_1_id").val(),
-                "port_two_1_reason":$("#port_1_1_id").val() == '' ? dmcc.port_two_1_reason : $("#port_1_1_id").val(),
+                "port_two_0_reason":$("#port_2_0_id").val() == '' ? dmcc.port_two_0_reason : $("#port_2_0_id").val(),
+                "port_two_1_reason":$("#port_2_1_id").val() == '' ? dmcc.port_two_1_reason : $("#port_2_1_id").val(),
             }            
             if (dmcc.userId != 'Unknown') {    
             	req.id = dmcc.userId;            
