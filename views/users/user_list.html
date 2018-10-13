@@ -36,7 +36,7 @@
                                 <td style="text-align: left;">
                                     <button type="button" class="btn btn-primary btn-xs" title="Edit" ng-click="resetForm(); usc.getUserData(data.id);"><i class="fa fa-pencil" aria-hidden="true" ></i></button>
 
-                                    <button type="button" class="btn btn-primary btn-xs" title="Reset Machine" ng-if="data.machine.id" ng-click="resetMachine($index, data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
+                                    <button type="button" class="btn btn-success btn-xs" title="Reset Machine" ng-if="data.machine.id" ng-click="resetMachine($index, data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
 
                                     <a class="btn btn-primary btn-xs" title="Assign Machine" ng-if="!data.machine.id" ng-href="/machine/assign_machine?id={{data.id}}"><i class="fa fa-cog" aria-hidden="true" ></i></a>
                                 </td>
