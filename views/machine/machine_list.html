@@ -14,7 +14,7 @@
         <div>
             <div class="row" >
                 <div class="col-md-12">
-                    <table class="table table-responsive">
+                    <table class="table table-hover table-responsive">
                         <thead>
                             <tr>
                                 <th style="text-align: center;">Sr No.</th>
@@ -34,7 +34,7 @@
                                 <td>{{data.status}}</td>
                                 <td style="text-align: left;">
                                     <a ng-href="/machine/update_machine/{{data.id}}" class="btn btn-primary btn-xs" title="Edit"><i class="fa fa-pencil" aria-hidden="true"></i></a> 
-                                    <button class="btn btn-success btn-xs" title="Reset User" ng-if="data.status=='ENGAGE'" ng-click="mac.resetUser($index,data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
+                                    <button class="btn btn-success btn-xs" title="Reset Machine" ng-if="data.status=='ENGAGE'" ng-click="mac.resetUser($index,data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
                                     <button class="btn btn-warning btn-xs" title="Reset Devices" ng-if="data.device_data.length > 0" ng-click="mac.resetAllDevices($index,data.device_data,data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
                                 </td>
                             </tr>

@@ -98,9 +98,9 @@ $scope.menuClick=function(link){
             if(result.status_code == 200){
                 $scope.id = result.data.id;
                 $scope.userName = result.data.name;
-                // $scope.userPassword = result.data.password;
+                // $scope.userpassword = result.data.password;
                 $scope.userEmail = result.data.email;
-                $scope.userRole = result.data.role_id;
+                $scope.mobileNo = result.data.mobile;
                 applySelect2();
                 $("#userProfilePassword").removeAttr("required");
                 $("#updateUserModal").modal("toggle");
@@ -116,7 +116,7 @@ $scope.menuClick=function(link){
                 "name": $scope.userName,
                 "email": $scope.userEmail,
                 "password":$scope.userpassword,
-                "role_id": $scope.userRole,
+                "mobile": $scope.mobileNo,
             }
             req.id = $scope.id;
 

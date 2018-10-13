@@ -742,3 +742,24 @@ text-align: center !important;
 thead{
     color: #2d90ca;
 }
+@media (max-width: 1200px) {
+    .content{
+    margin-top: 20% !important;
+    }
+     .contsiner{
+    margin-top: 14%;
+    }
+    .logo{
+            padding-left: 85px !important;
+    }
+    #logout{
+        margin-top: 0% !important;
+    }
+    #homeView{
+        width: 35% !important;
+    }
+    .container-fluid{
+       overflow-y: hidden; 
+    }
+    
+}

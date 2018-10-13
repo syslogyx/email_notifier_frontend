@@ -18,21 +18,21 @@
 <div class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo" ng-controller="loginCtrl">
-    <a href="/login"><b>Email Notifier</b></a>
+    <b>Email Notifier</b>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
     <!-- <p class="login-box-msg">Sign in to start</p> -->
 
     <form id="loginForm" method="POST">
-
-                <div class="form-group has-feedback">
+                <br>
+                <div class="form-group has-feedback" style="min-height:55px">
                     <label  class="sr-only"></label>
                     <input type="email" class="form-control" placeholder="Email" name="email" ng-model="lgc.email">
                     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 </div>
 
-                <div class="form-group has-feedback">
+                <div class="form-group has-feedback" style="min-height:55px">
                     <label  class="sr-only"></label>        
                     <input type="password" class="form-control" placeholder="Password" name="password" ng-model="lgc.password">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>

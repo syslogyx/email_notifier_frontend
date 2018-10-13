@@ -12,9 +12,9 @@
         </div>
         <br>
         <div>
-            <div class="row" >
-                <div class="col-md-12">
-                    <table class="table table-responsive">
+            <!-- <div class="row" > -->
+                <!-- <div > -->
+                    <table class="table table-hover table-responsive">
                         <thead>
                             <tr>
                                 <th style="text-align: center;">Sr No.</th>
@@ -27,7 +27,7 @@
                         </thead>
 
                         <tbody>
-                            <tr ng-if="usc.userList.length > 0" ng-repeat="data in usc.userList | orderBy:'name' track by data.id">
+                            <tr ng-if="usc.userList.length > 0" ng-repeat="data in usc.userList">
                                 <td style="text-align: center;" ng-bind="($index + 1)"></td>
                                 <td ng-bind="data.name"></td>
                                 <td ng-bind="data.email"></td>
@@ -35,10 +35,9 @@
                                 <td ng-bind="data.machine == null ? '---' : data.machine.machine_name "></td>
                                 <td style="text-align: left;">
                                     <button type="button" class="btn btn-primary btn-xs" title="Edit" ng-click="resetForm(); usc.getUserData(data.id);"><i class="fa fa-pencil" aria-hidden="true" ></i></button>
-
                                     <button type="button" class="btn btn-success btn-xs" title="Reset Machine" ng-if="data.machine.id" ng-click="resetMachine($index, data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
 
-                                    <a class="btn btn-primary btn-xs" title="Assign Machine" ng-if="!data.machine.id" ng-href="/machine/assign_machine?id={{data.id}}"><i class="fa fa-cog" aria-hidden="true" ></i></a>
+                                    <a class="btn btn-primary btn-xs" title="Assign Machine" ng-if="!data.machine.id" ng-href="/machine/assign_machine?id={{data.id}}"><i class="fa fa-check-square-o" aria-hidden="true" ></i></a>
                                 </td>
                             </tr>
                             <tr ng-if="usc.userList == null || usc.userList.length == 0">
@@ -46,8 +45,8 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-            </div>
+               <!--  </div> -->
+            <!-- </div> -->
         </div>
     </div>
 

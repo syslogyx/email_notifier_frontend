@@ -41,8 +41,8 @@ app.controller("loginCtrl", function (services, AclService, $scope, $http, $loca
                             name: data.name,
                             email: data.email,
                             role: data.role_id,
-                            device_id: data.device_id,
-                            device_name:data.device_name
+                            machine_id: data.machine_id,
+                            machine_name:data.machine_name
                         }
                     }
                     // services.setIdentity(identity);

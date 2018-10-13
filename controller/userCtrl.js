@@ -11,6 +11,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         	if(result.status_code == 200){
         		Utility.stopAnimation();
             	usc.userList = result.data;
+               console.log(usc.userList);
         	}else{
         		Utility.stopAnimation();
             	toastr.error(result.message, 'Sorry!');
@@ -139,8 +140,8 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
                     delete usc.userList[index]['machine']['id'];
                     usc.userList[index]['machine']['machine_name'] = '---';
 
-                    if(loggedInUser.identity.id != undefined && loggedInUser.id==userId){
-                        delete loggedInUser.identity.id;
+                    if(loggedInUser.identity.machine_id != undefined && loggedInUser.id==userId){
+                        delete loggedInUser.identity.machine_id;
                         delete loggedInUser.identity.machine_name;
                         services.setIdentity(loggedInUser);
                     }

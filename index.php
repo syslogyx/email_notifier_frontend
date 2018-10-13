@@ -218,9 +218,8 @@
 
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="mandatory" for="">Role</label>
-                                                        <select id="userRole" ng-model="userRole" name="userRole" class="form-control s2mn" style="width:100%;" ng-options="x.id as x.name for x in userRoleList" >
-                                                        <option value="" style="color:#ccc;">Select role</option></select>
+                                                        <label class="mandatory" for="">Mobile</label>
+                                                        <input type="text" class="form-control" id="mobileNo" name="mobileNo" ng-model="mobileNo" placeholder="Enter mobile number">
                                                     </div>
                                                 </div>
                                              </div>
@@ -249,9 +248,9 @@
             <div ng-controller="menuCtrl" >
                 <footer class="main-footer">
                     <div class="pull-right hidden-xs">
-                      <b>Version</b> 2.2
+                      <b>Version</b> 0.1
                     </div>
-                    <strong>Copyright &copy; 2014-2016 <a href="http://www.syslogyx.com/">Syslogyx Technologies Pvt. Ltd.</a></strong> All rights
+                    <strong>Copyright &copy; 2018 <a href="http://www.syslogyx.com/">Syslogyx Technologies Pvt. Ltd.</a></strong> All rights
                     reserved.
                 </footer>
 
@@ -429,7 +428,7 @@
                     errorPlacement: function (error, element) {
 
                         var type = $(element).attr("type");
-                        if ($(element).attr("id") === "userRole")
+                        if ($(element).attr("id") === "mobileNo")
                         {
                             // custom placement
                             element.parent().append(error);
@@ -448,7 +447,7 @@
                             regex: /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i
                         },
 
-                        userRole: {
+                        mobileNo: {
                             required: true
                         }
                     },
@@ -462,8 +461,8 @@
                         userProfilePassword: {
                             required: "Password is required."
                         },
-                        userRole: {
-                            required: "Role is required"
+                        mobileNo: {
+                            required: "Mobile No. is required"
                         }
                     },
                     highlight: function (element) { // hightlight error inputs
