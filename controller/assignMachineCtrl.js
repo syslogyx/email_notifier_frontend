@@ -13,7 +13,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     // amc.userName = loggedInUser.identity.name;
 	if(amc.userId!=undefined){
 		var promise = services.getMachineIdByUserId(amc.userId);
-		promise.success(function (result) {            
+		promise.success(function (result) {
             console.log(result.data);
 			if(result.status_code == 200){
 				Utility.stopAnimation();
@@ -35,7 +35,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 			}
 		});
 	}else{
-			amc.userId=undefined;       
+			amc.userId=undefined;
 	}
 
 	amc.init = function () {
@@ -55,7 +55,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 
 	amc.init();
 
-    debugger
+
     var promise = services.getMachineList();
     promise.success(function (result) {
     	if(result.status_code == 200){
@@ -86,7 +86,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
             "machine_id":amc.machineId,
             "user_id":amc.userName
         };
-        debugger
+        
 		if(!$('#machineAssignForm').valid()){
 			return false;
 		}
@@ -101,7 +101,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 				if(req.user_id==loggedInUser.id){
 					services.setIdentity(loggedInUser);
 				}
-                                
+
             }else{
                 toastr.error(result.data.message, 'Sorry!');
             }
@@ -131,7 +131,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
             promise.success(function (result) {
                 if(result.status_code == 200){
                     Utility.stopAnimation();
-                    amc.machineId = null;                    
+                    amc.machineId = null;
                     if(loggedInUser.identity.id != undefined){
                         console.log(loggedInUser);
                         delete loggedInUser.identity.machine_id;
