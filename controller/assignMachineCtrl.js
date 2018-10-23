@@ -5,7 +5,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     amc.userId=$location.search()['id'];
     amc.userMachineId=null;
     amc.userMachineName=null;
-    // console.log('userId',amc.userId);
+    // console.log(amc.userMachineId);
 
     var loggedInUser = JSON.parse(services.getIdentity());
     console.log(loggedInUser);
@@ -55,14 +55,14 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 
 	amc.init();
 
-
+    debugger
     var promise = services.getMachineList();
     promise.success(function (result) {
     	if(result.status_code == 200){
     		Utility.stopAnimation();
             amc.machineList = result.data;
-            console.log(amc.machineList);
-            if(loggedInUser.identity.machine_id != undefined){
+            console.log(loggedInUser.identity.machine_id);
+            if(loggedInUser.identity.machine_id != undefined || loggedInUser.identity.machine_id != "" || loggedInUser.identity.machine_id != null){
 					if(amc.userMachineId!=null){
                         console.log(amc.userMachineId);
 						if(amc.userMachineId!='' && amc.userMachineId!=null){

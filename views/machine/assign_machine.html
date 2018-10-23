@@ -6,7 +6,8 @@
                 <div class="col-md-12">
                     <div class="col-sm-6">
                         <!-- <h4>Assign Machine</h4> -->
-                        <button type="button" value="Reset" data-ng-click="resetMachine()" class="btn" style="outline: 0;margin-left:2%;margin-top:2%" ng-disabled="amc.userMachineId==''">Reset</button>
+                        <button type="button" value="Reset" data-ng-click="resetMachine()" class="btn" style="outline: 0;margin-left:2%;margin-top:2%" ng-disabled="amc.userMachineId=='' || amc.userMachineId==null ">Reset</button>
+                       <!--  <pre>{{amc.userMachineId}}</pre> -->
                     </div>                    
                     <!-- <div class="col-md-6">
                         <div class="pull-right" style="margin-top: 5px; margin-right: 30px;">
