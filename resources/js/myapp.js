@@ -730,9 +730,9 @@ app.config(function ($routeProvider, $locationProvider) {
                     }]
                 }
             })
-            .when('/analytix1', {
-                templateUrl: 'views/analytix/analytix1.html',
-                controller: 'analytixCtrl',
+            .when('/analytics1', {
+                templateUrl: 'views/analytics/analytics1.html',
+                controller: 'analyticsCtrl',
                 controllerAs: 'anx',
                 resolve: {
                     'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
@@ -740,9 +740,9 @@ app.config(function ($routeProvider, $locationProvider) {
                     }]
                 }
             })
-            .when('/analytix2', {
-                templateUrl: 'views/analytix/analytix2.html',
-                controller: 'analytixCtrl',
+            .when('/analytics2', {
+                templateUrl: 'views/analytics/analytics2.html',
+                controller: 'analyticsCtrl',
                 controllerAs: 'anx',
                 resolve: {
                     'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {

@@ -52,6 +52,8 @@
         <link rel="stylesheet" type="text/css" href="/resources/css/commonStyle.css"/>
 
         <link rel="stylesheet" type="text/css" href="/resources/css/sweetalert-master/dist/sweetalert.css">
+        <!-- pie_chart -->
+        <link rel="stylesheet" href="/resources/pie_chart/jqwidgets/styles/jqx.base.css" type="text/css" />
 
         <link href="/resources/css/ziehharmonika.css" rel="stylesheet">
         <!-- dropzone -->
@@ -376,8 +378,14 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
 
-         <script src="/resources/plugins/easyAutoComplete/easyAutocomplete.min.js"></script>
+        <script src="/resources/plugins/easyAutoComplete/easyAutocomplete.min.js"></script>
 
+        <script type="text/javascript" src="/resources/pie_chart/jqwidgets/jqxcore.js"></script>
+        <script type="text/javascript" src="/resources/pie_chart/jqwidgets/jqxdraw.js"></script>
+        <script type="text/javascript" src="/resources/pie_chart/jqwidgets/jqxchart.core.js"></script>
+        <!-- <script type="text/javascript" src="scripts/demos.js"></script> -->
+        <script type="text/javascript" src="/resources/pie_chart/jqwidgets/jqxdata.js"></script>
+    
         <script src="/resources/js/myapp.js"></script>
         <script type="text/javascript">
             var _c = new Date().getTime();
@@ -394,7 +402,7 @@
                                     "createDeviceCtrl",
                                     "assignMachineCtrl",
                                     "reportCtrl",
-                                    "analytixCtrl"
+                                    "analyticsCtrl"
                                   ];
 
             document.write('<script type="text/javascript" src="/resources/js/myapp.js?v='+_c+'"><\/script>');

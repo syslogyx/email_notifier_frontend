@@ -17,8 +17,8 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
           {"Title": "Device Management", "Link": "/device/device_list", "icon": "fa fa-mobile", "active":"deactive"},
           {"Title": "Machine Management", "Link": "/machine/machine_list", "icon": "fa fa-cogs", "active":"deactive"},
           {"Title": "Reports", "Link": "/report", "icon": "fa fa-file-code-o", "active":"deactive"},
-          {"Title": "Analytix1", "Link": "/analytix1", "icon": "fa  fa-pie-chart", "active":"deactive"},
-          {"Title": "Analytix2", "Link": "/analytix2", "icon": "fa  fa-pie-chart", "active":"deactive"}
+          {"Title": "Analytics1", "Link": "/analytics1", "icon": "fa  fa-pie-chart", "active":"deactive"},
+          {"Title": "Analytics", "Link": "/analytics2", "icon": "fa  fa-pie-chart", "active":"deactive"}
       ];
     }else if (loggedInUser.identity.role==2) {
       $scope.menuList = [
@@ -28,8 +28,8 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
           {"Title": "Device Management", "Link": "/device/device_list", "icon": "fa fa-mobile", "active":"deactive"},
           {"Title": "Machine Management", "Link": "/machine/machine_list", "icon": "fa fa-cogs", "active":"deactive"},
           {"Title": "Reports", "Link": "/report", "icon": "fa fa-file-code-o", "active":"deactive"},
-          {"Title": "Analytix1", "Link": "/analytix1", "icon": "fa  fa-pie-chart", "active":"deactive"},
-          {"Title": "Analytix2", "Link": "/analytix2", "icon": "fa  fa-pie-chart", "active":"deactive"}
+          {"Title": "Analytics1", "Link": "/analytics1", "icon": "fa  fa-pie-chart", "active":"deactive"},
+          {"Title": "Analytics2", "Link": "/analytics2", "icon": "fa  fa-pie-chart", "active":"deactive"}
       ];
     }else {
       $scope.menuList = [
