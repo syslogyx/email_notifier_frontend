@@ -1,0 +1,156 @@
+<section class="content">
+	<div class="container-fluid">
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+				<h4>Analytix For All Machines</h4>
+			</div>
+		</div>
+		<br>
+		<form role="form" name="addForm" id="analytix2Form">
+			<div class="box box-default">
+		    	<div class="box-body">
+					<div class="row">
+						<div class="col-md-3">
+				            <div class="form-group">
+				                <label class="mandatory" for="">From Date</label>
+				                <div>
+				                    <div class="input-group date">
+				                        <div class="input-group-addon">
+				                            <i class="fa fa-calendar"></i>
+				                        </div>  
+
+				                        <input type="text" class="form-control pull-right" id="fromDate" name="fromDate" ng-model="anx.fromDateForAllMachine" autocomplete="off" placeholder="Enter from date">
+				                       <!--  readonly='true' style="cursor:default;background-color: white;" -->
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+				        <div class="col-md-3">
+				        	<div class="form-group">
+				                <label class="mandatory" for="">To Date</label>
+				                <div>
+				                    <div class="input-group date">
+				                        <div class="input-group-addon">
+				                            <i class="fa fa-calendar"></i>
+				                        </div>  
+
+				                        <input type="text" class="form-control pull-right" id="toDate" name="toDate" ng-model="anx.toDateForAllMachine" autocomplete="off" placeholder="Enter to date">
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+
+				        <div class="col-md-2 " style="margin-top: 23px;">
+				            <button type="button" class="btn btn-block btn-primary" ng-click="anx.getPieChartForAllMachines()">Draw Chart</button>
+				        </div>
+
+				        <div class="col-md-1 " style="margin-top: 23px;">
+				            <button type="button" class="btn btn-block btn-primary fa fa-refresh" ng-click="anx.refreshForAllMachines()"></button>
+				        </div>    
+				    </div>
+				    <hr>
+				    <br>
+				    <div class="row">
+			    		<div class="col-md-12">
+			    		</div>
+			    	</div>
+				</div>
+			</div>
+		</form>
+		<!-- <br>
+		<div class="box box-default">
+	    	<div class="box-body">
+			    <div class="row">
+			    	<div class="col-md-12">
+			            
+			        </div>
+			    </div>
+			</div>
+		</div> -->
+	</div>
+</section>
+<script>
+
+    $(document).ready(function () {
+        $("html, body").animate({scrollTop: 0}, "fast");   
+    });
+
+    function setTime1(){
+    	//Date picker
+	    $('#fromDate').datepicker({
+	        autoclose: true,
+	        todayHighlight: true
+	    }).on("show", function (e) {
+	        //$(this).valid();    
+	    }).on("changeDate", function(){
+	    	//$(this).valid();
+	    	var selected = $(this).val();
+	        //console.log(selected);
+	        $('#toDate').datepicker('setStartDate', selected); 
+	        //$(this).valid();
+	    });
+
+	    $('#toDate').datepicker({
+	        autoclose: true,
+	        todayHighlight: true
+	    }).on("show", function (e) {
+	       // $(this).valid();      
+	    }).on("changeDate", function(){
+	    	//$(this).valid();
+	    	var selected = $(this).val();
+	        //console.log(selected);
+	        $('#fromDate').datepicker('setEndDate', selected);       
+	    });
+    }
+
+    setTimeout(function(){setTime1();},10);
+</script>
+<script>
+    $("#analytix2Form").validate({
+        errorElement: 'span', //default input error message container
+        errorClass: 'help-block help-block-error',
+        errorPlacement: function (error, element) {
+            var type = $(element).attr("type");
+            if ($(element).attr("id") === "")
+            {
+                element.parent().append(error);
+            } else if ($(element).attr("id") === "fromDate" || $(element).attr("id") === "toDate")
+            {
+                element.parent().parent().parent().append(error);
+            }
+             else {
+                error.insertAfter(element);
+            }
+        },
+        rules: {
+            fromDate: {
+                required: true
+            },
+            toDate: {
+                required: true
+            }
+        },
+        messages: {
+            fromDate: {
+                required: "From date is required."
+            },
+            toDate: {
+                required: "To date is required."
+            }
+        },
+        highlight: function (element) { // hightlight error inputs
+            $(element).closest('.form-group').addClass('has-error');
+
+            $(element).next().children().children().attr('style', 'border-color:#dd4b39!important');
+            // set error class to the control group
+        },
+        unhighlight: function (element) { // revert the change done by hightlight
+            $(element).closest('.form-group').removeClass('has-error');
+            $(element).next().children().children().attr('style', 'border-color:'); // set error class to the control group
+        },
+        success: function (label) {
+            label.closest('.form-group').removeClass('has-error'); // set success class to the control group
+        }
+    });
+</script>

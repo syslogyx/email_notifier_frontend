@@ -15,7 +15,10 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
           {"Title": "Assign Machine", "Link": "/machine/assign_machine", "icon": "fa fa fa-check-square-o", "active":"deactive"},
           {"Title": "User Management", "Link": "/user/user_list", "icon": "fa fa-user", "active":"deactive"},
           {"Title": "Device Management", "Link": "/device/device_list", "icon": "fa fa-mobile", "active":"deactive"},
-          {"Title": "Machine Management", "Link": "/machine/machine_list", "icon": "fa fa-cogs", "active":"deactive"}
+          {"Title": "Machine Management", "Link": "/machine/machine_list", "icon": "fa fa-cogs", "active":"deactive"},
+          {"Title": "Reports", "Link": "/report", "icon": "fa fa-file-code-o", "active":"deactive"},
+          {"Title": "Analytix1", "Link": "/analytix1", "icon": "fa  fa-pie-chart", "active":"deactive"},
+          {"Title": "Analytix2", "Link": "/analytix2", "icon": "fa  fa-pie-chart", "active":"deactive"}
       ];
     }else if (loggedInUser.identity.role==2) {
       $scope.menuList = [
@@ -23,7 +26,10 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
           {"Title": "Assign Machine", "Link": "/machine/assign_machine", "icon": "fa fa fa-check-square-o", "active":"deactive"},
           {"Title": "User Management", "Link": "/user/user_list", "icon": "fa fa-user", "active":"deactive"},
           {"Title": "Device Management", "Link": "/device/device_list", "icon": "fa fa-mobile", "active":"deactive"},
-          {"Title": "Machine Management", "Link": "/machine/machine_list", "icon": "fa fa-cogs", "active":"deactive"}
+          {"Title": "Machine Management", "Link": "/machine/machine_list", "icon": "fa fa-cogs", "active":"deactive"},
+          {"Title": "Reports", "Link": "/report", "icon": "fa fa-file-code-o", "active":"deactive"},
+          {"Title": "Analytix1", "Link": "/analytix1", "icon": "fa  fa-pie-chart", "active":"deactive"},
+          {"Title": "Analytix2", "Link": "/analytix2", "icon": "fa  fa-pie-chart", "active":"deactive"}
       ];
     }else {
       $scope.menuList = [
@@ -35,16 +41,15 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
     menuService.setMenu($scope.menuList);
 
 
-$scope.menuClick=function(link){
-  for (var i = 0; i < $scope.menuList.length; i++) {
-    if(link==$scope.menuList[i].Link){
-      $scope.menuList[i].active='active';
-    }else{
-      $scope.menuList[i].active='deactive';
+    $scope.menuClick=function(link){
+      for (var i = 0; i < $scope.menuList.length; i++) {
+        if(link==$scope.menuList[i].Link){
+          $scope.menuList[i].active='active';
+        }else{
+          $scope.menuList[i].active='deactive';
+        }
+      }
     }
-  }
-}
-
 
     $scope.init = function () {
         $scope.token = services.getAuthKey();
@@ -53,7 +58,25 @@ $scope.menuClick=function(link){
             /*console.log("sdfsdfsdfsd  "+$scope.user.identity.name);*/
             $scope.name = $scope.user.identity.name;
             $scope.userId = $scope.user.id;
+            $scope.machineId = loggedInUser.identity.machine_id;
+            $scope.machineName = loggedInUser.identity.machine_name;
             $scope.menuClick(window.location.pathname);
+
+            // var promise = services.getDeviceStatusDataByMachineID($scope.machineId);
+            // promise.success(function (result) {
+            //     //console.log(result.data.length);
+            //     if(result.data){
+            //          $scope.deviceStatusDataList = result.data; 
+            //          console.log($scope.deviceStatusDataList);
+            //         $scope.init();
+            //         Utility.stopAnimation();
+            //     }else{
+            //         Utility.stopAnimation();
+            //     }
+            // }, function myError(r) {
+            //     toastr.error(r.data.errors, 'Sorry!');
+            //     Utility.stopAnimation();
+            // });
         }
     };
 
@@ -64,6 +87,7 @@ $scope.menuClick=function(link){
 
         // $.removeCookie("authKey", { path: '/' });
         $cookieStore.remove('authkey');
+        //$cookieStore.remove('identity');
         $scope.init();
         window.location.href = "/site/login";
     }

@@ -20,7 +20,7 @@ app.controller("loginCtrl", function (services, AclService, $scope, $http, $loca
             console.log(req);
             var promise = services.logIn(req);
             promise.then(function mySucces(r) {
-                console.log(r);
+                //console.log(r);
 
                 if (r.data != null) {
 

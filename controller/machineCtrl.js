@@ -12,7 +12,7 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
 			if(result.status_code == 200){
 				Utility.stopAnimation();
 					mac.machineList = result.data;
-					console.log(mac.machineList);
+					//console.log(mac.machineList);
 		 			//mac.userName=mac.userId!=undefined?mac.userId:loggedInUser.id.toString();
 			}else{
 				Utility.stopAnimation();

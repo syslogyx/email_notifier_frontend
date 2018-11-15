@@ -11,7 +11,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         	if(result.status_code == 200){
         		Utility.stopAnimation();
             	usc.userList = result.data;
-               console.log(usc.userList);
+               //console.log(usc.userList);
         	}else{
         		Utility.stopAnimation();
             	toastr.error(result.message, 'Sorry!');

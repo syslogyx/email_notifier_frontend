@@ -126,6 +126,7 @@ app.constant('RESOURCES', (function () {
     }
 })());
 
+
 app.directive('ngFiles', ['$parse', function ($parse) {
     function fn_link(scope, element, attrs) {
         var onChange = $parse(attrs.ngFiles);
@@ -462,7 +463,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         })
     };
 
-    this.restDevicesByMachineID = function (id) {
+    this.restMachineByMachineID = function (id) {
         Utility.startAnimation();
         return $http({
             method: 'GET',
@@ -497,7 +498,77 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
+
+    this.getDeviceStatusDataByMachineID= function (id) {
+        //Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/devicePortStatusByMdchineId/"+id,
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+
+    this.saveUserEstimation = function (request) {
+        Utility.startAnimation();
+        return $http({
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "create/user_estimation",
+            dataType: 'json',
+            data: $.param(request),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+
+    this.getAllAssignMachinesByUserId= function (user_id) {
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/all_assign_machine/"+user_id,
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+
+    this.findestimationRecordFilter = function (request) {
+        Utility.startAnimation();
+        return $http({
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "filterUserEstimation",
+            dataType: 'json',
+            data: $.param(request),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
 });
+
+app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$rootScope,services) {
+    this.getNotification = function (machineId) {
+        var promise = services.getDeviceStatusDataByMachineID(machineId);
+        promise.success(function (result) {
+            if(result.data){
+               $rootScope.deviceStatusDataList = result.data; 
+               //console.log($rootScope.deviceStatusDataList);
+                Utility.stopAnimation();
+            }else{
+                Utility.stopAnimation();
+            }
+        }, function myError(r) {
+            toastr.error(r.data.errors, 'Sorry!');
+            Utility.stopAnimation();
+
+        });
+    }
+});
+
 
 app.config(function ($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
@@ -649,13 +720,43 @@ app.config(function ($routeProvider, $locationProvider) {
                     }]
                 }
             })
+            .when('/report', {
+                templateUrl: 'views/userEstimation/estimationReport.html',
+                controller: 'reportCtrl',
+                controllerAs: 'rep',
+                resolve: {
+                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+
+                    }]
+                }
+            })
+            .when('/analytix1', {
+                templateUrl: 'views/analytix/analytix1.html',
+                controller: 'analytixCtrl',
+                controllerAs: 'anx',
+                resolve: {
+                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+
+                    }]
+                }
+            })
+            .when('/analytix2', {
+                templateUrl: 'views/analytix/analytix2.html',
+                controller: 'analytixCtrl',
+                controllerAs: 'anx',
+                resolve: {
+                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+
+                    }]
+                }
+            })
 
     $locationProvider.html5Mode(true);
 });
 
-app.run(function ($rootScope, AclService, $cookieStore, $location, services) {
+app.run(function ($rootScope, AclService, $cookieStore, $location, services,notificationServices) {
     var authKey = $cookieStore.get('identity');
-
+    
     if (authKey == undefined) {
         $location.path('/site/login');
     } else {
@@ -665,6 +766,17 @@ app.run(function ($rootScope, AclService, $cookieStore, $location, services) {
         services.setIdentity(authIdentity);
         // Attach the member role to the current user
         AclService.attachRole(role);
+        
+         var loggedInUser = JSON.parse($cookieStore.get('identity'));
+         var machineID = loggedInUser.identity.machine_id;
+         
+         setInterval(function(){ 
+            var currentAuthKey = $cookieStore.get('authkey');
+            //console.log(currentAuthKey);
+            if(currentAuthKey != undefined){
+                notificationServices.getNotification(machineID);     
+            }
+        }, 1000);
     }
 
     // If the route change failed due to our "Unauthorized" error, redirect them
@@ -675,6 +787,7 @@ app.run(function ($rootScope, AclService, $cookieStore, $location, services) {
             $location.path('/site/login');
         }
     });
+
 });
 
 jQuery.validator.addMethod("customEmail", function (value, element) {

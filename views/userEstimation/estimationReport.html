@@ -1,0 +1,193 @@
+<section class="content">
+	<h4>Report</h4>
+	<br>
+	<form role="form" name="addForm" id="reportForm">
+		<div class="box box-default">
+	    	<div class="box-body">
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
+			                <label class="mandatory" for="">Machine</label>
+			                <select id="machineId" ng-model="rep.machineId" name="machineId" class="form-control s2mn" style="width:100%;">
+			                <option value="">Select Machine</option>
+			                 <option value="{{machine.id}}" ng-repeat="machine in rep.machineList">{{machine.name}}</option>
+			             </select>
+			            </div>
+					</div>
+					<div class="col-md-3">
+			            <div class="form-group">
+			                <label class="mandatory" for="">From Date</label>
+			                <div>
+			                    <div class="input-group date">
+			                        <div class="input-group-addon">
+			                            <i class="fa fa-calendar"></i>
+			                        </div>  
+
+			                        <input type="text" class="form-control pull-right" id="rfromDate" name="rfromDate" ng-model="rep.fromDate" autocomplete="off" placeholder="Enter from date">
+			                       <!--  readonly='true' style="cursor:default;background-color: white;" -->
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			        <div class="col-md-3">
+			        	<div class="form-group">
+			                <label class="mandatory" for="">To Date</label>
+			                <div>
+			                    <div class="input-group date">
+			                        <div class="input-group-addon">
+			                            <i class="fa fa-calendar"></i>
+			                        </div>  
+
+			                        <input type="text" class="form-control pull-right" id="rtoDate" name="rtoDate" ng-model="rep.toDate" autocomplete="off" placeholder="Enter to date">
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+
+			        <div class="col-md-1 " style="margin-top: 23px;">
+			            <button type="button" class="btn btn-block btn-primary" ng-click="rep.getEstimationReportFilter()">Search</button>
+			        </div>
+
+			        <div class="col-md-1 " style="margin-top: 23px;">
+			            <button type="button" class="btn btn-block btn-primary fa fa-refresh" ng-click="rep.refreshfilter()"></button>
+			        </div>
+			        
+			    </div>
+			</div>
+		</div>
+	</form>
+	<br>
+	<div class="box box-default">
+    	<div class="box-body">
+		    <div class="row">
+		    	<div class="col-md-12">
+		            <table class="table table-hover table-responsive">
+		                <thead>
+		                    <tr>
+		                        <th style="text-align: center;">Sr No.</th>
+		                        <th>Machine Name</th>
+		                        <th style="text-align: center;">Off Time</th>
+		                        <th style="text-align: center;">On Time</th>
+		                        <th style="text-align: center;">Estimation Hour</th>
+		                        <th style="text-align: center;">Actual Hour</th>
+		                        <th>Reason</th>
+		                        <th>Message</th>
+		                       
+		                    </tr>
+		                </thead>
+
+		                <tbody>
+		                    <tr ng-if="rep.allEstimationRecord.length > 0" ng-repeat="data in rep.allEstimationRecord">
+		                        <td style="text-align: center;" ng-bind="($index + 1)"></td>
+		                        <td>{{data.machine.name}}</td>
+		                        <td style="text-align: center;">{{data.created_at}}</td>
+		                        <td style="text-align: center;">{{data.on_time?data.on_time:'--'}}</td>
+		                        
+		                        <td style="text-align: center;">{{data.user_estimation.length <= 0 ? '--':data.user_estimation[0].hour}}</td>
+		                        <td style="text-align: center;">{{data.actual_hour?data.actual_hour :'--'}}</td>
+		                        <td>{{data.user_estimation.length <= 0 ? '--':data.user_estimation[0].reason_data.reason}}</td>
+		                        <td>{{data.user_estimation.length <=0 ? '--': data.user_estimation[0].msg}}</td>
+		                    </tr>
+		                    <tr ng-if="rep.allEstimationRecord == null || rep.allEstimationRecord.length == 0">
+		                        <td style="text-align: center;" colspan="7">No Records Found</td>
+		                    </tr>
+		                </tbody>
+		            </table>
+		        </div>
+		    </div>
+		</div>
+	</div>
+</section>
+<script>
+
+    $(document).ready(function () {
+        $("html, body").animate({scrollTop: 0}, "fast");   
+    });
+
+    function setTime(){
+    	//Date picker
+	    $('#rfromDate').datepicker({
+	        autoclose: true,
+	        todayHighlight: true
+	    }).on("show", function (e) {
+	        //$(this).valid();    
+	    }).on("changeDate", function(){
+	    	//$(this).valid();
+	    	var selected = $(this).val();
+	        //console.log(selected);
+	        $('#rtoDate').datepicker('setStartDate', selected); 
+	        //$(this).valid();
+	    });
+
+	    $('#rtoDate').datepicker({
+	        autoclose: true,
+	        todayHighlight: true
+	    }).on("show", function (e) {
+	       // $(this).valid();      
+	    }).on("changeDate", function(){
+	    	//$(this).valid();
+	    	var selected = $(this).val();
+	        //console.log(selected);
+	        $('#rfromDate').datepicker('setEndDate', selected);       
+	    });
+    }
+
+    setTimeout(function(){setTime();},10);
+</script>
+<script>
+    $("#reportForm").validate({
+        errorElement: 'span', //default input error message container
+        errorClass: 'help-block help-block-error',
+        errorPlacement: function (error, element) {
+            var type = $(element).attr("type");
+            if ($(element).attr("id") === "")
+            {
+                element.parent().append(error);
+            } else if ($(element).attr("id") === "machineId")
+            {
+                element.parent().append(error);
+            } else if ($(element).attr("id") === "rfromDate" || $(element).attr("id") === "rtoDate")
+            {
+                element.parent().parent().parent().append(error);
+            }
+             else {
+                error.insertAfter(element);
+            }
+        },
+        rules: {
+            machineId: {
+                required: true
+            },
+            rfromDate: {
+                required: true
+            },
+            rtoDate: {
+                required: true
+            }
+        },
+        messages: {
+            machineId: {
+                required: "Machine is required."
+            },
+            rfromDate: {
+                required: "From date is required."
+            },
+            rtoDate: {
+                required: "To date is required."
+            }
+        },
+        highlight: function (element) { // hightlight error inputs
+            $(element).closest('.form-group').addClass('has-error');
+
+            $(element).next().children().children().attr('style', 'border-color:#dd4b39!important');
+            // set error class to the control group
+        },
+        unhighlight: function (element) { // revert the change done by hightlight
+            $(element).closest('.form-group').removeClass('has-error');
+            $(element).next().children().children().attr('style', 'border-color:'); // set error class to the control group
+        },
+        success: function (label) {
+            label.closest('.form-group').removeClass('has-error'); // set success class to the control group
+        }
+    });
+</script>

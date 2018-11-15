@@ -105,45 +105,63 @@
                     </a>
                     <!-- Header Navbar: style can be found in header.less -->
                     <nav class="navbar navbar-static-top" >
-                      <!-- Sidebar toggle button-->
-                      <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" >
-                        <span class="sr-only">Toggle navigation</span>
-                      </a>
+                        <!-- Sidebar toggle button-->
+                        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button" >
+                            <span class="sr-only">Toggle navigation</span>
+                        </a>
 
-                      <div class="navbar-custom-menu">
-                        <ul class="nav navbar-nav" >
-
-                          <li class="dropdown user user-menu">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <img src="resources/img/default_profile.png" class="user-image" alt="User Image">
-                            </a>
-                            <ul class="dropdown-menu">
-                              <!-- User image -->
-
-                              <li class="user-header">
-                                    <img src="resources/img/default_profile.png" class="img-circle" alt="User Image">
-
-                                    <p>
-                                        <span ng-href="" style="color: white;">{{name}}</span>
-                                    </p>
+                        <div class="navbar-custom-menu">
+                            <ul class="nav navbar-nav" >
+                                <li class="dropdown notifications-menu"> 
+                                   <!--  ng-controller="homeCtrl" -->
+                                        <!-- <pre>{{deviceStatusDataList}}</pre> -->
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-bell-o"></i>
+                                            <span class="label label-warning" ng-if='deviceStatusDataList.flag=="True"'>1</span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li class="header">You have {{deviceStatusDataList.flag=='True'?1:0}} notifications</li>
+                                            <li>
+                                            <!-- inner menu: contains the actual data -->
+                                                <ul class="menu">
+                                                    <li ng-if='deviceStatusDataList.flag=="True"'>
+                                                        <a data-toggle="modal" data-target="#deviceEstimationModal">
+                                                            <i class="fa fa-cogs text-aqua"></i>Machine '<b>{{deviceStatusDataList.machine.name}}</b>' is turned 'OFF'. <br> Please give time estimation.
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                          </li>
+                                          <!-- <li class="footer"><a href="#">View all</a></li> -->
+                                        </ul>
                                 </li>
+                                <li class="dropdown user user-menu">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                        <img src="resources/img/default_profile.png" class="user-image" alt="User Image">
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                      <!-- User image -->
+                                        <li class="user-header">
+                                            <img src="resources/img/default_profile.png" class="img-circle" alt="User Image">
+                                            <p>
+                                                <span ng-href="" style="color: white;">{{name}}</span>
+                                            </p>
+                                        </li>
 
-                              <!-- Menu Footer-->
-                              <li class="user-footer">
-                                <div class="pull-left">
-                                    <button type="button" class="btn btn-default btn-md" title="Update Profile" data-ng-click="getUserData()">Update Profile
-                                    </button>
-                                </div>
-                                <div class="pull-right">
-                                    <button type="button" class="btn btn-default btn-md" title="Logout" data-ng-click="clearToken()">Logout
-                                    </button>
-                                </div>
-                              </li>
+                                      <!-- Menu Footer-->
+                                        <li class="user-footer">
+                                            <div class="pull-left">
+                                                <button type="button" class="btn btn-default btn-md" title="Update Profile" data-ng-click="getUserData()">Update Profile
+                                                </button>
+                                            </div>
+                                            <div class="pull-right">
+                                                <button type="button" class="btn btn-default btn-md" title="Logout" data-ng-click="clearToken()">Logout
+                                                </button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
-                          </li>
-
-                        </ul>
-                      </div>
+                        </div>
                     </nav>
                 </header>
 
@@ -374,7 +392,9 @@
                                     "createMachineCtrl",
                                     "deviceManagmentCtrl",
                                     "createDeviceCtrl",
-                                    "assignMachineCtrl"
+                                    "assignMachineCtrl",
+                                    "reportCtrl",
+                                    "analytixCtrl"
                                   ];
 
             document.write('<script type="text/javascript" src="/resources/js/myapp.js?v='+_c+'"><\/script>');
