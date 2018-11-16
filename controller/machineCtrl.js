@@ -1,25 +1,76 @@
-app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore,$routeParams,$location) {
+app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore,$routeParams,$location,pagination) {
 
 	var mac = this;
+    mac.pageno = 0;
+    mac.limit = 0;
 	// mac.userId=$location.search()['id'];
 	// mac.userDeviceId=null;
 	// mac.userDeviceName=null;
     var loggedInUser = JSON.parse(services.getIdentity());
 
-	mac.init = function () {		
-		var promise = services.getALLMachineList();
-		promise.success(function (result) {
-			if(result.status_code == 200){
-				Utility.stopAnimation();
-					mac.machineList = result.data;
-					//console.log(mac.machineList);
-		 			//mac.userName=mac.userId!=undefined?mac.userId:loggedInUser.id.toString();
-			}else{
-				Utility.stopAnimation();
-					mac.machineList = [];
-					toastr.error(result.message, 'Sorry!');
-			}
-		});
+    setTimeout(function(){
+        $('#table_length').on('change',function(){
+            mac.fetchList(-1);
+        });
+    },100);
+
+    mac.fetchList = function(page){
+        mac.limit = $('#table_length').val();
+        if(mac.limit == undefined){
+            mac.limit = -1;
+        }
+        if(page == -1){
+            mac.pageno = 1;
+            console.log($('#pagination-sec').data("twbs-pagination"));
+            if($('#pagination-sec').data("twbs-pagination")){
+                    $('#pagination-sec').twbsPagination('destroy');
+            }
+        }
+        else{
+            mac.pageno = page;
+        }
+        var requestParam = {
+            page:mac.pageno,
+            // limit:pagination.getpaginationLimit(),
+            limit:mac.limit,
+        }
+
+        var promise = services.getALLMachineList(requestParam);
+        promise.success(function (result) {
+            //console.log(result);
+            Utility.stopAnimation();
+           if(result.status_code == 200){
+                Utility.stopAnimation();
+                mac.machineList = result.data.data;
+                pagination.applyPagination(result.data, mac);
+           }else{
+                Utility.stopAnimation();
+                mac.machineList = [];
+                toastr.error(result.message, 'Sorry!');
+            }
+        }, function myError(r) {
+            toastr.error(r.data.message, 'Sorry!');
+            Utility.stopAnimation();
+
+        });
+    }
+
+	mac.init = function () {	
+        mac.limit = $('#table_length').val();
+        mac.fetchList(-1);	
+		// var promise = services.getALLMachineList();
+		// promise.success(function (result) {
+		// 	if(result.status_code == 200){
+		// 		Utility.stopAnimation();
+		// 			mac.machineList = result.data;
+		// 			//console.log(mac.machineList);
+		//  			//mac.userName=mac.userId!=undefined?mac.userId:loggedInUser.id.toString();
+		// 	}else{
+		// 		Utility.stopAnimation();
+		// 			mac.machineList = [];
+		// 			toastr.error(result.message, 'Sorry!');
+		// 	}
+		// });
 	}
 
 	$scope.setEmailIds = function(data){

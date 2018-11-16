@@ -156,6 +156,39 @@ app.service('checkAuthentication', function (RESOURCES, $http, $cookieStore, $fi
     }
 });
 
+app.service('pagination', function (RESOURCES, $http, $cookieStore, $filter) {
+    //set pagination limit here
+    var paginationLimit = 10;
+    this.getpaginationLimit = function () {
+     return paginationLimit;
+    };
+
+    //apply pagination
+    this.applyPagination = function (pageData, ctrlscope, $source= null) {
+        //console.log(pageData);
+        $('#pagination-sec').twbsPagination({
+            totalPages: pageData.last_page,
+            visiblePages: 5,
+            first: '',
+            last: '',
+            onPageClick: function (event, page) {
+                console.log('Page: ' + page);
+                if (ctrlscope.skip) {
+                    ctrlscope.skip = false;
+                    return;
+                }
+                if($source != null){
+
+                }else{
+                    ctrlscope.fetchList(page,$source);
+                }
+                
+                $("html, body").animate({ scrollTop: 0 }, "slow");
+            }
+        });
+    }
+});
+
 app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
     this.setIdentity = function (identity) {
         $cookieStore.put('identity', JSON.stringify(identity));
@@ -203,11 +236,18 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
-    this.getDeviceList = function () {
+    this.getDeviceList = function (request) {
+        if(request == undefined){
+            page = -1;
+            limit = -1;
+        }else{
+            page = request.page;
+            limit = request.limit;
+        }
         Utility.startAnimation();
         return $http({
             method: 'GET',
-            url: RESOURCES.SERVER_API + "get/all/devices",
+            url: RESOURCES.SERVER_API + "get/all/devices?page=" + page + "&limit=" + limit,
             dataType: 'json',
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
@@ -215,11 +255,18 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         })
     };
 
-    this.getAllUserList = function () {
+    this.getAllUserList = function (request) {
+        if(request == undefined){
+            page = -1;
+            limit = -1;
+        }else{
+            page = request.page;
+            limit = request.limit;
+        }
         Utility.startAnimation();
         return $http({
             method: 'GET',
-            url: RESOURCES.SERVER_API + "get/users",
+            url: RESOURCES.SERVER_API + "get/users?page=" + page + "&limit=" + limit,
             dataType: 'json',
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
@@ -363,11 +410,18 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         })
     };
 
-    this.getALLMachineList = function () {
+    this.getALLMachineList = function (request) {
+        if(request == undefined){
+            page = -1;
+            limit = -1;
+        }else{
+            page = request.page;
+            limit = request.limit;
+        }
         Utility.startAnimation();
         return $http({
             method: 'GET',
-            url: RESOURCES.SERVER_API + "get/allMachines",
+            url: RESOURCES.SERVER_API + "get/allMachines?page=" + page + "&limit=" + limit,
             dataType: 'json',
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
@@ -536,13 +590,20 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         })
     };
 
-    this.findestimationRecordFilter = function (request) {
+    this.findestimationRecordFilter = function (req,request) {
+        if(request == undefined){
+            page = -1;
+            limit = -1;
+        }else{
+            page = request.page;
+            limit = request.limit;
+        }
         Utility.startAnimation();
         return $http({
             method: 'POST',
-            url: RESOURCES.SERVER_API + "filterUserEstimation",
+            url: RESOURCES.SERVER_API + "filterUserEstimation?page=" + page + "&limit=" + limit,
             dataType: 'json',
-            data: $.param(request),
+            data: $.param(req),
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
             }

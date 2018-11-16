@@ -1,22 +1,62 @@
-app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$routeParams) {
+app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$routeParams,pagination) {
 
 	var usc = this;
-
     usc.id = null;
+    usc.pageno = 0;
+    usc.limit = 0;
 
     var loggedInUser = JSON.parse(services.getIdentity());
-    usc.init = function () {
-        var promise = services.getAllUserList();
-        promise.success(function (result) {
-        	if(result.status_code == 200){
-        		Utility.stopAnimation();
-            	usc.userList = result.data;
-               //console.log(usc.userList);
-        	}else{
-        		Utility.stopAnimation();
-            	toastr.error(result.message, 'Sorry!');
-        	}
+
+    setTimeout(function(){
+        $('#table_length').on('change',function(){
+            usc.fetchList(-1);
         });
+    },100);
+
+    usc.fetchList = function(page){
+        usc.limit = $('#table_length').val();
+        if(usc.limit == undefined){
+            usc.limit = -1;
+        }
+        if(page == -1){
+            usc.pageno = 1;
+            console.log($('#pagination-sec').data("twbs-pagination"));
+            if($('#pagination-sec').data("twbs-pagination")){
+                    $('#pagination-sec').twbsPagination('destroy');
+            }
+        }
+        else{
+            usc.pageno = page;
+        }
+        var requestParam = {
+            page:usc.pageno,
+            // limit:pagination.getpaginationLimit(),
+            limit:usc.limit,
+        }
+
+        var promise = services.getAllUserList(requestParam);
+        promise.success(function (result) {
+            //console.log(result);
+            Utility.stopAnimation();
+           if(result.status_code == 200){
+                Utility.stopAnimation();
+                usc.userList = result.data.data;
+                pagination.applyPagination(result.data, usc);
+           }else{
+                Utility.stopAnimation();
+                toastr.error(result.message, 'Sorry!');
+            }
+        }, function myError(r) {
+            toastr.error(r.data.message, 'Sorry!');
+            Utility.stopAnimation();
+
+        });
+    }
+
+    usc.init = function () {
+
+        usc.limit = $('#table_length').val();
+        usc.fetchList(-1);
     }
 
     usc.init();

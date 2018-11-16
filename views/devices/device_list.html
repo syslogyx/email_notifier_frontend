@@ -5,7 +5,20 @@
             <div class="col-md-6">
                 <h4>Devices</h4>
             </div>
-            <div class="col-md-6 pull-right" style="margin-top:1%;">
+            <div class="col-md-4" style="margin-top:1.5%;">
+                <div class="dataTables_length text-right" id="example_length">
+                    <label>Show 
+                        <select id="table_length" aria-controls="example" style="outline: 0;">
+                            <!-- <option value="1">1</option> -->
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select> 
+                    entries</label>
+                </div>
+            </div>
+            <div class="col-md-2 pull-right" style="margin-top:1%;">
                 <button type="button" class="btn btn-primary btn-circle btn-sm pull-right" data-toggle="modal" title="Add new Device" data-toggle="Modal" data-ng-click="resetForm();openAddDevicePage()"><i class="fa fa-plus" aria-hidden="true" style="padding-right:0.3px"></i>
                 </button>
 
@@ -30,7 +43,7 @@
 
                         <tbody>
                             <tr ng-if="dmc.deviceList.length > 0" ng-repeat="data in dmc.deviceList">
-                                <td style="text-align: center;" ng-bind="($index + 1)"></td>
+                                <td style="text-align: center;" ng-bind="(dmc.pageno - 1) * dmc.limit + ($index + 1)"></td>
                                 <td ng-bind="data.name"></td>
                                 <td ng-bind="data.status"></td>
                                 <td ng-bind="data.machine_data == null ? '---' : data.machine_data.name"></td>
@@ -45,6 +58,9 @@
                             </tr>
                         </tbody>
                     </table>
+                    <div class="row col-sm-12" style="padding-right: 0px;">
+                        <ul id="pagination-sec" class="pagination-sm" style="float: right;margin-top: 5px;margin-bottom:45px;margin-right:-1.2%"></ul>
+                    </div>
                 </div>
             </div>
         </div>

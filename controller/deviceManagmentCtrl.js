@@ -1,22 +1,73 @@
-app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$cookieStore,$routeParams,$location) {
+app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$cookieStore,$routeParams,$location,pagination) {
 
 	var dmc = this;
 
     dmc.id = null;
     dmc.deviceName = '';
+    dmc.pageno = 0;
+    dmc.limit = 0;
 
     var loggedInUser = JSON.parse(services.getIdentity());
-    dmc.init = function () {
-        var promise = services.getDeviceList();
-        promise.success(function (result) {
-        	if(result.status_code == 200){
-        		Utility.stopAnimation();
-                dmc.deviceList = result.data;
-        	}else{
-        		Utility.stopAnimation();
-            	toastr.error(result.message, 'Sorry!');
-        	}
+
+    setTimeout(function(){
+        $('#table_length').on('change',function(){
+            dmc.fetchList(-1);
         });
+    },100);
+
+    dmc.fetchList = function(page){
+        dmc.limit = $('#table_length').val();
+        if(dmc.limit == undefined){
+            dmc.limit = -1;
+        }
+        if(page == -1){
+            dmc.pageno = 1;
+            console.log($('#pagination-sec').data("twbs-pagination"));
+            if($('#pagination-sec').data("twbs-pagination")){
+                    $('#pagination-sec').twbsPagination('destroy');
+            }
+        }
+        else{
+            dmc.pageno = page;
+        }
+        var requestParam = {
+            page:dmc.pageno,
+            // limit:pagination.getpaginationLimit(),
+            limit:dmc.limit,
+        }
+
+        var promise = services.getDeviceList(requestParam);
+        promise.success(function (result) {
+            //console.log(result);
+            Utility.stopAnimation();
+           if(result.status_code == 200){
+                Utility.stopAnimation();
+                dmc.deviceList = result.data.data;
+                pagination.applyPagination(result.data, dmc);
+           }else{
+                Utility.stopAnimation();
+                toastr.error(result.message, 'Sorry!');
+            }
+        }, function myError(r) {
+            toastr.error(r.data.message, 'Sorry!');
+            Utility.stopAnimation();
+
+        });
+    }
+
+    dmc.init = function () {
+        dmc.limit = $('#table_length').val();
+        dmc.fetchList(-1);
+        // var promise = services.getDeviceList();
+        // promise.success(function (result) {
+        // 	if(result.status_code == 200){
+        // 		Utility.stopAnimation();
+        //         dmc.deviceList = result.data;
+        // 	}else{
+        // 		Utility.stopAnimation();
+        //     	toastr.error(result.message, 'Sorry!');
+        // 	}
+        // });
     }
 
 

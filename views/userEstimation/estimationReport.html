@@ -44,7 +44,7 @@
 			            </div>
 			        </div>
 
-			        <div class="col-md-1 " style="margin-top: 23px;">
+			        <div class="col-md-2 " style="margin-top: 23px;">
 			            <button type="button" class="btn btn-block btn-primary" ng-click="rep.getEstimationReportFilter()">Search</button>
 			        </div>
 
@@ -78,7 +78,7 @@
 
 		                <tbody>
 		                    <tr ng-if="rep.allEstimationRecord.length > 0" ng-repeat="data in rep.allEstimationRecord">
-		                        <td style="text-align: center;" ng-bind="($index + 1)"></td>
+		                        <td style="text-align: center;" ng-bind="(rep.pageno - 1) * rep.limit + ($index + 1)"></td>
 		                        <td>{{data.machine.name}}</td>
 		                        <td style="text-align: center;">{{data.created_at}}</td>
 		                        <td style="text-align: center;">{{data.on_time?data.on_time:'--'}}</td>
@@ -93,6 +93,9 @@
 		                    </tr>
 		                </tbody>
 		            </table>
+		            <div class="row col-sm-12" style="padding-right: 0px;">
+                        <ul id="pagination-sec" class="pagination-sm" style="float: right;margin-top: 5px;margin-bottom:45px;margin-right:-1.2%"></ul>
+                    </div>
 		        </div>
 		    </div>
 		</div>
