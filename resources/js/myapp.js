@@ -609,6 +609,15 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
+
+    this.downloadReportPDF = function (req) {
+        //window.open(RESOURCES.SERVER_API +"generate_pdf/" + $.param(req));
+        var encReq = window.btoa(JSON.stringify(req));
+        console.log(encReq);
+        var url = RESOURCES.SERVER_API +"generate_pdf?req=" + encReq;
+        console.log(url);
+        window.open(url);
+    };
 });
 
 app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$rootScope,services) {

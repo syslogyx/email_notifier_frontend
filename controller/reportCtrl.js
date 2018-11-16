@@ -4,6 +4,7 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
 	rep.fromDate = '';
 	rep.pageno = 0;
     rep.limit = 0;
+    rep.req ={};
 
 	var loggedInUser = JSON.parse(services.getIdentity());
     //console.log(loggedInUser);
@@ -52,16 +53,16 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
         var fromDate = Utility.formatDate(rep.fromDate,'Y/m/d');
 		var toDate = Utility.formatDate(rep.toDate,'Y/m/d');
 		//console.log(fromDate);
-		var req ={
+		rep.req ={
 			'machine_id':rep.machineId,
 			'from_date':fromDate,
 			'to_date':toDate
 		}
 		if(rep.logInUSerRoleID != 1){
-			req.user_id = rep.logInUSerID;
+			rep.req.user_id = rep.logInUSerID;
 		}
 		
-        var promise = services.findestimationRecordFilter(req,requestParam);
+        var promise = services.findestimationRecordFilter(rep.req,requestParam);
         promise.success(function (result) {
             //console.log(result);
             Utility.stopAnimation();
@@ -129,5 +130,17 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
         rep.toDate = '';
         rep.allEstimationRecord = '';
 	}
+
+	rep.downloadReportDataPDF = function(){
+		console.log(rep.req);
+		// var fromDate = Utility.formatDate(rep.fromDate,'Y/m/d');
+		// var toDate = Utility.formatDate(rep.toDate,'Y/m/d');  
+		// var req ={
+		// 	'machine_id':rep.machineId,
+		// 	'from_date':fromDate,
+		// 	'to_date':toDate
+		// }      
+        var promise = services.downloadReportPDF(rep.req);
+    }
 
 });
