@@ -9,8 +9,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 
     var loggedInUser = JSON.parse(services.getIdentity());
     console.log(loggedInUser);
-
-    // amc.userName = loggedInUser.identity.name;
+    //amc.userName = loggedInUser.identity.name;
 	if(amc.userId!=undefined){
         
 		var promise = services.getMachineIdByUserId(amc.userId);
@@ -47,7 +46,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 			promise.success(function (result) {
 				if(result.status_code == 200){
 					Utility.stopAnimation();
-						amc.userList = result.data;
+						amc.userList = result.data.data;
                         amc.userName=amc.userId!=undefined ? amc.userId : loggedInUser.id.toString();
 				}else{
 					Utility.stopAnimation();
@@ -64,8 +63,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     	if(result.status_code == 200){
     		Utility.stopAnimation();
             amc.machineList = result.data;
-            debugger
-            console.log(loggedInUser.identity.machine_id);
+            //console.log(loggedInUser.identity.machine_id);
             if(loggedInUser.identity.machine_id !=undefined && loggedInUser.identity.machine_id != "" && loggedInUser.identity.machine_id != null){
 					if(amc.userMachineId!=null){
                         //console.log(amc.userMachineId);
@@ -86,6 +84,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     });
 
     amc.assignMachine = function(){
+        console.log(amc.userName);
         var req = {
             "machine_id":amc.machineId,
             "user_id":amc.userName
