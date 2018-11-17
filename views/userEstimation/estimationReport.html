@@ -59,14 +59,19 @@
 	<br>
 	<div class="box box-default">
     	<div class="box-body">
-    		<div class="row" ng-if="rep.allEstimationRecord.length > 0"><div class="col-md-3"><button type="button" class="btn btn-block btn-primary fa fa-refresh" ng-click="rep.downloadReportDataPDF()"></button></div></div>
+    		<div class="row" ng-if="rep.allEstimationRecord.length > 0">
+    			<div class="col-md-2 pull-right">
+    				<button type="button" class="btn btn-block btn-default" ng-click="rep.downloadReportDataPDF()" style="font-size:15px"><i class=" fa  fa-file-pdf-o" aria-hidden="true" style="padding-right:10px;color:red"></i> PDF</button>
+    			</div>
+    		</div>
+    		<br>
 		    <div class="row">
 		    	<div class="col-md-12">
 		            <table class="table table-hover table-responsive">
 		                <thead>
 		                    <tr>
 		                        <th style="text-align: center;">Sr No.</th>
-		                        <th>Machine Name</th>
+		                        <th >Machine Name</th>
 		                        <th style="text-align: center;">Off Time</th>
 		                        <th style="text-align: center;">On Time</th>
 		                        <th style="text-align: center;">Estimation Hour</th>

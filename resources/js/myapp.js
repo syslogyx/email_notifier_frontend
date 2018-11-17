@@ -590,6 +590,19 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         })
     };
 
+    this.findAnalytixMachineEstimationDtata = function (req) {
+        Utility.startAnimation();
+        return $http({
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "filterUserEstimation",
+            dataType: 'json',
+            data: $.param(req),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+
     this.findestimationRecordFilter = function (req,request) {
         if(request == undefined){
             page = -1;
