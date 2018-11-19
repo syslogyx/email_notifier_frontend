@@ -637,11 +637,13 @@ app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$ro
     this.getNotification = function (machineId) {
         var promise = services.getDeviceStatusDataByMachineID(machineId);
         promise.success(function (result) {
+            //console.log(result);
             if(result.data){
                $rootScope.deviceStatusDataList = result.data; 
                //console.log($rootScope.deviceStatusDataList);
                 Utility.stopAnimation();
             }else{
+                $rootScope.deviceStatusDataList = [];
                 Utility.stopAnimation();
             }
         }, function myError(r) {
