@@ -640,7 +640,7 @@ app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$ro
             //console.log(result);
             if(result.data){
                $rootScope.deviceStatusDataList = result.data; 
-               //console.log($rootScope.deviceStatusDataList);
+               console.log($rootScope.deviceStatusDataList);
                 Utility.stopAnimation();
             }else{
                 $rootScope.deviceStatusDataList = [];
