@@ -86,7 +86,7 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
         $location.path('/machine/create_machine');
 	}
 
-	mac.resetUser=function(index,userID){
+	mac.resetUser=function(index,machineID){
         swal({
             title: 'Reset User',
             text: "Are you sure you want to reset User?",
@@ -97,7 +97,7 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
             cancelButtonText: "No",
             confirmButtonText: "Yes",
         }).then(function () {
-            var promise = services.restDevicesByMachineID(userID);
+            var promise = services.restMachineByMachineID(machineID);
             promise.success(function (result) {
                 if(result.status_code == 200){
                     Utility.stopAnimation();

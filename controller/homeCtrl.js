@@ -33,7 +33,7 @@ app.controller('homeCtrl', function ($scope,menuService,services,$cookieStore,$r
                 if(result.data.status_code == 200){
                     toastr.success('User estimation added successfully..');
                 }else{
-                    toastr.error('Something went wrong');
+                    toastr.error(result.data.message);
                 }
                 hme.resetForm();
 

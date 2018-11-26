@@ -542,7 +542,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
     };
 
     this.getMachineIdByUserId= function (id) {
-        Utility.startAnimation();
+        // Utility.startAnimation();
         return $http({
             method: 'GET',
             url: RESOURCES.SERVER_API + "get/machineIdByUserId/"+id,
@@ -634,22 +634,43 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
 });
 
 app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$rootScope,services) {
-    this.getNotification = function (machineId) {
-        var promise = services.getDeviceStatusDataByMachineID(machineId);
+    
+    this.getLogInUserMachineData = function (logInUserId) {
+        var promise = services.getMachineIdByUserId(logInUserId);
         promise.success(function (result) {
-            //console.log(result);
             if(result.data){
-               $rootScope.deviceStatusDataList = result.data; 
-               console.log($rootScope.deviceStatusDataList);
+               $rootScope.logInUserMachineId = result.data.machine_id; 
+
+               // return $rootScope.logInUserMachineData;
                 Utility.stopAnimation();
             }else{
-                $rootScope.deviceStatusDataList = [];
+                $rootScope.logInUserMachineId = null;
+               // return null;
                 Utility.stopAnimation();
             }
         }, function myError(r) {
             toastr.error(r.data.errors, 'Sorry!');
             Utility.stopAnimation();
 
+        });
+    }
+
+    this.getNotification = function (logInUserMachineID) {
+        var promise = services.getDeviceStatusDataByMachineID(logInUserMachineID);
+        promise.success(function (result) {
+               // console.log(result);
+
+            if(result.status_code ==200){
+               $rootScope.deviceStatusDataList = result.data; 
+               console.log($rootScope.deviceStatusDataList);
+                Utility.stopAnimation();
+            }else{
+                $rootScope.deviceStatusDataList = null;
+                Utility.stopAnimation();
+            }
+        }, function myError(r) {
+            toastr.error(r.data.errors, 'Sorry!');
+            Utility.stopAnimation();
         });
     }
 });
@@ -853,13 +874,15 @@ app.run(function ($rootScope, AclService, $cookieStore, $location, services,noti
         AclService.attachRole(role);
         
          var loggedInUser = JSON.parse($cookieStore.get('identity'));
+         var logInUserId = loggedInUser.id;
          var machineID = loggedInUser.identity.machine_id;
          
          setInterval(function(){ 
             var currentAuthKey = $cookieStore.get('authkey');
-            //console.log(currentAuthKey);
+              // console.log($rootScope.logInUserMachineId);
             if(currentAuthKey != undefined){
-                notificationServices.getNotification(machineID);     
+                notificationServices.getLogInUserMachineData(logInUserId);
+                notificationServices.getNotification($rootScope.logInUserMachineId);     
             }
         }, 1000);
     }

@@ -129,6 +129,7 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
         rep.fromDate = '';
         rep.toDate = '';
         rep.allEstimationRecord = '';
+        rep.fetchList(-1);
 	}
 
 	rep.downloadReportDataPDF = function(){
