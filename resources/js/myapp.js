@@ -631,6 +631,18 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         console.log(url);
         window.open(url);
     };
+
+    this.getAllAssignedMachinesRecordByUserId= function (user_id) {
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/all_assigned_machine_list/"+user_id,
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
 });
 
 app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$rootScope,services) {
@@ -640,12 +652,9 @@ app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$ro
         promise.success(function (result) {
             if(result.data){
                $rootScope.logInUserMachineId = result.data.machine_id; 
-
-               // return $rootScope.logInUserMachineData;
                 Utility.stopAnimation();
             }else{
                 $rootScope.logInUserMachineId = null;
-               // return null;
                 Utility.stopAnimation();
             }
         }, function myError(r) {
@@ -658,11 +667,11 @@ app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$ro
     this.getNotification = function (logInUserMachineID) {
         var promise = services.getDeviceStatusDataByMachineID(logInUserMachineID);
         promise.success(function (result) {
-               // console.log(result);
 
             if(result.status_code ==200){
                $rootScope.deviceStatusDataList = result.data; 
-               console.log($rootScope.deviceStatusDataList);
+                var statusCol= $rootScope.deviceStatusDataList['port']+'_'+$rootScope.deviceStatusDataList['status']+'_status';
+                $rootScope.machineStatus =$rootScope.deviceStatusDataList['device'][statusCol];
                 Utility.stopAnimation();
             }else{
                 $rootScope.deviceStatusDataList = null;
@@ -836,7 +845,7 @@ app.config(function ($routeProvider, $locationProvider) {
                     }]
                 }
             })
-            .when('/analytics1', {
+            .when('/analytics', {
                 templateUrl: 'views/analytics/analytics1.html',
                 controller: 'analyticsCtrl',
                 controllerAs: 'anx',
@@ -876,13 +885,17 @@ app.run(function ($rootScope, AclService, $cookieStore, $location, services,noti
          var loggedInUser = JSON.parse($cookieStore.get('identity'));
          var logInUserId = loggedInUser.id;
          var machineID = loggedInUser.identity.machine_id;
+         // console.log("logInUserId",logInUserId);
          
          setInterval(function(){ 
             var currentAuthKey = $cookieStore.get('authkey');
               // console.log($rootScope.logInUserMachineId);
             if(currentAuthKey != undefined){
                 notificationServices.getLogInUserMachineData(logInUserId);
-                notificationServices.getNotification($rootScope.logInUserMachineId);     
+                 // console.log("machineID",$rootScope.logInUserMachineId);
+                 if($rootScope.logInUserMachineId != undefined || $rootScope.logInUserMachineId != null){
+                    notificationServices.getNotification($rootScope.logInUserMachineId);               
+                 }
             }
         }, 1000);
     }

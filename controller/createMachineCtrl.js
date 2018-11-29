@@ -69,22 +69,20 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 				"name":macc.machine_name,
 				"email_ids":macc.machine_email_ids,
 			}
-			console.log(req);
+			// console.log(req);
 			 if (macc.userId != 'Unknown') { 
             	req.id = macc.userId;	
 				req.old_device_list = macc.oldDevice.length > 0 ? macc.oldDevice : null;
 				req.new_device_list = macc.device;    
                 var operationMessage = " updated ";
                 var promise = services.updateMachine(req);
-
              } else {
              	req.device_list = macc.device;  
                 var promise = services.saveMachine(req);
                 operationMessage = " created ";
             }
-
 			promise.then(function mySuccess(result) {
-				console.log(result);
+				// console.log(result);
 				Utility.stopAnimation();
                 if(result.data.status_code == 200){
                 	$location.url('/machine/machine_list', false);

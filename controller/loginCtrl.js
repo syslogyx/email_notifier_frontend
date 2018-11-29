@@ -17,21 +17,17 @@ app.controller("loginCtrl", function (services, AclService, $scope, $http, $loca
                 "email":lgc.email,
                 "password":lgc.password
             }
-            console.log(req);
+            // console.log(req);
             var promise = services.logIn(req);
             promise.then(function mySucces(r) {
                 //console.log(r);
-
                 if (r.data != null) {
-
                     // // set token in cookies
                     lgc.token = r.data.data.id;
-
                     // // $cookieStore.put('authkey', lgc.token);
                     services.setAuthKey(lgc.token);
                     var role = 'admin';
                     // var abilities = [];
-
                     var data = r.data.data;
                   
                     var identity = {

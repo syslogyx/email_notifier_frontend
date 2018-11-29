@@ -1,31 +1,31 @@
 app.controller('homeCtrl', function ($scope,menuService,services,$cookieStore,$rootScope) {
 
 	var hme = this;
-	hme.name = "";
+	$scope.name = "";
     //menuService.setMenu([]);
     var loggedInUser = JSON.parse($cookieStore.get('identity'));
-    hme.name  =  loggedInUser.identity.name;
-    hme.designation  =  loggedInUser.identity.designation;
-    hme.logInUserID = loggedInUser.id;
-   // console.log(loggedInUser);
-    hme.machineId = loggedInUser.identity.machine_id;
-    hme.machineName = loggedInUser.identity.machine_name;
+    $scope.name  =  loggedInUser.identity.name;
+    $scope.designation  =  loggedInUser.identity.designation;
+    $scope.logInUserID = loggedInUser.id;
+    $scope.machineId = loggedInUser.identity.machine_id;
+    $scope.machineName = loggedInUser.identity.machine_name;
 
     $scope.init = function(){
 		//$scope.$root.$broadcast("myEvent", {});
 		var token = services.getAuthKey();	
 	}
 
-	hme.addEstimationStatus = function(){
-		var machineStatusId = $('#machineStatusID').text();
+	$scope.addEstimationStatus = function(){
+        console.log($rootScope.deviceStatusDataList.id);
+		// $scope.machineStatusId = $rootScope.deviceStatusDataList.id;
 		if($("#deviceEstimationForm").valid()){
 			var req ={
-				"user_id":hme.logInUserID,
-				"machine_status_id":machineStatusId.trim(),
-				"msg":hme.comment,
-				"hour":hme.estimationHr
+				"user_id":$scope.logInUserID,
+				"machine_status_id":$rootScope.deviceStatusDataList.id,
+				"msg":$scope.comment,
+				"hour":$scope.estimationHr
 			}
-			console.log(req);
+			// console.log(req);
 			var promise = services.saveUserEstimation(req);
 			promise.then(function mySuccess(result) {
                 Utility.stopAnimation();
@@ -35,8 +35,7 @@ app.controller('homeCtrl', function ($scope,menuService,services,$cookieStore,$r
                 }else{
                     toastr.error(result.data.message);
                 }
-                hme.resetForm();
-
+                $scope.resetForm();
             }, function myError(r) {
                 toastr.error(r.data.errors.email[0], 'Sorry!');
                 Utility.stopAnimation();
@@ -45,13 +44,13 @@ app.controller('homeCtrl', function ($scope,menuService,services,$cookieStore,$r
 		}
 	}
 
-	hme.resetForm = function() {
+	$scope.resetForm = function() {
         $("div.form-group").each(function () {
             $(this).removeClass('has-error');
             $('span.help-block-error').remove();
         });
-        hme.estimationHr ='';
-        hme.comment ='';
+        $scope.estimationHr ='';
+        $scope.comment ='';
     };
 
 	$scope.init();

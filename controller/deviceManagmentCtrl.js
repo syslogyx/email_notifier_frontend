@@ -1,7 +1,6 @@
 app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$cookieStore,$routeParams,$location,pagination) {
 
 	var dmc = this;
-
     dmc.id = null;
     dmc.deviceName = '';
     dmc.pageno = 0;
@@ -22,7 +21,7 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
         }
         if(page == -1){
             dmc.pageno = 1;
-            console.log($('#pagination-sec').data("twbs-pagination"));
+            // console.log($('#pagination-sec').data("twbs-pagination"));
             if($('#pagination-sec').data("twbs-pagination")){
                     $('#pagination-sec').twbsPagination('destroy');
             }
@@ -58,16 +57,6 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
     dmc.init = function () {
         dmc.limit = $('#table_length').val();
         dmc.fetchList(-1);
-        // var promise = services.getDeviceList();
-        // promise.success(function (result) {
-        // 	if(result.status_code == 200){
-        // 		Utility.stopAnimation();
-        //         dmc.deviceList = result.data;
-        // 	}else{
-        // 		Utility.stopAnimation();
-        //     	toastr.error(result.message, 'Sorry!');
-        // 	}
-        // });
     }
 
 
@@ -112,11 +101,9 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
                     toastr.error(result.data.message, 'Sorry!');
                 }
                 // $location.url('/Device/Device_list', false);
-
             }, function myError(r) {
                 toastr.error(r.data.errors.email[0], 'Sorry!');
                 Utility.stopAnimation();
-
             });
         }
     }
@@ -173,7 +160,6 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
             });
         }, function (dismiss) {
              // alert("no");
-            //window.location.href = "/all-projects";
         })
     }
    

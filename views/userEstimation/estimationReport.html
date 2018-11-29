@@ -1,109 +1,118 @@
 <section class="content">
-	<h4>Report</h4>
-	<br>
-	<form role="form" name="addForm" id="reportForm">
-		<div class="box box-default">
-	    	<div class="box-body">
-				<div class="row">
-					<div class="col-md-3">
-						<div class="form-group">
-			                <label class="mandatory" for="">Machine</label>
-			                <select id="machineId" ng-model="rep.machineId" name="machineId" class="form-control s2mn" style="width:100%;">
-			                <option value="">Select Machine</option>
-			                 <option value="{{machine.id}}" ng-repeat="machine in rep.machineList">{{machine.name}}</option>
-			             </select>
-			            </div>
-					</div>
-					<div class="col-md-3">
-			            <div class="form-group">
-			                <label class="mandatory" for="">From Date</label>
-			                <div>
-			                    <div class="input-group date">
-			                        <div class="input-group-addon">
-			                            <i class="fa fa-calendar"></i>
-			                        </div>  
-
-			                        <input type="text" class="form-control pull-right" id="rfromDate" name="rfromDate" ng-model="rep.fromDate" autocomplete="off" placeholder="Enter from date">
-			                       <!--  readonly='true' style="cursor:default;background-color: white;" -->
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
-			        <div class="col-md-3">
-			        	<div class="form-group">
-			                <label class="mandatory" for="">To Date</label>
-			                <div>
-			                    <div class="input-group date">
-			                        <div class="input-group-addon">
-			                            <i class="fa fa-calendar"></i>
-			                        </div>  
-
-			                        <input type="text" class="form-control pull-right" id="rtoDate" name="rtoDate" ng-model="rep.toDate" autocomplete="off" placeholder="Enter to date">
-			                    </div>
-			                </div>
-			            </div>
-			        </div>
-
-			        <div class="col-md-2 " style="margin-top: 23px;">
-			            <button type="button" class="btn btn-block btn-primary" ng-click="rep.getEstimationReportFilter()">Search</button>
-			        </div>
-
-			        <div class="col-md-1 " style="margin-top: 23px;">
-			            <button type="button" class="btn btn-block btn-primary fa fa-refresh" ng-click="rep.refreshfilter()"></button>
-			        </div>
-			        
-			    </div>
+	<div class="container-fluid">
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+				<h4>Report</h4>
 			</div>
 		</div>
-	</form>
-	<br>
-	<div class="box box-default">
-    	<div class="box-body">
-    		<div class="row" ng-if="rep.allEstimationRecord.length > 0">
-    			<div class="col-md-2 pull-right">
-    				<button type="button" class="btn btn-block btn-default" ng-click="rep.downloadReportDataPDF()" style="font-size:15px"><i class=" fa  fa-file-pdf-o" aria-hidden="true" style="padding-right:10px;color:red"></i> PDF</button>
-    			</div>
-    		</div>
-    		<br>
-		    <div class="row">
-		    	<div class="col-md-12">
-		            <table class="table table-hover table-responsive">
-		                <thead>
-		                    <tr>
-		                        <th style="text-align: center;">Sr No.</th>
-		                        <th >Machine Name</th>
-		                        <th style="text-align: center;">Off Time</th>
-		                        <th style="text-align: center;">On Time</th>
-		                        <th style="text-align: center;">Estimation Hour</th>
-		                        <th style="text-align: center;">Actual Hour</th>
-		                        <th>Reason</th>
-		                        <th>Message</th>
-		                       
-		                    </tr>
-		                </thead>
+		<br>
+		<form role="form" name="addForm" id="reportForm">
+			<div class="box box-default">
+		    	<div class="box-body">
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+				                <label class="mandatory" for="">Machine</label>
+				                <select id="machineId" ng-model="rep.machineId" name="machineId" class="form-control s2mn" style="width:100%;">
+				                <option value="">Select Machine</option>
+				                 <option value="{{mach.id}}" ng-repeat="mach in rep.machineList">{{mach.name}}</option>
+				             </select>
+				            </div>
+						</div>
+						<div class="col-md-3">
+				            <div class="form-group">
+				                <label class="mandatory" for="">From Date</label>
+				                <div>
+				                    <div class="input-group date">
+				                        <div class="input-group-addon">
+				                            <i class="fa fa-calendar"></i>
+				                        </div>  
 
-		                <tbody>
-		                    <tr ng-if="rep.allEstimationRecord.length > 0" ng-repeat="data in rep.allEstimationRecord">
-		                        <td style="text-align: center;" ng-bind="(rep.pageno - 1) * rep.limit + ($index + 1)"></td>
-		                        <td>{{data.machine.name}}</td>
-		                        <td style="text-align: center;">{{data.created_at}}</td>
-		                        <td style="text-align: center;">{{data.on_time?data.on_time:'--'}}</td>
-		                        
-		                        <td style="text-align: center;">{{data.user_estimation.length <= 0 ? '--':data.user_estimation[0].hour}}</td>
-		                        <td style="text-align: center;">{{data.actual_hour?data.actual_hour :'--'}}</td>
-		                        <td>{{data.user_estimation.length <= 0 ? '--':data.user_estimation[0].reason_data.reason}}</td>
-		                        <td>{{data.user_estimation.length <=0 ? '--': data.user_estimation[0].msg}}</td>
-		                    </tr>
-		                    <tr ng-if="rep.allEstimationRecord == null || rep.allEstimationRecord.length == 0">
-		                        <td style="text-align: center;" colspan="7">No Records Found</td>
-		                    </tr>
-		                </tbody>
-		            </table>
-		            <div class="row col-sm-12" style="padding-right: 0px;">
-                        <ul id="pagination-sec" class="pagination-sm" style="float: right;margin-top: 5px;margin-bottom:45px;margin-right:-1.2%"></ul>
-                    </div>
-		        </div>
-		    </div>
+				                        <input type="text" class="form-control pull-right" id="rfromDate" name="rfromDate" ng-model="rep.fromDate" autocomplete="off" placeholder="Enter from date">
+				                       <!--  readonly='true' style="cursor:default;background-color: white;" -->
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+				        <div class="col-md-3">
+				        	<div class="form-group">
+				                <label class="mandatory" for="">To Date</label>
+				                <div>
+				                    <div class="input-group date">
+				                        <div class="input-group-addon">
+				                            <i class="fa fa-calendar"></i>
+				                        </div>  
+
+				                        <input type="text" class="form-control pull-right" id="rtoDate" name="rtoDate" ng-model="rep.toDate" autocomplete="off" placeholder="Enter to date">
+				                    </div>
+				                </div>
+				            </div>
+				        </div>
+
+				        <div class="col-md-2 " style="margin-top: 23px;">
+				            <button type="button" class="btn btn-block btn-primary" ng-click="rep.getEstimationReportFilter()">Search</button>
+				        </div>
+
+				        <div class="col-md-1 " style="margin-top: 23px;">
+				            <button type="button" class="btn btn-block btn-primary fa fa-refresh" ng-click="rep.refreshfilter()"></button>
+				        </div>
+				        
+				    </div>
+				</div>
+			</div>
+		</form>
+		<br>
+		<div class="box box-default">
+	    	<div class="box-body">
+	    		<div class="row" ng-if="rep.allEstimationRecord.length > 0">
+	    			<div class="col-md-2 pull-right">
+	    				<button type="button" class="btn btn-block btn-default" ng-click="rep.downloadReportDataPDF()" style="font-size:15px"><i class=" fa  fa-file-pdf-o" aria-hidden="true" style="padding-right:10px;color:red"></i> PDF</button>
+	    			</div>
+	    		</div>
+	    		<br>
+			    <div class="row">
+			    	<div class="col-md-12">
+			            <table class="table table-hover table-responsive">
+			                <thead>
+			                    <tr>
+			                        <th style="text-align: center;">Sr No.</th>
+			                        <th>Machine Name</th>
+			                        <th>Operator</th>
+			                        <th style="text-align: center;">Off Time</th>
+			                        <th style="text-align: center;">On Time</th>
+			                        <th style="text-align: center;">Estimation Hour</th>
+			                        <th style="text-align: center;">Actual Hour</th>
+			                        <th>Reason</th>
+			                        <th>Message</th>
+			                       
+			                    </tr>
+			                </thead>
+
+			                <tbody>
+			                    <tr ng-if="rep.allEstimationRecord.length > 0" ng-repeat="data in rep.allEstimationRecord">
+			                        <td style="text-align: center;" ng-bind="(rep.pageno - 1) * rep.limit + ($index + 1)"></td>
+			                        <td>{{data.machine.name}}</td>
+			                         <td>{{data.machine.user.name}}</td>
+			                        <td style="text-align: center;">{{data.created_at}}</td>
+			                        <td style="text-align: center;">{{data.on_time?data.on_time:'--'}}</td>
+			                        
+			                        <td style="text-align: center;">{{data.user_estimation.length <= 0 ? '--':data.user_estimation[0].hour}}</td>
+			                        <td style="text-align: center;">{{data.actual_hour?data.actual_hour :'--'}}</td>
+			                        <td>{{data.user_estimation.length <= 0 ? '--':data.user_estimation[0].reason_data.reason}}</td>
+			                        <td>{{data.user_estimation.length <=0 ? '--': data.user_estimation[0].msg}}</td>
+			                    </tr>
+			                    <tr ng-if="rep.allEstimationRecord == null || rep.allEstimationRecord.length == 0">
+			                        <td style="text-align: center;" colspan="7">No Records Found</td>
+			                    </tr>
+			                </tbody>
+			            </table>
+			            <div class="row col-sm-12" style="padding-right: 0px;">
+	                        <ul id="pagination-sec" class="pagination-sm" style="float: right;margin-top: 5px;margin-bottom:45px;margin-right:-1.2%"></ul>
+	                    </div>
+			        </div>
+			    </div>
+			</div>
 		</div>
 	</div>
 </section>

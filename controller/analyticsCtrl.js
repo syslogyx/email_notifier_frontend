@@ -2,8 +2,11 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
 	
   var anx = this;
 	var loggedInUser = JSON.parse(services.getIdentity());
+  anx.logInUSerID = loggedInUser.id;
+  anx.logInUSerRoleID = loggedInUser.identity.role;
 
-	anx.init = function () {		
+	anx.init = function () {	
+    if(anx.logInUSerRoleID == 1){	
   		var promise = services.getALLMachineList();
   		promise.success(function (result) {
     			if(result.status_code == 200){
@@ -16,6 +19,19 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
     					toastr.error(result.message, 'Sorry!');
     			}
   		});
+    }else{
+      var promise = services.getAllAssignedMachinesRecordByUserId(anx.logInUSerID);
+      promise.success(function (result) {
+        if(result.status_code == 200){
+          Utility.stopAnimation();
+          anx.machineList = result.data;   
+        }else{
+          Utility.stopAnimation();
+          anx.machineList = [];
+          toastr.error(result.message, 'Sorry!');
+        }
+      });
+    }
 	}
 
 	anx.init();
@@ -41,9 +57,6 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
     				'from_date':fromDate,
     				'to_date':toDate
   			}
-  			// if(rep.logInUSerRoleID != 1){
-  			// 	req.user_id = rep.logInUSerID;
-  			// }
   			console.log(req);
   			var promise = services.findAnalytixMachineEstimationDtata(req);
 	          promise.then(function mySuccess(response) {
@@ -115,11 +128,9 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
   		}else{
   			  totalTimeInHour = dayDifference * 24;
   		}
-
   		for(var i = 0;i<allEstimationRecord.length;i++){
   			  totalDownSecondsTime = totalDownSecondsTime + allEstimationRecord[i].actualSeconds;
   		}
-
   		totalDownHourTime = totalDownSecondsTime / 3600;
   		allEstimationRecord['total_time'] = totalTimeInHour;
   		allEstimationRecord['total_down_time'] = totalDownHourTime;
@@ -133,75 +144,77 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
   		var machineDownPercentage = (machineDownPercentageData).toFixed(2) +'%';
   		var machineUpPercentageData = (100 - machineDownPercentageData);
   		var machineUpPercentage = (machineUpPercentageData).toFixed(2) + '%';
-          if(allEstimationRecord != null){
-            	var PieData = [];
+      var machineName = allEstimationRecord[0].machine.name;
+      var operatorName = allEstimationRecord[0].machine.user.name;
+      
+      if(allEstimationRecord != null){
+        	var PieData = [];
+          obj = {
+              value    : machineUpPercentage,
+              color    : '#f56954',
+              highlight: '#f56954',
+              Browser    : 'Total Up Time',
+              label : (allEstimationRecord['total_up_time']).toFixed(2) + ' hour',
+              //id : result.data[i]["resource_ids"],
+          };
+          PieData.push(obj);
+        
+          obj1 = {
+              value    : machineDownPercentage,
+              color    : '#00a65a',
+              highlight: '#00a65a',
+              Browser    : 'Total Down Time',
+              label :(allEstimationRecord['total_down_time']).toFixed(2) + ' hour',
+              //id : result.data[i]["resource_ids"]
+          };
+          PieData.push(obj1);
+        
+        	anx.chart_data = PieData;
+        	console.log(anx.chart_data);
 
-              obj = {
-                  value    : machineUpPercentage,
-                  color    : '#f56954',
-                  highlight: '#f56954',
-                  Browser    : 'Total Up Time',
-                  label : (allEstimationRecord['total_up_time']).toFixed(2) + ' hour',
-                  //id : result.data[i]["resource_ids"],
-              };
-              PieData.push(obj);
-            
-              obj1 = {
-                  value    : machineDownPercentage,
-                  color    : '#00a65a',
-                  highlight: '#00a65a',
-                  Browser    : 'Total Down Time',
-                  label :(allEstimationRecord['total_down_time']).toFixed(2) + ' hour',
-                  //id : result.data[i]["resource_ids"]
-              };
-              PieData.push(obj1);
-            
-            	anx.chart_data = PieData;
-            	console.log(anx.chart_data);
+      	  var toolTipCustomFormatFn = function (value, itemIndex, serie, group, xAxisValue, xAxis) {
+              var dataItem = PieData[itemIndex];
+              return "<div style='text-align:left'>"+dataItem.label+"</div>";
+          };
 
-          	  var toolTipCustomFormatFn = function (value, itemIndex, serie, group, xAxisValue, xAxis) {
-                  var dataItem = PieData[itemIndex];
-                  return "<div style='text-align:left'>"+dataItem.label+"</div>";
-              };
-
-           	  var settings = {
-                  title: "Analytics",
-                  description: "Analytics For Machine",
-                  showToolTips: true,               
-                  enableAnimations: true,
-                  showLegend: true,
-                  showBorderLine: true,
-                  legendLayout: { left: 320, top: 200, width: 150, height: 300, flow: 'vertical' },
-                  padding: { left:5, top: 5, right: 5, bottom: 5 },
-                  titlePadding: { left: 0, top: 50, right: 0, bottom: 10 },
-                  source: PieData,
-                  colorScheme: 'scheme02',
-                  seriesGroups:
-                  [
-                      {
-                          type: 'donut',
-                          offsetX: 150,
-                          showLabels: true,
-                          toolTipFormatFunction: toolTipCustomFormatFn,
-                          series:
-                              [
-                                  {
-                                      dataField: 'value',
-                                      displayText: 'Browser',
-                                      labelRadius: 70,
-                                      initialAngle: 15,
-                                      radius: 120,
-                                      innerRadius: 35,
-                                      centerOffset: 0,
-                                      formatSettings: {  decimalPlaces: 0 }
-                                  }
-                              ]
-                      }
-                  ]
-        	    };
-              // setup the chart
-              $('#chartContainer').jqxChart(settings);
-          }  
+       	  var settings = {
+              title: machineName+" - Analytics",
+              description: "Operator Name : "+operatorName,
+              showToolTips: true,               
+              enableAnimations: true,
+              showLegend: true,
+              showBorderLine: true,
+              legendLayout: { left: 320, top: 200, width: 150, height: 300, flow: 'vertical' },
+              padding: { left:5, top: 5, right: 5, bottom: 5 },
+              titlePadding: { left: 0, top: 50, right: 0, bottom: 10 },
+              source: PieData,
+              colorScheme: 'scheme02',
+              seriesGroups:
+              [
+                  {
+                      type: 'donut',
+                      offsetX: 150,
+                      showLabels: true,
+                      toolTipFormatFunction: toolTipCustomFormatFn,
+                      series:
+                          [
+                              {
+                                  dataField: 'value',
+                                  displayText: 'Browser',
+                                  labelRadius: 70,
+                                  initialAngle: 15,
+                                  radius: 120,
+                                  innerRadius: 35,
+                                  centerOffset: 0,
+                                  formatSettings: {  decimalPlaces: 0 }
+                              }
+                          ]
+                  }
+              ]
+    	    };
+          // setup the chart
+          $('#chartContainer').jqxChart(settings);
+      }  
   }
 
 });

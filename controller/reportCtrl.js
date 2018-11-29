@@ -10,21 +10,35 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
     //console.log(loggedInUser);
     rep.logInUSerID = loggedInUser.id;
     rep.logInUSerRoleID = loggedInUser.identity.role;
-    //console.log(rep.logInUSerRoleID);
+    // console.log(rep.logInUSerRoleID);
 
-	rep.init = function () {		
-		var promise = services.getAllAssignMachinesByUserId(rep.logInUSerID);
-		promise.success(function (result) {
-			if(result.status_code == 200){
-				Utility.stopAnimation();
-				rep.machineList = result.data;
-				console.log(rep.machineList);	
-			}else{
-				Utility.stopAnimation();
-				rep.machineList = [];
-				toastr.error(result.message, 'Sorry!');
-			}
-		});
+	rep.init = function () {
+		if(rep.logInUSerRoleID != 1){
+			var promise = services.getAllAssignedMachinesRecordByUserId(rep.logInUSerID);
+			promise.success(function (result) {
+                console.log(result);
+				if(result.status_code == 200){
+					Utility.stopAnimation();
+					rep.machineList = result.data;	
+				}else{
+					Utility.stopAnimation();
+					rep.machineList = [];
+					toastr.error(result.message, 'Sorry!');
+				}
+			});
+		}else{
+			var promise = services.getALLMachineList();
+  			promise.success(function (result) {
+    			if(result.status_code == 200){
+    				  Utility.stopAnimation();
+    					rep.machineList = result.data.data;
+    			}else{
+    				  Utility.stopAnimation();
+    					rep.machineList = [];
+    					toastr.error(result.message, 'Sorry!');
+    			}
+  		    });
+		}		
 	}
 
 	rep.init();
@@ -74,7 +88,7 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
                 }
                 rep.allEstimationRecord = result.data.data;
                 rep.allEstimationRecord = rep.calculateActualHourForEachRecord(rep.allEstimationRecord);
-	            //console.log(rep.allEstimationRecord);
+	            // console.log(rep.allEstimationRecord);
 	            //toastr.success('Record Found successfully.');
                 pagination.applyPagination(result.data, rep);
             }else{  
@@ -84,7 +98,6 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
         }, function myError(r) {
             toastr.error(r.data.message, 'Sorry!');
             Utility.stopAnimation();
-
         });
     }
 

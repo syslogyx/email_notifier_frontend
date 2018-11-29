@@ -5,17 +5,12 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     amc.userId=$location.search()['id'];
     amc.userMachineId=null;
     amc.userMachineName=null;
-    console.log(amc.userId);
 
     var loggedInUser = JSON.parse(services.getIdentity());
-    console.log(loggedInUser);
     //amc.userName = loggedInUser.identity.name;
-	if(amc.userId!=undefined){
-        
+	if(amc.userId!=undefined){  
 		var promise = services.getMachineIdByUserId(amc.userId);
-        // debugger
 		promise.success(function (result) {
-            console.log(result.data);
 			if(result.status_code == 200){
 				Utility.stopAnimation();
 				if(result.data.status=='ENGAGE'){
@@ -34,26 +29,24 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
                 amc.userId=loggedInUser.id.toString();
 				// toastr.error(result.message, 'Sorry!');
 			}
-
 		});
 	}else{
-			amc.userId=undefined;
+		amc.userId=undefined;
 	}
-    //console.log(amc.userMachineId);
 
 	amc.init = function () {
-			var promise = services.getAllUserList();
-			promise.success(function (result) {
-				if(result.status_code == 200){
-					Utility.stopAnimation();
-						amc.userList = result.data.data;
-                        amc.userName=amc.userId!=undefined ? amc.userId : loggedInUser.id.toString();
-				}else{
-					Utility.stopAnimation();
-						amc.userList = [];
-						toastr.error(result.message, 'Sorry!');
-				}
-			});
+		var promise = services.getAllUserList();
+		promise.success(function (result) {
+			if(result.status_code == 200){
+				Utility.stopAnimation();
+				amc.userList = result.data.data;
+                amc.userName=amc.userId!=undefined ? amc.userId : loggedInUser.id.toString();
+			}else{
+				Utility.stopAnimation();
+				amc.userList = [];
+				toastr.error(result.message, 'Sorry!');
+			}
+		});
 	}
 
 	amc.init();
@@ -63,10 +56,8 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     	if(result.status_code == 200){
     		Utility.stopAnimation();
             amc.machineList = result.data;
-            //console.log(loggedInUser.identity.machine_id);
             if(loggedInUser.identity.machine_id !=undefined && loggedInUser.identity.machine_id != "" && loggedInUser.identity.machine_id != null){
 					if(amc.userMachineId!=null){
-                        //console.log(amc.userMachineId);
 						if(amc.userMachineId!='' && amc.userMachineId!=null){
 							amc.machineList.push({id:amc.userMachineId,name:amc.userMachineName});
                         }
@@ -74,7 +65,6 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 						amc.machineList.push({id:loggedInUser.identity.machine_id,name:loggedInUser.identity.machine_name});
 					}
                 amc.machineId = amc.userMachineId!=null?amc.userMachineId:loggedInUser.identity.machine_id.toString();
-                //console.log(amc.machineId);
             }
     	}else{
     		Utility.stopAnimation();
@@ -84,7 +74,6 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     });
 
     amc.assignMachine = function(){
-        console.log(amc.userName);
         var req = {
             "machine_id":amc.machineId,
             "user_id":amc.userName
@@ -104,21 +93,17 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 				if(req.user_id==loggedInUser.id){
 					services.setIdentity(loggedInUser);
 				}
-
             }else{
                 toastr.error(result.data.message, 'Sorry!');
             }
             $location.url('/user/user_list', false);
-
         }, function myError(r) {
             toastr.error(r.data.errors.email[0], 'Sorry!');
             Utility.stopAnimation();
-
         });
     }
 
     $scope.resetMachine=function(){
-        console.log(amc.machineId);
         swal({
             title: 'Reset Machine',
             text: "Are you sure you want to reset Machine?",
@@ -129,21 +114,16 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
             cancelButtonText: "No",
             confirmButtonText: "Yes",
         }).then(function () {
-            // alert("yes");
             var promise = services.restMachineByMachineID(amc.machineId);
             promise.success(function (result) {
-                debugger
                 if(result.status_code == 200){
                     Utility.stopAnimation();
                     amc.machineId = null;
                     if(loggedInUser.identity.machine_id != undefined){
-                        //console.log(loggedInUser);
                         delete loggedInUser.identity.machine_id;
                         delete loggedInUser.identity.machine_name;
-                        //console.log(loggedInUser);
                         services.setIdentity(loggedInUser);
                     }
-
                     toastr.success(result.message, 'Congratulation!!!');
                 }else{
                     Utility.stopAnimation();
@@ -152,8 +132,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
             });
         }, function (dismiss) {
              // alert("no");
-            //window.location.href = "/all-projects";
-        })
+        });
     }
 
 	amc.clearForm=function(){

@@ -196,67 +196,100 @@
                     <!-- /.sidebar -->
                 </aside>
                 <!-- Modal for adding new project resource -->
-                    <div class="modal fade" id="updateUserModal" role="dialog">
-                        <div class="modal-dialog modal-md">
-                            <form role="form" name="updateUserForm" id="updateUserForm">
-                                <div class="modal-content">
+                <div class="modal fade" id="updateUserModal" role="dialog">
+                    <div class="modal-dialog modal-md">
+                        <form role="form" name="updateUserForm" id="updateUserForm">
+                            <div class="modal-content">
 
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                        <h4 class="modal-title">Update User Profile</h4>
-                                    </div>
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Update User Profile</h4>
+                                </div>
 
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="col-md-6">
-                                                    <!-- text input -->
-                                                    <div class="form-group">
-                                                        <label class="mandatory" for="">Name</label>
-                                                        <input type="text" class="form-control" name="userName" ng-model="userName" placeholder="Enter user name">
-                                                    </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6">
+                                                <!-- text input -->
+                                                <div class="form-group">
+                                                    <label class="mandatory" for="">Name</label>
+                                                    <input type="text" class="form-control" name="userName" ng-model="userName" placeholder="Enter user name">
                                                 </div>
+                                            </div>
 
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="mandatory" for="">Email</label>
-                                                        <input type="text" class="form-control" name="userEmail" ng-model="userEmail" placeholder="Enter email">
-                                                    </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="mandatory" for="">Email</label>
+                                                    <input type="text" class="form-control" name="userEmail" ng-model="userEmail" placeholder="Enter email">
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="col-md-6">
-                                                    <!-- text input -->
-                                                    <div class="form-group">
-                                                        <label class="mandatory" for="">Password</label>
-                                                        <input type="text" class="form-control" name="userProfilePassword"  id="userProfilePassword" ng-model="userpassword" placeholder="Enter password">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <label class="mandatory" for="">Mobile</label>
-                                                        <input type="text" class="form-control" id="mobileNo" name="mobileNo" ng-model="mobileNo" placeholder="Enter mobile number">
-                                                    </div>
-                                                </div>
-                                             </div>
-                                        </div>
                                     </div>
 
-                                    <div class="modal-footer">
-                                        <div class="pull pull-right">
-                                            <input type="submit" value="Save" data-ng-click="saveUser()" class="btn btn-success"/>
-                                            <input ng-if="tec.title == 'Add New Technology'" type="reset" value="Reset" ng-click="resetForm()" class="btn" />
-                                        </div>
-                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-6">
+                                                <!-- text input -->
+                                                <div class="form-group">
+                                                    <label class="mandatory" for="">Password</label>
+                                                    <input type="text" class="form-control" name="userProfilePassword"  id="userProfilePassword" ng-model="userpassword" placeholder="Enter password">
+                                                </div>
+                                            </div>
 
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="mandatory" for="">Mobile</label>
+                                                    <input type="text" class="form-control" id="mobileNo" name="mobileNo" ng-model="mobileNo" placeholder="Enter mobile number">
+                                                </div>
+                                            </div>
+                                         </div>
+                                    </div>
                                 </div>
-                            </form>
+
+                                <div class="modal-footer">
+                                    <div class="pull pull-right">
+                                        <input type="submit" value="Save" data-ng-click="saveUser()" class="btn btn-success"/>
+                                        <input ng-if="tec.title == 'Add New Technology'" type="reset" value="Reset" ng-click="resetForm()" class="btn" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <div ng-controller="homeCtrl" class="modal fade deviceEstimationModal" id="deviceEstimationModal" role="dialog">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content" style="border-radius: 0px!important;" >
+                            <div class="modal-header" id="popUpModalHeader"> 
+                                <button type="button" class="close" data-dismiss="modal" ng-click="resetForm()" style="margin-right: 5px;">&times;</button>
+                                <h4 class="modal-title popUpModalTitle">User Estimation</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form id="deviceEstimationForm">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-md-6" style="margin-top: 1%;">
+                                                <label class="" style="font-size: 14px">Estimation Hours </label>
+                                                <input type="text" class="form-control" name="estimationHr" ng-model="estimationHr" placeholder="Enter estimation in hour">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12" style="margin-top: 1%;">
+                                                <label class="" style="font-size: 14px">Comment</label>
+                                                <textarea class="form-control" id="comment" name="comment" ng-model="comment" rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer" style="margin-top: 0px;"> 
+                                <button type="button" id="changeStatusBtn" class="btn btn-primary"  data-ng-click="addEstimationStatus();" >Save</button>
+                                <button type="reset" id="closeModal" class="btn btn-warning"  ng-click="resetForm()" data-dismiss="modal">Cancel</button>
+                            </div>
                         </div>
                     </div>
+                </div>
             </div>
 
             <!-- Content Wrapper. Contains page content -->

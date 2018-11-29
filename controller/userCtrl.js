@@ -33,7 +33,6 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
             // limit:pagination.getpaginationLimit(),
             limit:usc.limit,
         }
-
         var promise = services.getAllUserList(requestParam);
         promise.success(function (result) {
             //console.log(result);
@@ -49,12 +48,10 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         }, function myError(r) {
             toastr.error(r.data.message, 'Sorry!');
             Utility.stopAnimation();
-
         });
     }
 
     usc.init = function () {
-
         usc.limit = $('#table_length').val();
         usc.fetchList(-1);
     }
@@ -78,7 +75,6 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         var promise = services.getUserById(id);
         promise.success(function (result) {
             Utility.stopAnimation();
-
             if(result.status_code == 200){
                 usc.id = result.data.id;
                 usc.userName = result.data.name;
@@ -87,7 +83,6 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
                 usc.userRole = result.data.role_id;
                 usc.mobileno = result.data.mobile;
                 applySelect2();
-
                 $("#userpassword").removeAttr("required");
                   usc.title = "Update User";
                 $("#addUserModal").modal("toggle");
@@ -106,7 +101,6 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
                 "role_id": usc.userRole,
                 "mobile":usc.mobileno
             }
-
             if (usc.id) {
                 req.id = usc.id;
                 var operationMessage = " updated ";
@@ -116,7 +110,6 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
                 var promise = services.saveUser(req);
                 operationMessage = " created ";
             }
-
             promise.then(function mySuccess(result) {
                 Utility.stopAnimation();
                 if(result.data.status_code == 200){
@@ -127,11 +120,9 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
                     toastr.error(result.data.errors.email[0], 'Sorry!');
                 }
                 // $location.url('/user/user_list', false);
-
             }, function myError(r) {
                 toastr.error(r.data.errors.email[0], 'Sorry!');
                 Utility.stopAnimation();
-
             });
         }
     }
@@ -155,13 +146,13 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
     };
 
     $scope.openAddUserModal=function(){
-			  usc.title = "Add New User";
+		usc.title = "Add New User";
         $("#addUserModal").modal("toggle");
         $("#userpassword").prop("required",true);
     }
 
     $scope.resetMachine=function(index,userId){
-        console.log(userId);
+        // console.log(userId);
         swal({
             title: 'Reset Machine',
             text: "Are you sure you want to reset Machine?",
@@ -194,7 +185,6 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
             });
         }, function (dismiss) {
              // alert("no");
-            //window.location.href = "/all-projects";
         })
     }
 

@@ -21,9 +21,9 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
         }
         if(page == -1){
             mac.pageno = 1;
-            console.log($('#pagination-sec').data("twbs-pagination"));
+            // console.log($('#pagination-sec').data("twbs-pagination"));
             if($('#pagination-sec').data("twbs-pagination")){
-                    $('#pagination-sec').twbsPagination('destroy');
+                $('#pagination-sec').twbsPagination('destroy');
             }
         }
         else{
@@ -51,26 +51,12 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
         }, function myError(r) {
             toastr.error(r.data.message, 'Sorry!');
             Utility.stopAnimation();
-
         });
     }
 
 	mac.init = function () {	
         mac.limit = $('#table_length').val();
         mac.fetchList(-1);	
-		// var promise = services.getALLMachineList();
-		// promise.success(function (result) {
-		// 	if(result.status_code == 200){
-		// 		Utility.stopAnimation();
-		// 			mac.machineList = result.data;
-		// 			//console.log(mac.machineList);
-		//  			//mac.userName=mac.userId!=undefined?mac.userId:loggedInUser.id.toString();
-		// 	}else{
-		// 		Utility.stopAnimation();
-		// 			mac.machineList = [];
-		// 			toastr.error(result.message, 'Sorry!');
-		// 	}
-		// });
 	}
 
 	$scope.setEmailIds = function(data){
@@ -78,7 +64,6 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
 		return emailIds;
 	}
 
-    
     mac.init();
 	
     $scope.openAddMachinePage = function(){
@@ -103,7 +88,6 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
                     Utility.stopAnimation();
                      mac.machineList[index]['status']='NOT ENGAGE';
                     // if(loggedInUser.identity.device_id != undefined && loggedInUser.identity.device_id==device_id){
-
                     //     delete loggedInUser.identity.device_id;
                     //     delete loggedInUser.identity.device_name;
                     //     services.setIdentity(loggedInUser);
@@ -116,7 +100,6 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
             });
         }, function (dismiss) {
              // alert("no");
-            //window.location.href = "/all-projects";
         })
     }
 
@@ -157,9 +140,8 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
                 }
             });
         }, function (dismiss) {
-             // alert("no");
-            //window.location.href = "/all-projects";
-        })
+             // alert("no");;
+        });
     }
 
 });

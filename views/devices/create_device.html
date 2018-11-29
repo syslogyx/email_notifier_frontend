@@ -1,3 +1,8 @@
+<style>
+    textarea{
+        resize: vertical;
+}
+</style>
 <section class="content">
      <!-- general form elements disabled -->
     <div class="box box-default">
@@ -10,7 +15,6 @@
                         </h1>
                     </div> 
                 </div>
-
                 <div class="col-md-6">
                     <div class="pull-right" style="margin-top: 5px; margin-right: 30px;">
                         <a ng-href="/device/device_list"><button type="button" class="btn btn-default btn-sm" title="Back" style="border:white;color:#428bca;"><i class="fa fa-arrow-left" aria-hidden="true"></i></button></a>
@@ -35,71 +39,64 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-2">
-                            <label>Port 1</label>
+                            <!-- <label>Port</label> -->
+                            <select id="port1" name="port1" class="form-control" ng-model="dmcc.port1" data-placeholder="Select port" ng-change="dmcc.changePointByPort(dmcc.port1,dmcc.port2,dmcc.port1Status,dmcc.port2Status);">
+                            <option ng-repeat="key in dmcc.json.prts_1" value="{{key}}" >{{key}}</option>
+                            </select>
                         </div>
-                        <div class="col-md-10 form-group">
+                        <div class="col-md-2">
+                            <!-- <label>Port Status</label> -->
+                            <select id="port1Status" name="port1Status" class="form-control" ng-model="dmcc.port1Status" data-placeholder="Select port status" ng-change="dmcc.changeStatusPoint1(dmcc.port1Status,dmcc.port1,dmcc.port2);">
+                                <option  ng-repeat="x in dmcc.json.prtpnts_1" value="{{x}}" >{{x}}</option>
+                              
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                           <!--  <label>Port Status</label> -->
+                            <select id="devicePort1Status" name="devicePort1Status" class="form-control" ng-model="dmcc.devicePort1Status" data-placeholder="Select device port status" ng-change="dmcc.changeStatus1(dmcc.devicePort1Status);">
+                                <option  ng-repeat="x in dmcc.json.prtst_1" value="{{x}}" >{{x}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <div class="col-md-12">
+                                <textarea  type="text" rows="2" ng-model="dmcc.port_reason_1" name="port_reason_1" id="port_reason_1" class="form-control"></textarea>
 
-                            <div class="col-md-2">
-                                <label class="mandatory">0</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="port_1_0" id="port_1_0" ng-model="dmcc.port_1_0_reason">
-                                <input type="hidden" name="port_1_0_id" id="port_1_0_id">
+                                <input type="hidden" name="port_reason_1_id" id="port_reason_1_id">
                             </div>
                         </div>
-                        
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-md-2"></div>
-                        <div class="col-md-10 form-group">
-                        
-                            <div class="col-md-2">
-                                <label class="mandatory">1</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input class="form-control" type="text" name="port_1_1" id="port_1_1" ng-model="dmcc.port_1_1_reason">
-                                <input type="hidden" name="port_1_1_id" id="port_1_1_id">
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-                <hr>
+
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-2">
-                            <label>Port 2</label>
+                            <!-- <label>Port</label> -->
+                            <select id="port2" name="port2" class="form-control" ng-model="dmcc.port2" data-placeholder="Select port" ng-change="dmcc.changePointByPort(dmcc.port1,dmcc.port2,dmcc.port1Status,dmcc.port2Status);">
+                                <option ng-repeat="key in dmcc.json.prts_1" value="{{key}}">{{key}}</option>
+                            </select>
                         </div>
-                        <div class="col-md-10 form-group">
-
-                            <div class="col-md-2">
-                                <label class="mandatory">0</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input class="form-control" type="text" name="port_2_0" id="port_2_0" ng-model="dmcc.port_2_0_reason">
-                                <input type="hidden" name="port_2_0_id" id="port_2_0_id">
+                        <div class="col-md-2">
+                            <!-- <label>Port Status</label> -->
+                            <select id="port2Status" name="port2Status" class="form-control" ng-model="dmcc.port2Status" data-placeholder="Select port status"  ng-change="dmcc.changeStatusPoint2(dmcc.port2Status,dmcc.port1,dmcc.port2);">
+                                <option ng-repeat="x in dmcc.json.prtpnts_1"  value="{{x}}" >{{x}}</option>
+                                 
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                           <!--  <label>Port Status</label> -->
+                            <select id="devicePort2Status" name="devicePort2Status" class="form-control" ng-model="dmcc.devicePort2Status" data-placeholder="Select device port status" ng-change="dmcc.changeStatus2(dmcc.devicePort2Status);" >
+                                <option ng-repeat="x in dmcc.json.prtst_1" value="{{x}}">{{x}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <div class="col-md-12">
+                                <textarea  type="text" rows="2" ng-model="dmcc.port_reason_2" name="port_reason_2" id="port_reason_2" class="form-control"></textarea>
+                                
+                                <input type="hidden" name="port_reason_2_id" id="port_reason_2_id">
                             </div>
                         </div>
-                        
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-md-2"></div>
-                        <div class="col-md-10 form-group">                        
-                            <div class="col-md-2">
-                                <label class="mandatory">1</label>
-                            </div>
-                            <div class="col-md-8">
-                                <input class="form-control" type="text" name="port_2_1" id="port_2_1" ng-model="dmcc.port_2_1_reason">
-                                <input type="hidden" name="port_2_1_id" id="port_2_1_id">
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
+                </div>    
             </div>
             <!-- /.box-body -->
         </form>
@@ -138,24 +135,12 @@
             errorPlacement: function (error, element) {
 
                 var type = $(element).attr("type");
-                if ($(element).attr("id") === "port_1_0")
+                if ($(element).attr("id") === "port_reason_1")
                 {
-                    // custom placement
                     element.parent().append(error);
                 } 
-                else if ($(element).attr("id") === "port_1_1")
+                else if ($(element).attr("id") === "port_reason_2")
                 {
-                    // custom placement
-                    element.parent().append(error);
-                }
-                else if ($(element).attr("id") === "port_2_0")
-                {
-                    // custom placement
-                    element.parent().append(error);
-                }
-                else if ($(element).attr("id") === "port_2_1")
-                {
-                    // custom placement
                     element.parent().append(error);
                 }
                 else {
@@ -168,33 +153,21 @@
                 deviceName: {
                     required: true
                 },
-                port_1_0:{
+                port_reason_1:{
                     required:true
                 },
-                port_1_1:{
+                port_reason_2:{
                     required:true
-                },
-                port_2_0:{
-                    required:true
-                },
-                port_2_1:{
-                    required:true
-                },                
+                },              
             },
             messages: {
                 deviceName: {
                     required: "Device name is required."
                 },
-                port_1_0: {
+                port_reason_1: {
                     required: "Port reason is required."
                 },
-                port_1_1: {
-                    required: "Port reason is required."
-                },
-                port_2_0: {
-                    required: "Port reason is required."
-                },
-                port_2_1: {
+                port_reason_2: {
                     required: "Port reason is required."
                 },                
             },

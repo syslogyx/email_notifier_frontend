@@ -1,94 +1,192 @@
 app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,services,$cookieStore,$location,$routeParams) {
 
 	var dmcc = this;
-	dmcc.userId = null;
+	dmcc.deviceId = null;
     dmcc.title = "Add New Device";
     dmcc.deviceName = '';
-    dmcc.port_1_0_reason = '';
-    dmcc.port_1_1_reason = '';
-    dmcc.port_2_0_reason = '';
-    dmcc.port_2_1_reason = '';
+
+    dmcc.pf1 = {
+                    Port_1 : {
+                                0: ['ON','OFF'],
+                                1: ['ON','OFF']
+                            },
+                    Port_2 : {
+                            0: ['ON','OFF'],
+                            1: ['ON','OFF']
+                        }
+                };
+
+    dmcc.port1='Port_1';
+    dmcc.port2='Port_1';
+
+    dmcc.port1Status='0';
+    dmcc.port2Status='1';
+
+    dmcc.devicePort1Status='ON';
+    dmcc.devicePort2Status='OFF';
+
+    dmcc.json={
+        prts_1:[],
+        prtpnts_1:[],
+        prtst_1:[],  
+    };
+
+    dmcc.getPorts=function(obj,v){
+        temp=[];
+        for (var x in obj){  
+            temp.push(x);                  
+        }        
+        dmcc.json[v]=temp;
+    }
+
+    dmcc.getPoints=function(obj,port,v){
+        temp=[];
+        for (var x in obj[port]){  
+            temp.push(x);                  
+        }        
+        dmcc.json[v]=temp;
+    }
+
+    dmcc.getStatus=function(obj,port,pnt,v){
+        temp=[];
+        temp=obj[port][pnt];      
+        dmcc.json[v]=temp;
+    }
+
+    dmcc.getPorts(dmcc.pf1,'prts_1');
+   
+    dmcc.getPoints(dmcc.pf1, dmcc.port1,'prtpnts_1');
+   
+    dmcc.getStatus(dmcc.pf1,dmcc.port1,0,'prtst_1');
+   
+    dmcc.changePointByPort = function(port1,port2,port1Status,port2Status){
+        if(port1 == port2){
+            if(port1Status==port2Status){
+                dmcc.port1Status='0';
+                dmcc.port2Status='1';
+            }
+        }
+    }
+
+    dmcc.changeStatusPoint1= function(value,port1,port2){
+        if(port1 == port2){
+            if(value=='0'){
+                dmcc.port2Status='1';
+            }else{
+                dmcc.port2Status='0';
+            }
+        }
+    }
+
+    dmcc.changeStatusPoint2= function(value,port1,port2){
+        if(port1 == port2){
+            if(value=='0'){
+                dmcc.port1Status='1';
+            }else{
+                dmcc.port1Status='0';
+            }
+        }
+    }
+
+    dmcc.changeStatus1 = function(value){   
+        if(value == 'ON'){
+            dmcc.devicePort2Status='OFF';
+        }else{
+            dmcc.devicePort2Status='ON';
+        }
+    }
+
+    dmcc.changeStatus2 = function(value){
+        if(value == 'ON'){
+            dmcc.devicePort1Status='OFF';
+        }else{
+            dmcc.devicePort1Status='ON';
+        }
+    }
+
+    dmcc.port_reason_1 = '';
+    dmcc.port_reason_2 = '';
 
     var loggedInUser = JSON.parse(services.getIdentity());
 
-    dmcc.userId = $routeParams.id || "Unknown";
+    dmcc.deviceId = $routeParams.id || "Unknown";
 
     dmcc.init = function(){
-		if(dmcc.userId > 0){
+		if(dmcc.deviceId > 0){
             dmcc.title = "Update Device";
-            var promise = services.getDeviceById(dmcc.userId);
+            var promise = services.getDeviceById(dmcc.deviceId);
             promise.success(function (result) {
                 Utility.stopAnimation();
                 if(result.status_code == 200){
+                    // console.log(result.data);
                     dmcc.id = result.data.id;
                     dmcc.deviceName = result.data.name;
+
+                    dmcc.port1 = dmcc.capitalize(result.data.reasonList[0].current_device_port_no);
+                    dmcc.port2 = dmcc.capitalize(result.data.reasonList[1].current_device_port_no);
+
+                    dmcc.port1Status = result.data.reasonList[0].current_device_status;
+                    dmcc.port2Status = result.data.reasonList[1].current_device_status;
+
+                    dmcc.devicePort1Status = result.data.reasonList[0].flag;
+                    dmcc.devicePort2Status = result.data.reasonList[1].flag;
+
                     // to set pre-populated port numbers
-                    $("#port_1_0").val(result.data.status_reason_port_one_0.reason);
-                    $("#port_1_0_id").val(result.data.status_reason_port_one_0.id);
+                    $("#port_reason_1").val(result.data.reasonList[0].reason);
+                    $("#port_reason_1_id").val(result.data.reasonList[0].id);
 
-                    $("#port_1_1").val(result.data.status_reason_port_one_1.reason);
-                    $("#port_1_1_id").val(result.data.status_reason_port_one_1.id);
-
-                    $("#port_2_0").val(result.data.status_reason_port_two_0.reason);
-                    $("#port_2_0_id").val(result.data.status_reason_port_two_0.id);
-
-                    $("#port_2_1").val(result.data.status_reason_port_two_1.reason);
-                    $("#port_2_1_id").val(result.data.status_reason_port_two_1.id);
+                    $("#port_reason_2").val(result.data.reasonList[1].reason);
+                    $("#port_reason_2_id").val(result.data.reasonList[1].id);
 
                     dmcc.title = "Update Device";
                 }else{
                     toastr.error(result.message, 'Sorry!');
                 }
             });
-
 		}
 
-        dmcc.getReasonListForPort_one_0();
-		dmcc.getReasonListForPort_one_1();
-        dmcc.getReasonListForPort_two_0();
-        dmcc.getReasonListForPort_two_1();
+        dmcc.getReasonListForFirstPort();
+		dmcc.getReasonListForSecondPort();
         dmcc.initializeChangeEvents();
 	}
 
+    //Function to capital first letter of string
+    dmcc.capitalize = function(s){
+        return s[0].toUpperCase() + s.slice(1);
+    }
+
     dmcc.initializeChangeEvents = function(){
-
-        $('#port_1_0').on('keyup',function(e){
-            dmcc.port_1_0_reason = $("#port_1_0").val();
-            $("#port_1_0_id").val('');
+        $('#port_reason_1').on('keyup',function(e){
+            dmcc.port_reason_1 = $("#port_reason_1").val();
+            $("#port_reason_1_id").val('');
         });
 
-        $('#port_1_1').on('keyup',function(e){
-            dmcc.port_1_1_reason = $("#port_1_1").val();
-            $("#port_1_1_id").val('');
-        });
-
-        $('#port_2_0').on('keyup',function(e){
-            dmcc.port_2_0_reason = $("#port_2_0").val();
-            $("#port_2_0_id").val('');
-        });
-
-        $('#port_2_1').on('keyup',function(e){
-            dmcc.port_2_1_reason = $("#port_2_1").val();
-            $("#port_2_1_id").val('');
+        $('#port_reason_2').on('keyup',function(e){
+            dmcc.port_reason_2 = $("#port_reason_2").val();
+            $("#port_reason_2_id").val('');
         });
     }
 
-
 	dmcc.saveDevice = function () {
-            // console.log($("#port_1_0_id").val());
-            // console.log($("#port_1_1_id").val());
-            // console.log($("#port_2_0_id").val());
-            // console.log($("#port_2_1_id").val());
         if ($("#addDeviceForm").valid()) {
+
+            var v1=dmcc.port1.toLowerCase()+'_'+dmcc.port1Status+"_"+"reason";
+            var v2=dmcc.port2.toLowerCase()+'_'+dmcc.port2Status+'_'+"reason";
+            var v3=dmcc.port1.toLowerCase()+'_'+dmcc.port1Status+'_'+"status";
+            var v4=dmcc.port2.toLowerCase()+'_'+dmcc.port2Status+'_'+"status";
+            
             var req = {
                 "name": dmcc.deviceName,
-                "port_1_0_reason":$("#port_1_0_id").val() == '' ? dmcc.port_1_0_reason : $("#port_1_0_id").val(),
-                "port_1_1_reason":$("#port_1_1_id").val() == '' ? dmcc.port_1_1_reason : $("#port_1_1_id").val(),
-                "port_2_0_reason":$("#port_2_0_id").val() == '' ? dmcc.port_2_0_reason : $("#port_2_0_id").val(),
-                "port_2_1_reason":$("#port_2_1_id").val() == '' ? dmcc.port_2_1_reason : $("#port_2_1_id").val(),
-            }
-            if (dmcc.userId != 'Unknown') {
-            	req.id = dmcc.userId;
+                };
+
+            req[v1]=$("#port_reason_1_id").val() == '' ? dmcc.port_reason_1 : $("#port_reason_1_id").val();
+            req[v2]=$("#port_reason_2_id").val() == '' ? dmcc.port_reason_2 : $("#port_reason_2_id").val();
+            req[v3]=dmcc.devicePort1Status;
+            req[v4]=dmcc.devicePort2Status;
+
+            // console.log('req',req);
+            if (dmcc.deviceId != 'Unknown') {
+            	req.id = dmcc.deviceId;
                 var operationMessage = " updated ";
                 var promise = services.updateDevice(req);
 
@@ -115,10 +213,8 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         }
     }
 
- 	dmcc.getReasonListForPort_one_0 = function () {
-
+ 	dmcc.getReasonListForFirstPort = function () {
         var options = {
-
             url: RESOURCES.SERVER_API + "get/reasons",
             ajaxSettings: {
                 dataType: "json",
@@ -131,28 +227,24 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 // console.log(element);
                 return element.reason;
             },
-
             list: {
                 onChooseEvent: function() {
-                    var selectedId = $("#port_1_0").getSelectedItemData().id;
+                    var selectedId = $("#port_reason_1").getSelectedItemData().id;
                     if(selectedId){
-                        $("#port_1_0_id").val(selectedId);
+                        $("#port_reason_1_id").val(selectedId);
                     }
                 },
                 match: {
                     enabled: true
                 }
             },
-
             requestDelay: 200,
             theme: "square"
         };
-
-        $("#port_1_0").easyAutocomplete(options);
+        $("#port_reason_1").easyAutocomplete(options);
     }
 
-    dmcc.getReasonListForPort_one_1 = function () {
-
+    dmcc.getReasonListForSecondPort = function () {
         var options = {
             url: RESOURCES.SERVER_API + "get/reasons",
             ajaxSettings: {
@@ -165,12 +257,11 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
             getValue: function(element) {
                 return element.reason;
             },
-
             list: {
                 onChooseEvent: function() {
-                    var selectedId = $("#port_1_1").getSelectedItemData().id;
+                    var selectedId = $("#port_reason_2").getSelectedItemData().id;
                     if(selectedId){
-                        $("#port_1_1_id").val(selectedId);
+                        $("#port_reason_2_id").val(selectedId);
                     }
                 },
                 match: {
@@ -180,80 +271,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
             requestDelay: 200,
             theme: "square"
         };
-
-        $("#port_1_1").easyAutocomplete(options);
-    }
-
-    dmcc.getReasonListForPort_two_0 = function () {
-
-        var options = {
-
-            url: RESOURCES.SERVER_API + "get/reasons",
-            ajaxSettings: {
-                dataType: "json",
-                method: "GET"
-            },
-            categories: [{
-                listLocation: "data"
-            }],
-            getValue: function(element) {
-                // console.log(element);
-                return element.reason;
-            },
-
-            list: {
-                onChooseEvent: function() {
-                    var selectedId = $("#port_2_0").getSelectedItemData().id;
-                    if(selectedId){
-                        $("#port_2_0_id").val(selectedId);
-                    }
-                },
-                match: {
-                    enabled: true
-                }
-            },
-
-            requestDelay: 200,
-            theme: "square"
-        };
-
-        $("#port_2_0").easyAutocomplete(options);
-    }
-
-    dmcc.getReasonListForPort_two_1 = function () {
-
-        var options = {
-
-            url: RESOURCES.SERVER_API + "get/reasons",
-            ajaxSettings: {
-                dataType: "json",
-                method: "GET"
-            },
-            categories: [{
-                listLocation: "data"
-            }],
-            getValue: function(element) {
-                //console.log(element);
-                return element.reason;
-            },
-
-            list: {
-                onChooseEvent: function() {
-                    var selectedId = $("#port_2_1").getSelectedItemData().id;
-                    if(selectedId){
-                        $("#port_2_1_id").val(selectedId);
-                    }
-                },
-                match: {
-                    enabled: true
-                }
-            },
-
-            requestDelay: 200,
-            theme: "square"
-        };
-
-        $("#port_2_1").easyAutocomplete(options);
+        $("#port_reason_2").easyAutocomplete(options);
     }
 
     $scope.resetForm = function() {
@@ -264,10 +282,8 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         });
         dmcc.id = null;
         dmcc.deviceName = '';
-        $("#port_1_0_id").val('');
-        $("#port_1_1_id").val('');
-        $("#port_2_0_id").val('');
-        $("#port_2_1_id").val('');
+        $("#port_reason_1_id").val('');
+        $("#port_reason_2_id").val('');
     };
 
     dmcc.init();
