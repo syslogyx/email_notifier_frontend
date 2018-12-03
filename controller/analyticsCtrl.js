@@ -12,7 +12,7 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
     			if(result.status_code == 200){
     				  Utility.stopAnimation();
     					anx.machineList = result.data.data;
-    					console.log(anx.machineList);
+    					// console.log(anx.machineList);
     			}else{
     				  Utility.stopAnimation();
     					anx.machineList = [];
@@ -57,10 +57,10 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
     				'from_date':fromDate,
     				'to_date':toDate
   			}
-  			console.log(req);
+  			// console.log(req);
   			var promise = services.findAnalytixMachineEstimationDtata(req);
 	          promise.then(function mySuccess(response) {
-            console.log(response) ;  
+            // console.log(response) ;  
 	        	Utility.stopAnimation();
 	            try {
 	                if(response.data.status_code == 200){
@@ -170,7 +170,7 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
           PieData.push(obj1);
         
         	anx.chart_data = PieData;
-        	console.log(anx.chart_data);
+        	// console.log(anx.chart_data);
 
       	  var toolTipCustomFormatFn = function (value, itemIndex, serie, group, xAxisValue, xAxis) {
               var dataItem = PieData[itemIndex];

@@ -327,8 +327,8 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
     this.updateUser = function (request) {
         Utility.startAnimation();
         return $http({
-            method: 'PUT',
-            url: RESOURCES.SERVER_API + "update/user",
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "update/user?_method=PUT",
             dataType: 'json',
             data: $.param(request),
             headers: {
@@ -340,8 +340,8 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
     this.updateDevice = function (request) {
         Utility.startAnimation();
         return $http({
-            method: 'PUT',
-            url: RESOURCES.SERVER_API + "update/device",
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "update/device?_method=PUT",
             dataType: 'json',
             data: $.param(request),
             headers: {
@@ -495,8 +495,8 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
     this.updateMachine = function (request) {
         Utility.startAnimation();
         return $http({
-            method: 'PUT',
-            url: RESOURCES.SERVER_API + "update/machine",
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "update/machine?_method=PUT",
             dataType: 'json',
             data: $.param(request),
             headers: {
@@ -626,9 +626,9 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
     this.downloadReportPDF = function (req) {
         //window.open(RESOURCES.SERVER_API +"generate_pdf/" + $.param(req));
         var encReq = window.btoa(JSON.stringify(req));
-        console.log(encReq);
+        // console.log(encReq);
         var url = RESOURCES.SERVER_API +"generate_pdf?req=" + encReq;
-        console.log(url);
+        // console.log(url);
         window.open(url);
     };
 
@@ -667,7 +667,6 @@ app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$ro
     this.getNotification = function (logInUserMachineID) {
         var promise = services.getDeviceStatusDataByMachineID(logInUserMachineID);
         promise.success(function (result) {
-
             if(result.status_code ==200){
                $rootScope.deviceStatusDataList = result.data; 
                 var statusCol= $rootScope.deviceStatusDataList['port']+'_'+$rootScope.deviceStatusDataList['status']+'_status';

@@ -20,7 +20,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         }
         if(page == -1){
             usc.pageno = 1;
-            console.log($('#pagination-sec').data("twbs-pagination"));
+            // console.log($('#pagination-sec').data("twbs-pagination"));
             if($('#pagination-sec').data("twbs-pagination")){
                     $('#pagination-sec').twbsPagination('destroy');
             }

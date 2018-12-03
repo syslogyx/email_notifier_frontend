@@ -450,7 +450,7 @@
             });
 
             $(window).on('popstate', function(event) {
-                console.log("back button clicked");
+                // console.log("back button clicked");
                 $(".modal").modal("hide");
                 $('.modal-backdrop').remove();
                 // $('.modal').remove();

@@ -16,7 +16,7 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
 		if(rep.logInUSerRoleID != 1){
 			var promise = services.getAllAssignedMachinesRecordByUserId(rep.logInUSerID);
 			promise.success(function (result) {
-                console.log(result);
+                // console.log(result);
 				if(result.status_code == 200){
 					Utility.stopAnimation();
 					rep.machineList = result.data;	
@@ -146,7 +146,7 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
 	}
 
 	rep.downloadReportDataPDF = function(){
-		console.log(rep.req);
+		// console.log(rep.req);
 		// var fromDate = Utility.formatDate(rep.fromDate,'Y/m/d');
 		// var toDate = Utility.formatDate(rep.toDate,'Y/m/d');  
 		// var req ={

@@ -6,7 +6,7 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
     }
 
     var loggedInUser = JSON.parse(services.getIdentity());
-    console.log('loggedInUser.identity.name',loggedInUser);
+    // console.log('loggedInUser.identity.name',loggedInUser);
 
     if(loggedInUser.identity.role==1){
       $scope.menuList = [

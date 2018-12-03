@@ -3,16 +3,16 @@ app.controller('homeCtrl', function ($scope,menuService,services,$cookieStore,$r
 	var hme = this;
 	$scope.name = "";
     //menuService.setMenu([]);
-    var loggedInUser = JSON.parse($cookieStore.get('identity'));
-    $scope.name  =  loggedInUser.identity.name;
-    $scope.designation  =  loggedInUser.identity.designation;
-    $scope.logInUserID = loggedInUser.id;
-    $scope.machineId = loggedInUser.identity.machine_id;
-    $scope.machineName = loggedInUser.identity.machine_name;
 
     $scope.init = function(){
 		//$scope.$root.$broadcast("myEvent", {});
 		var token = services.getAuthKey();	
+        if($cookieStore.get('identity') != null || $cookieStore.get('identity') != undefined){
+            var loggedInUser = JSON.parse($cookieStore.get('identity'));
+            $scope.name  =  loggedInUser.identity.name;
+            $scope.logInUserID = loggedInUser.id; 
+        }
+        
 	}
 
 	$scope.addEstimationStatus = function(){
