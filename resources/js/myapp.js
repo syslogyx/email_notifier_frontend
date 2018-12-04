@@ -328,8 +328,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         Utility.startAnimation();
         return $http({
             method: 'POST',
-            url: RESOURCES.SERVER_API + "update/user?_method=PUT",
-            dataType: 'json',
+            url: RESOURCES.SERVER_API + "update/user",
             data: $.param(request),
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
@@ -341,7 +340,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         Utility.startAnimation();
         return $http({
             method: 'POST',
-            url: RESOURCES.SERVER_API + "update/device?_method=PUT",
+            url: RESOURCES.SERVER_API + "update/device",
             dataType: 'json',
             data: $.param(request),
             headers: {
@@ -496,7 +495,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         Utility.startAnimation();
         return $http({
             method: 'POST',
-            url: RESOURCES.SERVER_API + "update/machine?_method=PUT",
+            url: RESOURCES.SERVER_API + "update/machine",
             dataType: 'json',
             data: $.param(request),
             headers: {
@@ -896,7 +895,7 @@ app.run(function ($rootScope, AclService, $cookieStore, $location, services,noti
                     notificationServices.getNotification($rootScope.logInUserMachineId);               
                  }
             }
-        }, 1000);
+        }, 2000);
     }
 
     // If the route change failed due to our "Unauthorized" error, redirect them
