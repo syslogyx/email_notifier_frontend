@@ -9,7 +9,14 @@
     margin-left: 0px;
 }
  .login-page, .register-page {
-    background: #ecf0f5;
+    /* background: #ecf0f5; */
+}
+
+.wrapper, html {
+  background-image: url("resources/img/back_image.jpg");
+}
+.login-logo{
+  /* background-image: url("resources/img/logo2.png"); */
 }
 </style>
 
@@ -18,7 +25,8 @@
 <div class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo" ng-controller="loginCtrl">
-    <b>Email Notifier</b>
+
+    <img src="resources/img/logo2.png" alt="">
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
@@ -33,7 +41,7 @@
                 </div>
 
                 <div class="form-group has-feedback" style="min-height:55px">
-                    <label  class="sr-only"></label>        
+                    <label  class="sr-only"></label>
                     <input type="password" class="form-control" placeholder="Password" name="password" ng-model="lgc.password">
                     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                 </div>
@@ -48,7 +56,7 @@
                     </div>
                     <!-- /.col -->
 
-                    <div class="col-xs-4 row"> 
+                    <div class="col-xs-4 row">
                         <button  type="submit" class="btn btn-primary btn-block btn-flat" name="submit-btn" ng-click="lgc.login()">
                             <span class="glyphicon glyphicon-log-in"></span> &nbsp; Sign In
                         </button>
@@ -103,7 +111,7 @@
             validateloginForm();
 </script>
 
-<!-- iCheck --> 
+<!-- iCheck -->
 <script src="../resources/plugins/iCheck/icheck.min.js"></script>
 <script>
 
