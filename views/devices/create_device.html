@@ -2,6 +2,9 @@
     textarea{
         resize: vertical;
 }
+.easy-autocomplete{
+  width:inherit !important;
+}
 </style>
 <section class="content">
      <!-- general form elements disabled -->
@@ -13,13 +16,13 @@
                         <h1 class="formheading">
                             <b>{{dmcc.title}}</b>
                         </h1>
-                    </div> 
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <div class="pull-right" style="margin-top: 5px; margin-right: 30px;">
                         <a ng-href="/device/device_list"><button type="button" class="btn btn-default btn-sm" title="Back" style="border:white;color:#428bca;"><i class="fa fa-arrow-left" aria-hidden="true"></i></button></a>
                     </div>
-                </div>               
+                </div>
             </div>
 
             <!-- /.box-header-->
@@ -48,7 +51,7 @@
                             <!-- <label>Port Status</label> -->
                             <select id="port1Status" name="port1Status" class="form-control" ng-model="dmcc.port1Status" data-placeholder="Select port status" ng-change="dmcc.changeStatusPoint1(dmcc.port1Status,dmcc.port1,dmcc.port2);">
                                 <option  ng-repeat="x in dmcc.json.prtpnts_1" value="{{x}}" >{{x}}</option>
-                              
+
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -58,7 +61,7 @@
                             </select>
                         </div>
                         <div class="col-md-6 form-group">
-                            <div class="col-md-12">
+                            <div class="">
                                 <textarea  type="text" rows="2" ng-model="dmcc.port_reason_1" name="port_reason_1" id="port_reason_1" class="form-control"></textarea>
 
                                 <input type="hidden" name="port_reason_1_id" id="port_reason_1_id">
@@ -79,7 +82,7 @@
                             <!-- <label>Port Status</label> -->
                             <select id="port2Status" name="port2Status" class="form-control" ng-model="dmcc.port2Status" data-placeholder="Select port status"  ng-change="dmcc.changeStatusPoint2(dmcc.port2Status,dmcc.port1,dmcc.port2);">
                                 <option ng-repeat="x in dmcc.json.prtpnts_1"  value="{{x}}" >{{x}}</option>
-                                 
+
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -89,30 +92,30 @@
                             </select>
                         </div>
                         <div class="col-md-6 form-group">
-                            <div class="col-md-12">
+                            <div class="">
                                 <textarea  type="text" rows="2" ng-model="dmcc.port_reason_2" name="port_reason_2" id="port_reason_2" class="form-control"></textarea>
-                                
+
                                 <input type="hidden" name="port_reason_2_id" id="port_reason_2_id">
                             </div>
                         </div>
                     </div>
-                </div>    
+                </div>
             </div>
             <!-- /.box-body -->
         </form>
-        
+
         <div class="box-footer">
             <div class="pull pull-right" >
                 <button type="button" value="Save" data-ng-click="dmcc.saveDevice()" class="btn btn-success">Save</button>
-                <button type="reset" value="Clear" ng-click="resetForm()" class="btn" >Clear</button> 
+                <button type="reset" value="Clear" ng-click="resetForm()" class="btn" >Clear</button>
             </div>
         </div>
-        
+
     </div>
 </section>
 
 <script>
-    $(document).ready(function () {       
+    $(document).ready(function () {
         // $(".ports").autocomplete();
 
         $(".s2mn").on("change", function () { $(this).valid(); });
@@ -138,7 +141,7 @@
                 if ($(element).attr("id") === "port_reason_1")
                 {
                     element.parent().append(error);
-                } 
+                }
                 else if ($(element).attr("id") === "port_reason_2")
                 {
                     element.parent().append(error);
@@ -158,7 +161,7 @@
                 },
                 port_reason_2:{
                     required:true
-                },              
+                },
             },
             messages: {
                 deviceName: {
@@ -169,7 +172,7 @@
                 },
                 port_reason_2: {
                     required: "Port reason is required."
-                },                
+                },
             },
             highlight: function (element) { // hightlight error inputs
                 $(element)
