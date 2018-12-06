@@ -82,22 +82,6 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
       $scope.selectedIndex=i;
     };
 
-    $scope.userRoleList=[];
-    $scope.getRoleList = function () {
-        var promise = services.getAllRoleList();
-        promise.success(function (result) {
-            if(result.status_code == 200){
-                Utility.stopAnimation();
-                $scope.userRoleList = result.data;
-            }else{
-                $scope.userRoleList=[];
-                Utility.stopAnimation();
-                toastr.error(result.message, 'Sorry!');
-            }
-        });
-    }
-    $scope.getRoleList();
-
     $scope.getUserData = function () {
         var promise = services.getUserById(loggedInUser.id);
         promise.success(function (result) {
@@ -106,6 +90,7 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
                 $scope.id = result.data.id;
                 $scope.userName = result.data.name;
                 // $scope.userpassword = result.data.password;
+                $scope.userRole = result.data.role_id;
                 $scope.userEmail = result.data.email;
                 $scope.mobileNo = result.data.mobile;
                 applySelect2();
@@ -123,6 +108,7 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
                 "name": $scope.userName,
                 "email": $scope.userEmail,
                 "password":$scope.userpassword,
+                "role_id": $scope.userRole,
                 "mobile": $scope.mobileNo,
             }
             req.id = $scope.id;

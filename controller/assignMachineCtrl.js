@@ -7,8 +7,11 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     amc.userMachineName=null;
 
     var loggedInUser = JSON.parse(services.getIdentity());
+    console.log(loggedInUser);
+    amc.logInuserMachineId = loggedInUser.identity.machine_id;
     //amc.userName = loggedInUser.identity.name;
 	if(amc.userId!=undefined){  
+
 		var promise = services.getMachineIdByUserId(amc.userId);
 		promise.success(function (result) {
 			if(result.status_code == 200){
@@ -96,9 +99,9 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
             }else{
                 toastr.error(result.data.message, 'Sorry!');
             }
-            $location.url('/user/user_list', false);
+            // $location.url('/user/user_list', false);
         }, function myError(r) {
-            toastr.error(r.data.errors.email[0], 'Sorry!');
+            toastr.error(r.data.message, 'Sorry!');
             Utility.stopAnimation();
         });
     }
@@ -137,6 +140,8 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 
 	amc.clearForm=function(){
 		amc.machineId='';
+        $("#machineAssignForm").validate().resetForm();
+
 	}
 
 });

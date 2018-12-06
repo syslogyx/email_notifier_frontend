@@ -93,7 +93,7 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
                 pagination.applyPagination(result.data, rep);
             }else{  
             	rep.allEstimationRecord = [];    
-                //toastr.error("No matching results found.", 'Sorry!');
+                toastr.error("No matching results found.", 'Sorry!');
             }
         }, function myError(r) {
             toastr.error(r.data.message, 'Sorry!');
@@ -138,22 +138,19 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
             $(this).removeClass('has-error');
             $('span.help-block-error').remove();
         });
+        // debugger
+        // if(rep.machineId !=undefined ||rep.machineId != ''|| rep.fromDate !='' || rep.toDate != ''){
+        //     rep.fetchList(-1);
+        // }
         rep.machineId = '';
         rep.fromDate = '';
         rep.toDate = '';
-        rep.allEstimationRecord = '';
-        rep.fetchList(-1);
+        rep.allEstimationRecord = null;
+        $('#pagination-sec').twbsPagination('destroy');
+        // rep.fetchList(-1);
 	}
 
-	rep.downloadReportDataPDF = function(){
-		// console.log(rep.req);
-		// var fromDate = Utility.formatDate(rep.fromDate,'Y/m/d');
-		// var toDate = Utility.formatDate(rep.toDate,'Y/m/d');  
-		// var req ={
-		// 	'machine_id':rep.machineId,
-		// 	'from_date':fromDate,
-		// 	'to_date':toDate
-		// }      
+	rep.downloadReportDataPDF = function(){     
         var promise = services.downloadReportPDF(rep.req);
     }
 

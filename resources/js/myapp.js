@@ -1,5 +1,8 @@
 var Utility = {
-    apiBaseUrl: "http://172.16.1.97:9000/api/",
+     // apiBaseUrl: "http://172.16.1.97:9000/api/",
+     apiBaseUrl: " http://enfapi.syslogyx.com/api/",
+
+   
     imgBaseUrl: "http://172.16.1.97:9000/img/",
     formatDate: function (date, format) {
         var tDate = null;
@@ -649,8 +652,11 @@ app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$ro
     this.getLogInUserMachineData = function (logInUserId) {
         var promise = services.getMachineIdByUserId(logInUserId);
         promise.success(function (result) {
+            // console.log(result);
             if(result.data){
-               $rootScope.logInUserMachineId = result.data.machine_id; 
+               $rootScope.logInUserMachineId = result.data.machine_id;
+               $rootScope.logInUserMachineData = result.data;
+               // console.log($rootScope.logInUserMachineData);
                 Utility.stopAnimation();
             }else{
                 $rootScope.logInUserMachineId = null;
@@ -670,6 +676,7 @@ app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$ro
                $rootScope.deviceStatusDataList = result.data; 
                 var statusCol= $rootScope.deviceStatusDataList['port']+'_'+$rootScope.deviceStatusDataList['status']+'_status';
                 $rootScope.machineStatus =$rootScope.deviceStatusDataList['device'][statusCol];
+               // console.log($rootScope.machineStatus);
                 Utility.stopAnimation();
             }else{
                 $rootScope.deviceStatusDataList = null;

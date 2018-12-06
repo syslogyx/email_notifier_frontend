@@ -5,46 +5,56 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 	macc.userDeviceId=null;
 	macc.userDeviceName=null;
 	macc.title = "Create Machine";
+     macc.deviceList =[];
 	var loggedInUser = JSON.parse(services.getIdentity());
 	
 	macc.userId = $routeParams.id || "Unknown";
 
 	macc.init = function () {
 		// to fetch not engage devices
-		macc.getDeviceList();
+		// macc.getDeviceList();
+		var promise = services.getNotEngageDeviceList();
+        promise.success(function (result) {
+			// console.log(result);
+            Utility.stopAnimation();
+            if(result.status_code == 200){
+                macc.deviceList = result.data;
+				if(macc.userId > 0){
+					macc.title = "Update Machine";
+		            var promise = services.getMachineById(macc.userId);
+		            promise.success(function (result) {
+		                if(result.status_code == 200){
+		                    macc.id = result.data.id;
+		                    macc.machine_name = result.data.name;
+		                    macc.machine_email_ids = result.data.email_ids;
+		                    var newdeviceList = result.data.device_data;                    
+		                    for ($i = 0; $i < newdeviceList.length; $i++) {	                        
+		                        macc.deviceList.push(newdeviceList[$i]);
+		                    }
+		                    
+			                var devicesArr = [];
+			                if (newdeviceList) {
+			                    for (var i = 0; i < newdeviceList.length; i++) {
+			                    	if (newdeviceList[i]['id']) {
+			                    		devicesArr.push(newdeviceList[i]['id']);
+			                    	}
+			                    }
+			                }
+			                macc.device = devicesArr;
+			                macc.oldDevice = devicesArr;
+		                    macc.status = result.data.status;
+		                }else{
+		                    toastr.error(result.message, 'Sorry!');
+		                }
+		                Utility.stopAnimation();
+		            });	
+				}	
 
-		if(macc.userId > 0){
-			macc.title = "Update Machine";
-            var promise = services.getMachineById(macc.userId);
-            promise.success(function (result) {
-                if(result.status_code == 200){
-                    macc.id = result.data.id;
-                    macc.machine_name = result.data.name;
-                    macc.machine_email_ids = result.data.email_ids;
-                    var newdeviceList = result.data.device_data;                    
-                    for ($i = 0; $i < newdeviceList.length; $i++) {	                        
-                        macc.deviceList.push(newdeviceList[$i]);
-                    }
-                    
-	                var devicesArr = [];
-	                if (newdeviceList) {
-	                    for (var i = 0; i < newdeviceList.length; i++) {
-	                    	if (newdeviceList[i]['id']) {
-	                    		devicesArr.push(newdeviceList[i]['id']);
-	                    	}
-	                    }
-	                }
-
-	                macc.device = devicesArr;
-	                macc.oldDevice = devicesArr;
-                    macc.status = result.data.status;
-                }else{
-                    toastr.error(result.message, 'Sorry!');
-                }
-                Utility.stopAnimation();
-            });
-			
-		}		
+			}else{
+				macc.deviceList = [];
+                toastr.error(result.message, 'Sorry!');
+	        }
+	    })	
 	}
 
 	macc.getDeviceList = function () {
@@ -95,9 +105,12 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 	}
 
 	$scope.resetForm = function () {
-		$("#machineAddForm")[0].reset();
-		macc.deviceList = '';
-		macc.getDeviceList();
+		// $("#machineAddForm")[0].reset();
+		// macc.deviceList = '';
+		macc.device ='';
+		macc.machine_email_ids ='';
+		macc.machine_name ='';
+		 // macc.getDeviceList();
         $("div.form-group").each(function () {
             $(this).removeClass('has-error');
             $('span.help-block-error').remove();

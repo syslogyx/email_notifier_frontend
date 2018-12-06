@@ -11,25 +11,34 @@ app.controller('homeCtrl', function ($scope,menuService,services,$cookieStore,$r
             var loggedInUser = JSON.parse($cookieStore.get('identity'));
             $scope.name  =  loggedInUser.identity.name;
             $scope.logInUserID = loggedInUser.id; 
+            $scope.logInUserRole = loggedInUser.identity.role;
+            // console.log($scope.logInUserRole);
         }
-        
 	}
 
 	$scope.addEstimationStatus = function(){
         console.log($rootScope.deviceStatusDataList.id);
 		// $scope.machineStatusId = $rootScope.deviceStatusDataList.id;
 		if($("#deviceEstimationForm").valid()){
+            $("#changeStatusBtn").attr("disabled","disabled");
+            var hr=$scope.estimationHr<10?('0'+$scope.estimationHr):$scope.estimationHr;
+            var min=$scope.estimationMin<10?('0'+$scope.estimationMin):$scope.estimationMin;
+            var estimationTime= hr+':'+min;
+            // console.log('estimationTime', estimationTime);
 			var req ={
 				"user_id":$scope.logInUserID,
 				"machine_status_id":$rootScope.deviceStatusDataList.id,
 				"msg":$scope.comment,
-				"hour":$scope.estimationHr
+				"hour":estimationTime
 			}
-			// console.log(req);
+			 // console.log(req);
+            Utility.startAnimation();
 			var promise = services.saveUserEstimation(req);
 			promise.then(function mySuccess(result) {
-                Utility.stopAnimation();
                 $("#deviceEstimationModal").modal("toggle");
+                $('#changeStatusBtn').removeAttr("disabled");
+               
+                Utility.stopAnimation();
                 if(result.data.status_code == 200){
                     toastr.success('User estimation added successfully..');
                 }else{
@@ -37,20 +46,23 @@ app.controller('homeCtrl', function ($scope,menuService,services,$cookieStore,$r
                 }
                 $scope.resetForm();
             }, function myError(r) {
-                toastr.error(r.data.errors.email[0], 'Sorry!');
+                toastr.error(r.data.message, 'Sorry!');
                 Utility.stopAnimation();
-
             });
+
 		}
 	}
 
-	$scope.resetForm = function() {
-        $("div.form-group").each(function () {
-            $(this).removeClass('has-error');
-            $('span.help-block-error').remove();
-        });
-        $scope.estimationHr ='';
-        $scope.comment ='';
+    $scope.pagelink = function(){
+        $("#deviceEstimationModal").modal("show");
+        setTimeout(function(){
+            $scope.resetForm(); 
+        }, 500);
+    }
+
+	$scope.resetForm = function() { 
+        $('#deviceEstimationForm')[0].reset();
+        $("#deviceEstimationForm").validate().resetForm();
     };
 
 	$scope.init();

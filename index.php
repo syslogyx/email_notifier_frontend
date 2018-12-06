@@ -97,15 +97,13 @@
         <!-- Site wrapper -->
         <div class="wrapper">
             <div ng-controller="menuCtrl" >
-
-                <!-- style="display:none;" -->
                 <header class="main-header">
                     <!-- Logo -->
                     <a href="/" class="logo">
-                      <!-- mini logo for sidebar mini 50x50 pixels -->
-                      <img src="/resources/img/Syslogyx_logo_samll.png" style="    padding-left: 7px; padding-top: 7px;" class="logo-mini">
-                      <!-- logo for regular state and mobile devices -->
-                      <img src="/resources/img/syslogyx_logo.png" style="padding-left: 46px;" class="logo-lg">
+                        <!-- mini logo for sidebar mini 50x50 pixels -->
+                        <img src="/resources/img/Syslogyx_logo_samll.png" style="    padding-left: 7px; padding-top: 7px;" class="logo-mini">
+                        <!-- logo for regular state and mobile devices -->
+                        <img src="/resources/img/syslogyx_logo.png" style="padding-left: 46px;" class="logo-lg">
                     </a>
                     <!-- Header Navbar: style can be found in header.less -->
                     <nav class="navbar navbar-static-top" >
@@ -114,29 +112,26 @@
                             <span class="sr-only">Toggle navigation</span>
                         </a>
 
-                        <div class="navbar-custom-menu">
+                        <div class="navbar-custom-menu" ng-controller="homeCtrl">
                             <ul class="nav navbar-nav" >
                                 <li class="dropdown notifications-menu"> 
-                                   <!--  ng-controller="homeCtrl" -->
-                                        <!-- <pre>{{deviceStatusDataList}}</pre> -->
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                            <i class="fa fa-bell-o"></i>
-                                            <span class="label label-warning" ng-if='deviceStatusDataList.flag=="True"'>1</span>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li class="header">You have {{deviceStatusDataList.flag=='True'?1:0}} notifications</li>
-                                            <li>
-                                            <!-- inner menu: contains the actual data -->
-                                                <ul class="menu">
-                                                    <li ng-if='deviceStatusDataList.flag=="True"'>
-                                                        <a data-toggle="modal" data-target="#deviceEstimationModal">
-                                                            <i class="fa fa-cogs text-aqua"></i>Machine '<b>{{deviceStatusDataList.machine.name}}</b>' is turned 'OFF'. <br> Please give time estimation.
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                          </li>
-                                          <!-- <li class="footer"><a href="#">View all</a></li> -->
-                                        </ul>
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-bell-o"></i>
+                                        <span class="label label-warning" ng-if='deviceStatusDataList.flag=="True"'>1</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="header">You have {{deviceStatusDataList.flag=='True'?1:0}} notifications</li>
+                                        <li>
+                                        <!-- inner menu: contains the actual data -->
+                                            <ul class="menu" >
+                                                <li ng-if='deviceStatusDataList.flag=="True"'>
+                                                    <a href="" ng-click="pagelink();">
+                                                        <i class="fa fa-cogs text-aqua"></i>Machine '<b>{{deviceStatusDataList.machine.name}}</b>' is turned 'OFF'. <br> Please give time estimation.
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
                                 </li>
                                 <li class="dropdown user user-menu">
                                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -176,14 +171,14 @@
                     <!-- sidebar: style can be found in sidebar.less -->
                     <section class="sidebar">
                         <!-- Sidebar user panel -->
-                      <div class="user-panel push-menu">
-                        <div class="pull-left image">
-                          <img src="resources/img/default_profile.png" class="img-circle" alt="User Image">
+                        <div class="user-panel push-menu">
+                            <div class="pull-left image">
+                                <img src="resources/img/default_profile.png" class="img-circle" alt="User Image">
+                            </div>
+                            <div class="pull-left info">
+                                <p>{{name}}</p>
+                            </div>
                         </div>
-                        <div class="pull-left info">
-                          <p>{{name}}</p>
-                        </div>
-                      </div>
                         <!-- sidebar menu: : style can be found in sidebar.less -->
                         <ul class="sidebar-menu" data-widget="treeview" role="menu">
                             <!-- Dashboard Menu -->
@@ -191,18 +186,17 @@
                                 <a href="{{item.Link}}" id="{{item.id}}"  style="outline:0;text-decoration: none;">
                                     <i class="{{item.icon}}"></i> <span>{{item.Title}}</span>
                                 </a>
-                                
                             </li>
                         </ul>
                     </section>
                     <!-- /.sidebar -->
                 </aside>
+
                 <!-- Modal for adding new project resource -->
                 <div class="modal fade" id="updateUserModal" role="dialog">
                     <div class="modal-dialog modal-md">
                         <form role="form" name="updateUserForm" id="updateUserForm">
                             <div class="modal-content">
-
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     <h4 class="modal-title">Update User Profile</h4>
@@ -254,7 +248,6 @@
                                         <input ng-if="tec.title == 'Add New Technology'" type="reset" value="Reset" ng-click="resetForm()" class="btn" />
                                     </div>
                                 </div>
-
                             </div>
                         </form>
                     </div>
@@ -262,34 +255,43 @@
                 
                 <div ng-controller="homeCtrl" class="modal fade deviceEstimationModal" id="deviceEstimationModal" role="dialog">
                     <div class="modal-dialog modal-md">
-                        <div class="modal-content" style="border-radius: 0px!important;" >
-                            <div class="modal-header" id="popUpModalHeader"> 
-                                <button type="button" class="close" data-dismiss="modal" ng-click="resetForm()" style="margin-right: 5px;">&times;</button>
-                                <h4 class="modal-title popUpModalTitle">User Estimation</h4>
-                            </div>
-                            <div class="modal-body">
-                                <form id="deviceEstimationForm">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-md-6" style="margin-top: 1%;">
-                                                <label class="" style="font-size: 14px">Estimation Hours </label>
-                                                <input type="text" class="form-control" name="estimationHr" ng-model="estimationHr" placeholder="Enter estimation in hour">
+                        <form id="deviceEstimationForm">
+                            <div class="modal-content" style="border-radius: 0px!important;" >
+                                <div class="modal-header" id="popUpModalHeader"> 
+                                    <button type="button" class="close" data-dismiss="modal" ng-click="resetForm()" style="margin-right: 5px;">&times;</button>
+                                    <h4 class="modal-title popUpModalTitle">User Estimation</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12" style="margin-top: 1%;">
+                                            <div class="col-md-6" style="padding: 1px;">
+                                                <label class="mandatory" style="font-size: 14px">Estimation(In HH:MM) </label>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id ="estimationHr" name="estimationHr" ng-model="estimationHr" placeholder="Hour">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6" style="padding: 1px;">
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control" id ="estimationMin" name="estimationMin" ng-model="estimationMin" placeholder="Minute" style="margin-top:9.5%">
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12" style="margin-top: 1%;">
-                                                <label class="" style="font-size: 14px">Comment</label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" style="margin-top: 1%;">
+                                            <div class="form-group">
+                                                <label class="mandatory" style="font-size: 14px">Comment</label>
                                                 <textarea class="form-control" id="comment" name="comment" ng-model="comment" rows="2"></textarea>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
+                                <div class="modal-footer" style="margin-top: 0px;"> 
+                                    <button type="button" id="changeStatusBtn" class="btn btn-primary"  data-ng-click="addEstimationStatus();" >Save</button>
+                                    <button type="reset" id="closeModal" class="btn btn-warning"  ng-click="resetForm()" data-dismiss="modal">Cancel</button>
+                                </div>
                             </div>
-                            <div class="modal-footer" style="margin-top: 0px;"> 
-                                <button type="button" id="changeStatusBtn" class="btn btn-primary"  data-ng-click="addEstimationStatus();" >Save</button>
-                                <button type="reset" id="closeModal" class="btn btn-warning"  ng-click="resetForm()" data-dismiss="modal">Cancel</button>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -476,7 +478,6 @@
         <script>
             $(document).ready(function () {
 
-
                 $.validator.addMethod('regex', function (value, element, regexp) {
                     if (regexp.constructor != RegExp)
                         regexp = new RegExp(regexp);
@@ -548,5 +549,65 @@
                 });
             });
         </script>
+        <script>
+            $("#deviceEstimationForm").validate({
+                errorElement: 'span', //default input error message container
+                errorClass: 'help-block help-block-error',
+                errorPlacement: function (error, element) {
+
+                    var type = $(element).attr("type");
+                    if ($(element).attr("id") === "")
+                    {
+                        element.parent().append(error);
+
+                    } 
+                    else {
+                        error.insertAfter(element);
+                    }
+                },
+                rules: {
+                    estimationHr: {
+                        required: true,
+                        digits:true
+                    },
+                    estimationMin:{
+                        required: true,
+                        digits:true,
+                        range: [0, 59],
+                    },
+                    comment: {
+                        required: true
+                    }
+                },
+                messages: {
+                    estimationHr: {
+                        required: "Estimation hour is required.",
+                        digits:"Estimation hour is in number."
+                    },
+                    estimationMin: {
+                        required: "Estimation minute is required.",
+                        digits:"Estimation minute is in number.",
+                        range:"Enter minute in between 0 to 59."
+                    },
+                    comment: {
+                        required: "Comment is required."
+                    }
+                },
+                highlight: function (element) { // hightlight error inputs
+                    $(element).closest('.form-group').addClass('has-error');
+
+                    $(element).next().children().children().attr('style', 'border-color:#dd4b39!important');
+                    // set error class to the control group
+                },
+                unhighlight: function (element) { // revert the change done by hightlight
+                    $(element).closest('.form-group').removeClass('has-error');
+                    $(element).next().children().children().attr('style', 'border-color:'); // set error class to the control group
+                },
+                success: function (label) {
+                    label.closest('.form-group').removeClass('has-error'); // set success class to the control group
+                }
+            });
+</script>
+
     </body>
 </html>
