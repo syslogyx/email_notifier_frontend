@@ -24,123 +24,109 @@
             </div>
         </div>
         <br>
-        <div>
-            <!-- <div class="row" > -->
-                <!-- <div > -->
-                    <table class="table table-hover table-responsive">
-                        <thead>
-                            <tr>
-                                <th style="text-align: center;">Sr No.</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Role</th>
-                               <th>Assigned Machine</th>
-                                <th style="text-align: left;" >Action</th>
-                            </tr>
-                        </thead>
+        <div class="table-responsive no-padding">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;">Sr No.</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                       <th>Assigned Machine</th>
+                        <th style="text-align: left;" >Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-if="usc.userList.length > 0" ng-repeat="data in usc.userList">
+                        <td style="text-align: center;" ng-bind="(usc.pageno - 1) * usc.limit + ($index + 1)"></td>
+                        <td ng-bind="data.name"></td>
+                        <td ng-bind="data.email"></td>
+                        <td ng-bind="data.role.name"></td>
+                        <td ng-bind="data.machine == null ? '---' : data.machine.machine_name "></td>
+                        <td style="text-align: left;">
+                            <button type="button" class="btn btn-primary btn-xs" title="Edit" ng-click="resetForm(); usc.getUserData(data.id);"><i class="fa fa-pencil" aria-hidden="true" ></i></button>
+                            
+                            <button type="button" class="btn btn-success btn-xs" title="Reset Machine" ng-if="data.machine.id" ng-click="resetMachine($index, data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
 
-                        <tbody>
-                            <tr ng-if="usc.userList.length > 0" ng-repeat="data in usc.userList">
-                                <td style="text-align: center;" ng-bind="(usc.pageno - 1) * usc.limit + ($index + 1)"></td>
-                                <td ng-bind="data.name"></td>
-                                <td ng-bind="data.email"></td>
-                                <td ng-bind="data.role.name"></td>
-                                <td ng-bind="data.machine == null ? '---' : data.machine.machine_name "></td>
-                                <td style="text-align: left;">
-                                    <button type="button" class="btn btn-primary btn-xs" title="Edit" ng-click="resetForm(); usc.getUserData(data.id);"><i class="fa fa-pencil" aria-hidden="true" ></i></button>
-                                    <button type="button" class="btn btn-success btn-xs" title="Reset Machine" ng-if="data.machine.id" ng-click="resetMachine($index, data.id)"><i class="fa fa-refresh" aria-hidden="true" ></i></button>
-
-                                    <a class="btn btn-primary btn-xs" title="Assign Machine" ng-if="!data.machine.id" ng-href="/machine/assign_machine?id={{data.id}}"><i class="fa fa-check-square-o" aria-hidden="true" ></i></a>
-                                </td>
-                            </tr>
-                            <tr ng-if="usc.userList == null || usc.userList.length == 0">
-                                <td style="text-align: center;" colspan="5">No Records Found</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="row col-sm-12" style="padding-right: 0px;">
-                        <ul id="pagination-sec" class="pagination-sm" style="float: right;margin-top: 5px;margin-bottom:45px;margin-right:-1.2%"></ul>
-                    </div>
-               <!--  </div> -->
-            <!-- </div> -->
+                            <a class="btn btn-primary btn-xs" title="Assign Machine" ng-if="!data.machine.id" ng-href="/machine/assign_machine?id={{data.id}}"><i class="fa fa-check-square-o" aria-hidden="true" ></i></a>
+                        </td>
+                    </tr>
+                    <tr ng-if="usc.userList == null || usc.userList.length == 0">
+                        <td style="text-align: center;" colspan="5">No Records Found</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row col-sm-12" style="padding-right: 0px;">
+                <ul id="pagination-sec" class="pagination-sm" style="float: right;margin-top: 5px;margin-bottom:45px;margin-right:-1.2%">
+                </ul>
+            </div>
         </div>
     </div>
 
-    <!-- Modal for adding new project resource -->
-        <div class="modal fade" id="addUserModal" role="dialog">
-            <div class="modal-dialog modal-md">
-                <form role="form" name="addUserForm" id="addUserForm">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">{{usc.title}}</h4>
-                        </div>
-
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-md-6">
-                                        <!-- text input -->
-                                        <div class="form-group">
-                                            <label class="mandatory" for="">Name</label>
-                                            <input type="text" class="form-control" name="userName" ng-model="usc.userName" placeholder="Enter user name">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="mandatory" for="">Email</label>
-                                            <input type="text" class="form-control" name="userEmail" ng-model="usc.userEmail" placeholder="Enter email">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-md-6">
-                                        <!-- text input -->
-                                        <div class="form-group">
-                                            <label class="mandatory" for="">Password</label>
-                                            <input type="password" class="form-control" name="userpassword"  id="userpassword" ng-model="usc.userpassword" placeholder="Enter password">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="mandatory" for="">Role</label>
-                                            <select id="user_role" ng-model="usc.userRole" name="userRole" class="form-control s2mn" style="width:100%;" ng-options="x.id as x.name for x in usc.userRoleList" >
-                                            <option value="" style="color:#ccc;">Select role</option></select>
-                                        </div>
-                                    </div>
-                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-md-6">
-                                        <!-- text input -->
-                                        <div class="form-group">
-                                            <label class="mandatory" for="">Mobile</label>
-                                            <input type="text" class="form-control" name="mobile" ng-model="usc.mobileno" placeholder="Enter mobile number">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <div class="pull pull-right">
-                                <input type="submit" value="Save" data-ng-click="usc.saveUser()" class="btn btn-success"/>
-                                <input ng-if="tec.title == 'Add New Technology'" type="reset" value="Reset" ng-click="resetForm()" class="btn" />
-                            </div>
-                        </div>
-
+    <!-- Modal for adding new user -->
+    <div class="modal fade" id="addUserModal" role="dialog">
+        <div class="modal-dialog modal-md">
+            <form role="form" name="addUserForm" id="addUserForm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">{{usc.title}}</h4>
                     </div>
-                </form>
-            </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="mandatory" for="">Name</label>
+                                        <input type="text" class="form-control" name="userName" ng-model="usc.userName" placeholder="Enter user name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="mandatory" for="">Email</label>
+                                        <input type="text" class="form-control" name="userEmail" ng-model="usc.userEmail" placeholder="Enter email">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="mandatory" for="">Password</label>
+                                        <input type="password" class="form-control" name="userpassword"  id="userpassword" ng-model="usc.userpassword" placeholder="Enter password">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="mandatory" for="">Role</label>
+                                        <select id="user_role" ng-model="usc.userRole" name="userRole" class="form-control s2mn" style="width:100%;" ng-options="x.id as x.name for x in usc.userRoleList" >
+                                        <option value="" style="color:#ccc;">Select role</option></select>
+                                    </div>
+                                </div>
+                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="mandatory" for="">Mobile</label>
+                                        <input type="text" class="form-control" name="mobile" ng-model="usc.mobileno" placeholder="Enter mobile number">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="pull pull-right">
+                            <input type="submit" value="Save" data-ng-click="usc.saveUser()" class="btn btn-success"/>
+                            <input ng-if="tec.title == 'Add New Technology'" type="reset" value="Reset" ng-click="resetForm()" class="btn" />
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
+    </div>
 </section>
 
 <script>

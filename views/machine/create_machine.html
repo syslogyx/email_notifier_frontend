@@ -1,5 +1,4 @@
 <section class="content">
-     <!-- general form elements disabled -->
     <div class="box box-default">
         <form id="machineAddForm" role="form" name="machineAddForm">
             <div class="row boxhead box-header with-border boxhead">
@@ -35,14 +34,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    <!-- <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="mandatory">Assign To</label>
-                            <select id="assign_to" name="assign_to" class="form-control s2mn" ng-model="assign_to" data-placeholder="Select User" ng-options="x.id as x.name for x in userList | filter: { role_id: '2'}">
-                                <option value="">Select user</option>
-                            </select>
-                        </div>
-                    </div> -->
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="mandatory">Device</label>
@@ -61,8 +52,7 @@
                 <button type="button" value="Save" data-ng-click="saveMachine()" class="btn btn-success">Save</button>
                 <button type="reset" value="Clear" ng-click="resetForm()" class="btn" >Clear</button> 
             </div>
-        </div>
-        
+        </div>  
     </div>
 </section>
 <!-- On Reason Modal -->
@@ -87,7 +77,6 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal" style="outline: 0;">Cancel</button>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -113,7 +102,6 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal" style="outline: 0;">Cancel</button>
             </div>
         </div>
-
     </div>
 </div>
 

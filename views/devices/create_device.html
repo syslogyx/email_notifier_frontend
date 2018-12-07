@@ -1,13 +1,12 @@
 <style>
     textarea{
         resize: vertical;
-}
-.easy-autocomplete{
-  width:inherit !important;
-}
+    }
+    .easy-autocomplete{
+        width:inherit !important;
+    }
 </style>
 <section class="content">
-     <!-- general form elements disabled -->
     <div class="box box-default">
         <form role="form" name="addDeviceForm" id="addDeviceForm">
             <div class="row boxhead box-header with-border boxhead">
@@ -25,12 +24,10 @@
                 </div>
             </div>
 
-            <!-- /.box-header-->
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-12">
-                            <!-- text input -->
                             <div class="form-group">
                                 <label class="mandatory" for="">Name</label>
                                 <input type="text" class="form-control" name="deviceName" ng-model="dmcc.deviceName" placeholder="Enter Device name">
@@ -42,20 +39,16 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-2">
-                            <!-- <label>Port</label> -->
                             <select id="port1" name="port1" class="form-control" ng-model="dmcc.port1" data-placeholder="Select port" ng-change="dmcc.changePointByPort(dmcc.port1,dmcc.port2,dmcc.port1Status,dmcc.port2Status);">
                             <option ng-repeat="key in dmcc.json.prts_1" value="{{key}}" >{{key}}</option>
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <!-- <label>Port Status</label> -->
                             <select id="port1Status" name="port1Status" class="form-control" ng-model="dmcc.port1Status" data-placeholder="Select port status" ng-change="dmcc.changeStatusPoint1(dmcc.port1Status,dmcc.port1,dmcc.port2);">
                                 <option  ng-repeat="x in dmcc.json.prtpnts_1" value="{{x}}" >{{x}}</option>
-
                             </select>
                         </div>
                         <div class="col-md-2">
-                           <!--  <label>Port Status</label> -->
                             <select id="devicePort1Status" name="devicePort1Status" class="form-control" ng-model="dmcc.devicePort1Status" data-placeholder="Select device port status" ng-change="dmcc.changeStatus1(dmcc.devicePort1Status);">
                                 <option  ng-repeat="x in dmcc.json.prtst_1" value="{{x}}" >{{x}}</option>
                             </select>
@@ -69,24 +62,19 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-2">
-                            <!-- <label>Port</label> -->
                             <select id="port2" name="port2" class="form-control" ng-model="dmcc.port2" data-placeholder="Select port" ng-change="dmcc.changePointByPort(dmcc.port1,dmcc.port2,dmcc.port1Status,dmcc.port2Status);">
                                 <option ng-repeat="key in dmcc.json.prts_1" value="{{key}}">{{key}}</option>
                             </select>
                         </div>
                         <div class="col-md-2">
-                            <!-- <label>Port Status</label> -->
                             <select id="port2Status" name="port2Status" class="form-control" ng-model="dmcc.port2Status" data-placeholder="Select port status"  ng-change="dmcc.changeStatusPoint2(dmcc.port2Status,dmcc.port1,dmcc.port2);">
                                 <option ng-repeat="x in dmcc.json.prtpnts_1"  value="{{x}}" >{{x}}</option>
-
                             </select>
                         </div>
                         <div class="col-md-2">
-                           <!--  <label>Port Status</label> -->
                             <select id="devicePort2Status" name="devicePort2Status" class="form-control" ng-model="dmcc.devicePort2Status" data-placeholder="Select device port status" ng-change="dmcc.changeStatus2(dmcc.devicePort2Status);" >
                                 <option ng-repeat="x in dmcc.json.prtst_1" value="{{x}}">{{x}}</option>
                             </select>
@@ -94,7 +82,6 @@
                         <div class="col-md-6 form-group">
                             <div class="">
                                 <textarea  type="text" rows="2" ng-model="dmcc.port_reason_2" name="port_reason_2" id="port_reason_2" class="form-control"></textarea>
-
                                 <input type="hidden" name="port_reason_2_id" id="port_reason_2_id">
                             </div>
                         </div>
@@ -110,13 +97,11 @@
                 <button type="reset" value="Clear" ng-click="resetForm()" class="btn" >Clear</button>
             </div>
         </div>
-
     </div>
 </section>
 
 <script>
     $(document).ready(function () {
-        // $(".ports").autocomplete();
 
         $(".s2mn").on("change", function () { $(this).valid(); });
 

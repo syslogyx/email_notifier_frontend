@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-
         <base href="/">
 
         <meta charset="utf-8">
@@ -377,8 +376,6 @@
         <script src="/resources/lib/sweetalert2-6.6.0/sweetalert2.min.js"></script>
         <!--<script src="/resources/plugins/jquery-validation/dist/jquery.validate.min.js"></script>-->
         <script src="/resources/plugins/iCheck/icheck.min.js"></script>
-
-
         <!-- CK Editor -->
         <script src="/resources/plugins/ckeditor/ckeditor.js"></script>
         <!-- Bootstrap WYSIHTML5 -->
@@ -386,7 +383,6 @@
 
         <!-- For toaster alert -->
         <script src="/resources/bower_components/toastr/toastr.min.js"></script>
-
 
         <!-- date-range-picker -->
         <script src="/resources/lib/moment/moment.min.js"></script>
@@ -607,7 +603,6 @@
                     label.closest('.form-group').removeClass('has-error'); // set success class to the control group
                 }
             });
-</script>
-
+        </script>
     </body>
 </html>

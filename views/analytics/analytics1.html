@@ -28,9 +28,7 @@
 				                        <div class="input-group-addon">
 				                            <i class="fa fa-calendar"></i>
 				                        </div>  
-
-				                        <input type="text" class="form-control pull-right" id="rfromDate" name="rfromDate" ng-model="anx.fromDate" autocomplete="off" placeholder="Enter from date">
-				                       <!--  readonly='true' style="cursor:default;background-color: white;" -->
+				                        <input type="text" class="form-control pull-right" id="rfromDate" name="rfromDate" ng-model="anx.fromDate" autocomplete="off" placeholder="Enter from date" readonly='true' style="cursor:default;background-color: white;">
 				                    </div>
 				                </div>
 				            </div>
@@ -43,22 +41,18 @@
 				                        <div class="input-group-addon">
 				                            <i class="fa fa-calendar"></i>
 				                        </div>  
-
-				                        <input type="text" class="form-control pull-right" id="rtoDate" name="rtoDate" ng-model="anx.toDate" autocomplete="off" placeholder="Enter to date">
+				                        <input type="text" class="form-control pull-right" id="rtoDate" name="rtoDate" ng-model="anx.toDate" autocomplete="off" placeholder="Enter to date" readonly='true' style="cursor:default;background-color: white;">
 				                    </div>
 				                </div>
 				            </div>
 				        </div>
-
 				        <div class="col-md-2 " style="margin-top: 27px;">
 				            <button type="button" class="btn btn-block btn-primary" ng-click="anx.getPieChartforEachMachine()">Search</button>
 				        </div>
-
 				        <div class="col-md-1 " style="margin-top: 27px;">
 				            <button type="button" class="btn btn-block btn-primary fa fa-refresh" ng-click="anx.refreshforEachMachine()"></button>
 				        </div>    
 				    </div>
-				    <!-- <hr> -->
 				    <br>
 				</div>
 			</div>
@@ -78,7 +72,6 @@
 	</div>
 </section>
 <script>
-
     $(document).ready(function () {
         $("html, body").animate({scrollTop: 0}, "fast");   
     });
@@ -88,26 +81,19 @@
 	    $('#rfromDate').datepicker({
 	        autoclose: true,
 	        todayHighlight: true
-	    }).on("show", function (e) {
-	        //$(this).valid();    
 	    }).on("changeDate", function(){
-	    	//$(this).valid();
 	    	var selected = $(this).val();
-	        //console.log(selected);
 	        $('#rtoDate').datepicker('setStartDate', selected); 
-	        //$(this).valid();
+	        $(this).valid();
 	    });
 
 	    $('#rtoDate').datepicker({
 	        autoclose: true,
 	        todayHighlight: true
-	    }).on("show", function (e) {
-	       // $(this).valid();      
 	    }).on("changeDate", function(){
-	    	//$(this).valid();
 	    	var selected = $(this).val();
-	        //console.log(selected);
-	        $('#rfromDate').datepicker('setEndDate', selected);       
+	        $('#rfromDate').datepicker('setEndDate', selected);
+	        $(this).valid();       
 	    });
     }
 
