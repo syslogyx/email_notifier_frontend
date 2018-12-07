@@ -5,6 +5,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     amc.userId=$location.search()['id'];
     amc.userMachineId=null;
     amc.userMachineName=null;
+    amc.userMachineId = '';
 
     var loggedInUser = JSON.parse(services.getIdentity());
     console.log(loggedInUser);
@@ -96,6 +97,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 				if(req.user_id==loggedInUser.id){
 					services.setIdentity(loggedInUser);
 				}
+                amc.userMachineId = amc.machineId;
             }else{
                 toastr.error(result.data.message, 'Sorry!');
             }
@@ -122,6 +124,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
                 if(result.status_code == 200){
                     Utility.stopAnimation();
                     amc.machineId = null;
+                     amc.userMachineId = '';
                     if(loggedInUser.identity.machine_id != undefined){
                         delete loggedInUser.identity.machine_id;
                         delete loggedInUser.identity.machine_name;

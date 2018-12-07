@@ -37,7 +37,7 @@
                                    
                                     <div class='class=" box-header with-border' ng-style="machineStatus=='OFF' && {'background-color':' #dd4b39'} || machineStatus=='ON' && {'background-color':'#00a65a'} || machineStatus==null && {'background-color':'#f39c1a'}">
                                         <h4 style="text-align:center;color:white">
-                                            Status: {{machineStatus==null?'Unknown':machineStatus}}
+                                            Status: {{machineStatus==null?'Idle':machineStatus}}
                                         </h4>
                                         <span id="machineStatusID" class="status-info" style="display:none">{{deviceStatusDataList.id}}
                                         </span>
@@ -67,7 +67,7 @@
                                    
                                     <div class='class=" box-header with-border' ng-style=" machineStatus==null && {'background-color':'#f39c1a'}">
                                         <h4 style="text-align:center;color:white">
-                                            Status: {{machineStatus==null?'Unknown':machineStatus}}
+                                            Status: {{machineStatus==null?'Idle':machineStatus}}
                                         </h4>
                                         <!-- <span id="machineStatusID" class="status-info" style="display:none">{{deviceStatusDataList.id}}
                                         </span> -->

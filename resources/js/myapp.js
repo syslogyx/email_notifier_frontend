@@ -1,6 +1,6 @@
 var Utility = {
-     // apiBaseUrl: "http://172.16.1.97:9000/api/",
-     apiBaseUrl: " http://enfapi.syslogyx.com/api/",
+      apiBaseUrl: "http://172.16.1.97:9000/api/",
+     // apiBaseUrl: " http://enfapi.syslogyx.com/api/",
 
    
     imgBaseUrl: "http://172.16.1.97:9000/img/",
