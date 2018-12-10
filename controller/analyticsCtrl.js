@@ -7,12 +7,12 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
 
 	anx.init = function () {	
     if(anx.logInUSerRoleID == 1){	
+      /* TO fetch machine list*/
   		var promise = services.getALLMachineList();
   		promise.success(function (result) {
     			if(result.status_code == 200){
     				  Utility.stopAnimation();
     					anx.machineList = result.data.data;
-    					// console.log(anx.machineList);
     			}else{
     				  Utility.stopAnimation();
     					anx.machineList = [];
@@ -20,6 +20,7 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
     			}
   		});
     }else{
+      /* TO fetch login user all assigned machine list*/
       var promise = services.getAllAssignedMachinesRecordByUserId(anx.logInUSerID);
       promise.success(function (result) {
         if(result.status_code == 200){
@@ -36,6 +37,7 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
 
 	anx.init();
 
+  /* Function to reset analytics*/
 	anx.refreshforEachMachine = function(){
 		  $("div.form-group").each(function () {
             $(this).removeClass('has-error');
@@ -48,6 +50,7 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
       $('#chartContainer').hide();
 	}
 	
+   /* Function to draw analytics*/
 	anx.getPieChartforEachMachine = function(){
 		if($("#analytics1Form").valid()){
   			var fromDate = Utility.formatDate(anx.fromDate,'Y/m/d');
@@ -57,10 +60,8 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
     				'from_date':fromDate,
     				'to_date':toDate
   			}
-  			// console.log(req);
   			var promise = services.findAnalytixMachineEstimationDtata(req);
-	          promise.then(function mySuccess(response) {
-            // console.log(response) ;  
+	          promise.then(function mySuccess(response) {  
 	        	Utility.stopAnimation();
 	            try {
 	                if(response.data.status_code == 200){
@@ -69,7 +70,6 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
     	            		var dayDifference = anx.calculateDaysDifference(fromDate,toDate);
     	            		anx.allEstimationRecord = anx.calculateTotalUpDownTime(anx.allEstimationRecord,dayDifference);
 	                    anx.drawPieChartForEachMachine(anx.allEstimationRecord );
-	                    //console.log(anx.allEstimationRecord);
 	                    toastr.success('Analytix drawn successfully.');
 	                }
 	                else{  
@@ -87,6 +87,7 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
 	    }
 	}
 
+ /* Function to calculate actual working hour*/
 	anx.calculateActualHourForEachRecord = function(allEstimationRecord){
 		  for(var i = 0; i < allEstimationRecord.length; i++) {
         	if(allEstimationRecord[i].on_time != null){
@@ -99,17 +100,16 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
       				minutes = String(minutes).padStart(2, "0");
       				hours = String(hours).padStart(2, "0");
       				seconds = String(seconds).padStart(2, "0");
-      				//console.log(hours + ":" + minutes + ":" + seconds);
       				allEstimationRecord[i].actual_hour=hours + ":" + minutes + ":" + seconds;                    		
         	}else{
           		allEstimationRecord[i].actual_hour = null;
           		allEstimationRecord[i].actualSeconds = 0;
         	}
       }
-      //console.log(allEstimationRecord);
       return allEstimationRecord;
 	}
 
+ /* Function to calculate days difference*/
 	anx.calculateDaysDifference = function(firstDate,secondDate){
 	    var startDay = new Date(firstDate);
 	    var endDay = new Date(secondDate);
@@ -119,6 +119,7 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
 	    return days;
   }
 
+   /* Function to calcualte machine up and down time*/
   anx.calculateTotalUpDownTime = function(allEstimationRecord,dayDifference){
   		var totalTimeInHour = 0;
   		var totalDownSecondsTime = 0;
@@ -138,6 +139,7 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
   		return allEstimationRecord;
   }
 
+    /* Function to for piechart setting*/
   anx.drawPieChartForEachMachine = function(allEstimationRecord ){
       $('#chartContainer').show();
   		var machineDownPercentageData = (allEstimationRecord['total_down_time'] / allEstimationRecord['total_time']) * 100;
@@ -155,7 +157,6 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
               highlight: '#f56954',
               Browser    : 'Total Up Time',
               label : (allEstimationRecord['total_up_time']).toFixed(2) + ' hour',
-              //id : result.data[i]["resource_ids"],
           };
           PieData.push(obj);
         
@@ -165,12 +166,10 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
               highlight: '#00a65a',
               Browser    : 'Total Down Time',
               label :(allEstimationRecord['total_down_time']).toFixed(2) + ' hour',
-              //id : result.data[i]["resource_ids"]
           };
           PieData.push(obj1);
         
         	anx.chart_data = PieData;
-        	// console.log(anx.chart_data);
 
       	  var toolTipCustomFormatFn = function (value, itemIndex, serie, group, xAxisValue, xAxis) {
               var dataItem = PieData[itemIndex];
@@ -190,31 +189,26 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
               source: PieData,
               colorScheme: 'scheme02',
               seriesGroups:
-              [
-                  {
-                      type: 'donut',
-                      offsetX: 150,
-                      showLabels: true,
-                      toolTipFormatFunction: toolTipCustomFormatFn,
-                      series:
-                          [
-                              {
-                                  dataField: 'value',
-                                  displayText: 'Browser',
-                                  labelRadius: 70,
-                                  initialAngle: 15,
-                                  radius: 120,
-                                  innerRadius: 35,
-                                  centerOffset: 0,
-                                  formatSettings: {  decimalPlaces: 0 }
-                              }
-                          ]
-                  }
-              ]
+              [{
+                  type: 'donut',
+                  offsetX: 150,
+                  showLabels: true,
+                  toolTipFormatFunction: toolTipCustomFormatFn,
+                  series:
+                  [{
+                      dataField: 'value',
+                      displayText: 'Browser',
+                      labelRadius: 70,
+                      initialAngle: 15,
+                      radius: 120,
+                      innerRadius: 35,
+                      centerOffset: 0,
+                      formatSettings: {  decimalPlaces: 0 }
+                  }]
+              }]
     	    };
           // setup the chart
           $('#chartContainer').jqxChart(settings);
       }  
   }
-
 });

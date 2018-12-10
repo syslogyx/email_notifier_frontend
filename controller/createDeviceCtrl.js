@@ -31,6 +31,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         prtst_1:[],  
     };
 
+    /* Function to set port data*/
     dmcc.getPorts=function(obj,v){
         temp=[];
         for (var x in obj){  
@@ -39,6 +40,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         dmcc.json[v]=temp;
     }
 
+    /* Function to set point data*/
     dmcc.getPoints=function(obj,port,v){
         temp=[];
         for (var x in obj[port]){  
@@ -47,6 +49,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         dmcc.json[v]=temp;
     }
 
+    /* Function to set status data*/
     dmcc.getStatus=function(obj,port,pnt,v){
         temp=[];
         temp=obj[port][pnt];      
@@ -59,6 +62,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
    
     dmcc.getStatus(dmcc.pf1,dmcc.port1,0,'prtst_1');
    
+    /* Function to change point data by port selection*/
     dmcc.changePointByPort = function(port1,port2,port1Status,port2Status){
         if(port1 == port2){
             if(port1Status==port2Status){
@@ -68,6 +72,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         }
     }
 
+    /* Function to change status point1 */
     dmcc.changeStatusPoint1= function(value,port1,port2){
         if(port1 == port2){
             if(value=='0'){
@@ -78,6 +83,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         }
     }
 
+    /* Function to change status point2 */
     dmcc.changeStatusPoint2= function(value,port1,port2){
         if(port1 == port2){
             if(value=='0'){
@@ -88,6 +94,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         }
     }
 
+    /* Function to change status1 */
     dmcc.changeStatus1 = function(value){   
         if(value == 'ON'){
             dmcc.devicePort2Status='OFF';
@@ -96,6 +103,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         }
     }
 
+    /* Function to change status2 */
     dmcc.changeStatus2 = function(value){
         if(value == 'ON'){
             dmcc.devicePort1Status='OFF';
@@ -112,6 +120,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
     dmcc.deviceId = $routeParams.id || "Unknown";
 
     dmcc.init = function(){
+        /* To get device data */
 		if(dmcc.deviceId > 0){
             dmcc.title = "Update Device";
             var promise = services.getDeviceById(dmcc.deviceId);
@@ -150,11 +159,12 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         dmcc.initializeChangeEvents();
 	}
 
-    //Function to capital first letter of string
+    /*Function to capital first letter of string */
     dmcc.capitalize = function(s){
         return s[0].toUpperCase() + s.slice(1);
     }
 
+    /*Function to intialise autotext in text area of port */
     dmcc.initializeChangeEvents = function(){
         $('#port_reason_1').on('keyup',function(e){
             dmcc.port_reason_1 = $("#port_reason_1").val();
@@ -167,6 +177,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         });
     }
 
+    /*Function to save device */
 	dmcc.saveDevice = function () {
         if ($("#addDeviceForm").valid()) {
 

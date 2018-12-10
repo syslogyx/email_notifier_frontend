@@ -8,11 +8,10 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     amc.userMachineId = '';
 
     var loggedInUser = JSON.parse(services.getIdentity());
-    console.log(loggedInUser);
     amc.logInuserMachineId = loggedInUser.identity.machine_id;
-    //amc.userName = loggedInUser.identity.name;
-	if(amc.userId!=undefined){  
 
+	if(amc.userId!=undefined){ 
+        /* To fetch assign machine data to user*/ 
 		var promise = services.getMachineIdByUserId(amc.userId);
 		promise.success(function (result) {
 			if(result.status_code == 200){
@@ -31,7 +30,6 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
                 Utility.stopAnimation();
                 amc.userMachineId='';
                 amc.userId=loggedInUser.id.toString();
-				// toastr.error(result.message, 'Sorry!');
 			}
 		});
 	}else{
@@ -39,6 +37,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 	}
 
 	amc.init = function () {
+        /* To fetch users list*/
 		var promise = services.getAllUserList();
 		promise.success(function (result) {
 			if(result.status_code == 200){
@@ -55,6 +54,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 
 	amc.init();
 
+    /* To fetch machine list*/
     var promise = services.getMachineList();
     promise.success(function (result) {
     	if(result.status_code == 200){
@@ -74,9 +74,9 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     		Utility.stopAnimation();
         	toastr.error(result.message, 'Sorry!');
     	}
-
     });
 
+    /* Function to assign machine to user*/
     amc.assignMachine = function(){
         var req = {
             "machine_id":amc.machineId,
@@ -101,13 +101,13 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
             }else{
                 toastr.error(result.data.message, 'Sorry!');
             }
-            // $location.url('/user/user_list', false);
         }, function myError(r) {
             toastr.error(r.data.message, 'Sorry!');
             Utility.stopAnimation();
         });
     }
 
+    /* Function to reset machine by machine id*/
     $scope.resetMachine=function(){
         swal({
             title: 'Reset Machine',
@@ -141,10 +141,10 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
         });
     }
 
+    /* Function to reset form*/
 	amc.clearForm=function(){
 		amc.machineId='';
         $("#machineAssignForm").validate().resetForm();
-
 	}
 
 });
