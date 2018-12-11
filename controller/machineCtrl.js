@@ -3,17 +3,17 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
 	var mac = this;
     mac.pageno = 0;
     mac.limit = 0;
-	// mac.userId=$location.search()['id'];
-	// mac.userDeviceId=null;
-	// mac.userDeviceName=null;
+
     var loggedInUser = JSON.parse(services.getIdentity());
 
+    /*To show page limit machine list */
     setTimeout(function(){
         $('#table_length').on('change',function(){
             mac.fetchList(-1);
         });
     },100);
 
+    /*Function to fetch machine list */
     mac.fetchList = function(page){
         mac.limit = $('#table_length').val();
         if(mac.limit == undefined){
@@ -21,7 +21,6 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
         }
         if(page == -1){
             mac.pageno = 1;
-            // console.log($('#pagination-sec').data("twbs-pagination"));
             if($('#pagination-sec').data("twbs-pagination")){
                 $('#pagination-sec').twbsPagination('destroy');
             }
@@ -31,13 +30,11 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
         }
         var requestParam = {
             page:mac.pageno,
-            // limit:pagination.getpaginationLimit(),
             limit:mac.limit,
         }
 
         var promise = services.getALLMachineList(requestParam);
         promise.success(function (result) {
-            //console.log(result);
             Utility.stopAnimation();
            if(result.status_code == 200){
                 Utility.stopAnimation();
@@ -54,23 +51,26 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
         });
     }
 
+    /*Function to initialise controller */
 	mac.init = function () {	
         mac.limit = $('#table_length').val();
         mac.fetchList(-1);	
 	}
-
+ 
+    /*Function to set comma seperated email ids */
 	$scope.setEmailIds = function(data){
 		var emailIds = data.join(', ');
 		return emailIds;
 	}
 
     mac.init();
-	
+   
+    /*Function to open add machine page */
     $scope.openAddMachinePage = function(){
-		// window.location = '/machine/create_machine';
         $location.path('/machine/create_machine');
 	}
 
+    /*Function to reset assigned user by machine id */
 	mac.resetUser=function(index,machineID){
         swal({
             title: 'Reset User',
@@ -103,12 +103,11 @@ app.controller('machineCtrl', function ($scope,menuService,services,$cookieStore
         })
     }
 
+    /*Function to reset all assigned devices by machine id */
     mac.resetAllDevices=function(index,deviceData,machineId){
         var deviceName = [];
-        // var device_ids = [];
         for (var i = 0; i < deviceData.length; i++) {
             if(deviceData[i]['id']){
-                // device_ids.push(deviceData[i]['id']);
                 deviceName.push(deviceData[i]['name']);
             }
         }

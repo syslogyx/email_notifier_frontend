@@ -6,13 +6,15 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
     usc.limit = 0;
 
     var loggedInUser = JSON.parse(services.getIdentity());
-
+    
+    /*To show page limit machine list */
     setTimeout(function(){
         $('#table_length').on('change',function(){
             usc.fetchList(-1);
         });
     },100);
 
+    /*Function to fetch user list */
     usc.fetchList = function(page){
         usc.limit = $('#table_length').val();
         if(usc.limit == undefined){
@@ -20,9 +22,8 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         }
         if(page == -1){
             usc.pageno = 1;
-            // console.log($('#pagination-sec').data("twbs-pagination"));
             if($('#pagination-sec').data("twbs-pagination")){
-                    $('#pagination-sec').twbsPagination('destroy');
+                $('#pagination-sec').twbsPagination('destroy');
             }
         }
         else{
@@ -30,12 +31,10 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         }
         var requestParam = {
             page:usc.pageno,
-            // limit:pagination.getpaginationLimit(),
             limit:usc.limit,
         }
         var promise = services.getAllUserList(requestParam);
         promise.success(function (result) {
-            //console.log(result);
             Utility.stopAnimation();
            if(result.status_code == 200){
                 Utility.stopAnimation();
@@ -51,6 +50,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         });
     }
 
+    /*Function to intialise controller */
     usc.init = function () {
         usc.limit = $('#table_length').val();
         usc.fetchList(-1);
@@ -58,6 +58,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
 
     usc.init();
 
+    /*Function to fetch role list */
     usc.getRoleList = function () {
         var promise = services.getAllRoleList();
         promise.success(function (result) {
@@ -71,6 +72,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         });
     }
 
+    /*Function to fetch user data by user id */
     usc.getUserData = function (id) {
         var promise = services.getUserById(id);
         promise.success(function (result) {
@@ -92,6 +94,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         });
     }
 
+    /*Function to create user */
     usc.saveUser = function () {
         if ($("#addUserForm").valid()) {
             var req = {
@@ -119,7 +122,6 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
                 }else{
                     toastr.error(result.data.errors.email[0], 'Sorry!');
                 }
-                // $location.url('/user/user_list', false);
             }, function myError(r) {
                 toastr.error(r.data.errors.email[0], 'Sorry!');
                 Utility.stopAnimation();
@@ -127,6 +129,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         }
     }
 
+    /*Function to reset user form */
     $scope.resetForm = function() {
         $('#addUserForm')[0].reset();
         $("div.form-group").each(function () {
@@ -145,14 +148,15 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         applySelect2();
     };
 
+    /*Function to open add user modal */
     $scope.openAddUserModal=function(){
 		usc.title = "Add New User";
         $("#addUserModal").modal("toggle");
         $("#userpassword").prop("required",true);
     }
 
+    /*Function to reset machine by user id */
     $scope.resetMachine=function(index,userId){
-        // console.log(userId);
         swal({
             title: 'Reset Machine',
             text: "Are you sure you want to reset Machine?",
@@ -163,7 +167,6 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
             cancelButtonText: "No",
             confirmButtonText: "Yes",
         }).then(function () {
-            // alert("yes");
             var promise = services.resetMachine(userId);
             promise.success(function (result) {
                 if(result.status_code == 200){
@@ -176,7 +179,6 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
                         delete loggedInUser.identity.machine_name;
                         services.setIdentity(loggedInUser);
                     }
-
                     toastr.success(result.message, 'Congratulation!!!');
                 }else{
                     Utility.stopAnimation();

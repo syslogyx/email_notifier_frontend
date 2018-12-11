@@ -61,14 +61,18 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     		Utility.stopAnimation();
             amc.machineList = result.data;
             if(loggedInUser.identity.machine_id !=undefined && loggedInUser.identity.machine_id != "" && loggedInUser.identity.machine_id != null){
-					if(amc.userMachineId!=null){
+					if(amc.userId!=undefined){
 						if(amc.userMachineId!='' && amc.userMachineId!=null){
 							amc.machineList.push({id:amc.userMachineId,name:amc.userMachineName});
                         }
 					}else{
 						amc.machineList.push({id:loggedInUser.identity.machine_id,name:loggedInUser.identity.machine_name});
 					}
-                amc.machineId = amc.userMachineId!=null?amc.userMachineId:loggedInUser.identity.machine_id.toString();
+                if(amc.userId!=undefined){
+                    amc.machineId = amc.userMachineId!=null?amc.userMachineId:loggedInUser.identity.machine_id.toString();    
+                }else{
+                     amc.machineId = amc.userMachineId!=''?amc.userMachineId:loggedInUser.identity.machine_id.toString();
+                }
             }
     	}else{
     		Utility.stopAnimation();
@@ -98,6 +102,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 					services.setIdentity(loggedInUser);
 				}
                 amc.userMachineId = amc.machineId;
+               
             }else{
                 toastr.error(result.data.message, 'Sorry!');
             }

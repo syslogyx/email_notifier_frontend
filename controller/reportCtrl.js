@@ -7,16 +7,15 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
     rep.req ={};
 
 	var loggedInUser = JSON.parse(services.getIdentity());
-    //console.log(loggedInUser);
     rep.logInUSerID = loggedInUser.id;
     rep.logInUSerRoleID = loggedInUser.identity.role;
-    // console.log(rep.logInUSerRoleID);
 
+    /*Function to initialise controller */
 	rep.init = function () {
 		if(rep.logInUSerRoleID != 1){
+            /*To fetch all assign machine list till date by user id */
 			var promise = services.getAllAssignedMachinesRecordByUserId(rep.logInUSerID);
 			promise.success(function (result) {
-                // console.log(result);
 				if(result.status_code == 200){
 					Utility.stopAnimation();
 					rep.machineList = result.data;	
@@ -27,15 +26,16 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
 				}
 			});
 		}else{
+            /*To fetch all machine list by user id */
 			var promise = services.getALLMachineList();
   			promise.success(function (result) {
     			if(result.status_code == 200){
-    				  Utility.stopAnimation();
-    					rep.machineList = result.data.data;
+    				Utility.stopAnimation();
+    				rep.machineList = result.data.data;
     			}else{
-    				  Utility.stopAnimation();
-    					rep.machineList = [];
-    					toastr.error(result.message, 'Sorry!');
+    				Utility.stopAnimation();
+    				rep.machineList = [];
+    				toastr.error(result.message, 'Sorry!');
     			}
   		    });
 		}		
@@ -43,16 +43,15 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
 
 	rep.init();
 
+    /*Function to fetch filtered report list */
 	rep.fetchList = function(page,req){
-        //rep.limit = $('#table_length').val();
         if(rep.limit == undefined){
             rep.limit = -1;
         }
         if(page == -1){
             rep.pageno = 1;
-            //console.log($('#pagination-sec').data("twbs-pagination"));
             if($('#pagination-sec').data("twbs-pagination")){
-                    $('#pagination-sec').twbsPagination('destroy');
+                $('#pagination-sec').twbsPagination('destroy');
             }
         }
         else{
@@ -60,13 +59,11 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
         }
         var requestParam = {
             page:rep.pageno,
-            // limit:pagination.getpaginationLimit(),
             limit:pagination.getpaginationLimit()
         }
 
         var fromDate = Utility.formatDate(rep.fromDate,'Y/m/d');
 		var toDate = Utility.formatDate(rep.toDate,'Y/m/d');
-		//console.log(fromDate);
 		rep.req ={
 			'machine_id':rep.machineId,
 			'from_date':fromDate,
@@ -78,7 +75,6 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
 		
         var promise = services.findestimationRecordFilter(rep.req,requestParam);
         promise.success(function (result) {
-            //console.log(result);
             Utility.stopAnimation();
            	if(result.status_code == 200){
                 Utility.stopAnimation();
@@ -88,8 +84,6 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
                 }
                 rep.allEstimationRecord = result.data.data;
                 rep.allEstimationRecord = rep.calculateActualHourForEachRecord(rep.allEstimationRecord);
-	            // console.log(rep.allEstimationRecord);
-	            //toastr.success('Record Found successfully.');
                 pagination.applyPagination(result.data, rep);
             }else{  
             	rep.allEstimationRecord = [];    
@@ -101,18 +95,16 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
         });
     }
 
+    /*Function to fetch filtered report data */
 	rep.getEstimationReportFilter = function(){
 		if($("#reportForm").valid()){
 			rep.SearchStatus = true;
 			rep.fetchList(-1);
-			rep.limit = pagination.getpaginationLimit();
-			 console.log(rep.allEstimationRecord);
-			// if(rep.allEstimationRecord != null){
-			// 	toastr.success('Record Found successfully.');
-			// }	
+			rep.limit = pagination.getpaginationLimit();	
 	    }
 	}
 
+    /*Function to calculate actual hour(machine stop time) */
 	rep.calculateActualHourForEachRecord = function(allEstimationRecord){
 		for(var i = 0; i < allEstimationRecord.length; i++) {
         	if(allEstimationRecord[i].on_time != null){
@@ -124,7 +116,6 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
 				minutes = String(minutes).padStart(2, "0");
 				hours = String(hours).padStart(2, "0");
 				seconds = String(seconds).padStart(2, "0");
-				//console.log(hours + ":" + minutes + ":" + seconds);
 				allEstimationRecord[i].actual_hour=hours + ":" + minutes + ":" + seconds;                    		
         	}else{
         		allEstimationRecord[i].actual_hour = null;
@@ -133,23 +124,21 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
         return allEstimationRecord;
 	}
 
+    /*Function to refresh filter */
 	rep.refreshfilter = function(){
 		$("div.form-group").each(function () {
             $(this).removeClass('has-error');
             $('span.help-block-error').remove();
         });
-        // debugger
-        // if(rep.machineId !=undefined ||rep.machineId != ''|| rep.fromDate !='' || rep.toDate != ''){
-        //     rep.fetchList(-1);
-        // }
+        
         rep.machineId = '';
         rep.fromDate = '';
         rep.toDate = '';
         rep.allEstimationRecord = null;
         $('#pagination-sec').twbsPagination('destroy');
-        // rep.fetchList(-1);
 	}
 
+    /*Function to download report data */
 	rep.downloadReportDataPDF = function(){     
         var promise = services.downloadReportPDF(rep.req);
     }

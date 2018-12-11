@@ -195,7 +195,6 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
             req[v3]=dmcc.devicePort1Status;
             req[v4]=dmcc.devicePort2Status;
 
-            // console.log('req',req);
             if (dmcc.deviceId != 'Unknown') {
             	req.id = dmcc.deviceId;
                 var operationMessage = " updated ";
@@ -209,7 +208,6 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
             promise.then(function mySuccess(result) {
                 Utility.stopAnimation();
                 if(result.data.status_code == 200){
-                    //dmcc.init();
                     $location.url('/device/device_list', false);
                     toastr.success('Device' + operationMessage +  'successfully..');
                 }else{
@@ -219,11 +217,11 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
             }, function myError(r) {
                 toastr.error(r.data.errors.name[0], 'Sorry!');
                 Utility.stopAnimation();
-
             });
         }
     }
 
+    /*Function to autoload reason list for port1 */
  	dmcc.getReasonListForFirstPort = function () {
         var options = {
             url: RESOURCES.SERVER_API + "get/reasons",
@@ -255,6 +253,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         $("#port_reason_1").easyAutocomplete(options);
     }
 
+    /*Function to autoload reason list for port2 */
     dmcc.getReasonListForSecondPort = function () {
         var options = {
             url: RESOURCES.SERVER_API + "get/reasons",
@@ -285,6 +284,7 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
         $("#port_reason_2").easyAutocomplete(options);
     }
 
+    /*Function to reset device form */
     $scope.resetForm = function() {
         $('#addDeviceForm')[0].reset();
         $("div.form-group").each(function () {

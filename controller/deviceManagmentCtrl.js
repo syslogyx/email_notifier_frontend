@@ -8,12 +8,14 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
 
     var loggedInUser = JSON.parse(services.getIdentity());
 
+    /*To show page limit device list */
     setTimeout(function(){
         $('#table_length').on('change',function(){
             dmc.fetchList(-1);
         });
     },100);
 
+    /*Function to fetch device list */
     dmc.fetchList = function(page){
         dmc.limit = $('#table_length').val();
         if(dmc.limit == undefined){
@@ -21,9 +23,8 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
         }
         if(page == -1){
             dmc.pageno = 1;
-            // console.log($('#pagination-sec').data("twbs-pagination"));
             if($('#pagination-sec').data("twbs-pagination")){
-                    $('#pagination-sec').twbsPagination('destroy');
+                $('#pagination-sec').twbsPagination('destroy');
             }
         }
         else{
@@ -31,19 +32,17 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
         }
         var requestParam = {
             page:dmc.pageno,
-            // limit:pagination.getpaginationLimit(),
             limit:dmc.limit,
         }
 
         var promise = services.getDeviceList(requestParam);
         promise.success(function (result) {
-            //console.log(result);
             Utility.stopAnimation();
-           if(result.status_code == 200){
+            if(result.status_code == 200){
                 Utility.stopAnimation();
                 dmc.deviceList = result.data.data;
                 pagination.applyPagination(result.data, dmc);
-           }else{
+            }else{
                 Utility.stopAnimation();
                 toastr.error(result.message, 'Sorry!');
             }
@@ -54,12 +53,13 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
         });
     }
 
+    /*Function intialise controller*/
     dmc.init = function () {
         dmc.limit = $('#table_length').val();
         dmc.fetchList(-1);
     }
 
-
+    /*Function to get device data by device id */
     dmc.getDeviceData = function (id) {
         var promise = services.getDeviceById(id);
         promise.success(function (result) {
@@ -75,6 +75,7 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
         });
     }
 
+    /*Function create device */
     dmc.saveDevice = function () {
         if ($("#addDeviceForm").valid()) {
             var req = {
@@ -85,7 +86,6 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
                 req.id = dmc.id;
                 var operationMessage = " updated ";
                 var promise = services.updateDevice(req);
-
             } else {
                 var promise = services.saveDevice(req);
                 operationMessage = " created ";
@@ -100,7 +100,6 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
                 }else{
                     toastr.error(result.data.message, 'Sorry!');
                 }
-                // $location.url('/Device/Device_list', false);
             }, function myError(r) {
                 toastr.error(r.data.errors.email[0], 'Sorry!');
                 Utility.stopAnimation();
@@ -108,6 +107,7 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
         }
     }
 
+    /*Function to reset form */
     $scope.resetForm = function() {
         $('#addDeviceForm')[0].reset();
         $("div.form-group").each(function () {
@@ -118,16 +118,19 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
         dmc.deviceName = '';
     };
 
+    /*Function to open add device modal*/
     $scope.openAddDeviceModal=function(){
         dmc.title = "Add New Device";
         $("#addDeviceModal").modal("toggle");
         $("#Devicepassword").prop("required",true);
     }
     
+    /*Function to open add device page*/
     $scope.openAddDevicePage=function(){
         $location.path('/device/create_device');
     }
 
+    /*Function to reset device by device id*/
     $scope.resetDevice=function(index,device_id){
         swal({
             title: 'Reset Device',
@@ -139,19 +142,12 @@ app.controller('deviceManagmentCtrl', function ($scope,menuService,services,$coo
             cancelButtonText: "No",
             confirmButtonText: "Yes",
         }).then(function () {
-            // alert("yes");
             var promise = services.restDevice(device_id);
             promise.success(function (result) {
                 if(result.status_code == 200){
                     Utility.stopAnimation();
                     dmc.deviceList[index]['machine_data'] = null;
                     dmc.deviceList[index]['status']='NOT ENGAGE';
-                    // if(loggedInUser.identity.device_id != undefined && loggedInUser.identity.device_id==device_id){
-
-                    //     delete loggedInUser.identity.device_id;
-                    //     delete loggedInUser.identity.device_name;
-                    //     services.setIdentity(loggedInUser);
-                    // }
                     toastr.success(result.message, 'Congratulation!!!');
                 }else{
                     Utility.stopAnimation();

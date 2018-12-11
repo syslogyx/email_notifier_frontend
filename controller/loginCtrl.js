@@ -8,19 +8,16 @@ app.controller("loginCtrl", function (services, AclService, $scope, $http, $loca
 
     lgc.data = [];
 
+    /*Function to login*/
     lgc.login = function () {
-
         if ($("#loginForm").valid()) {
-
             Utility.startAnimation();
             var req={
                 "email":lgc.email,
                 "password":lgc.password
             }
-            // console.log(req);
             var promise = services.logIn(req);
             promise.then(function mySucces(r) {
-                //console.log(r);
                 if (r.data != null) {
                     // // set token in cookies
                     lgc.token = r.data.data.id;
@@ -67,7 +64,7 @@ app.controller("loginCtrl", function (services, AclService, $scope, $http, $loca
         }
     }
 
-    // forgot password
+    /*Function for forgot password*/
     lgc.forgotpassword = function () {
         $location.path('/site/forget-password');
     }

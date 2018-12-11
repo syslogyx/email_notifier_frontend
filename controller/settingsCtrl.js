@@ -42,7 +42,6 @@ app.controller('settingsCtrl', function ($scope,menuService,services,RESOURCES,$
 	set.init = function () {
 		set.getPdfSettingList();
 		set.getColumnList();
-
 	}
 
 	set.init();
@@ -77,7 +76,7 @@ app.controller('settingsCtrl', function ($scope,menuService,services,RESOURCES,$
 				}else{
 					Utility.stopAnimation();
 					set.colNames=[];
-						toastr.error(result.message, 'Sorry!');
+					toastr.error(result.message, 'Sorry!');
 				}
 			});
     	}

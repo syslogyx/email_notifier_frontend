@@ -5,22 +5,22 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 	macc.userDeviceId=null;
 	macc.userDeviceName=null;
 	macc.title = "Create Machine";
-     macc.deviceList =[];
+    macc.deviceList =[];
 	var loggedInUser = JSON.parse(services.getIdentity());
 	
 	macc.userId = $routeParams.id || "Unknown";
 
 	macc.init = function () {
-		// to fetch not engage devices
+		/*to fetch not engage devices */
 		// macc.getDeviceList();
 		var promise = services.getNotEngageDeviceList();
         promise.success(function (result) {
-			// console.log(result);
             Utility.stopAnimation();
             if(result.status_code == 200){
                 macc.deviceList = result.data;
 				if(macc.userId > 0){
 					macc.title = "Update Machine";
+					/*to fetch machine data by id */
 		            var promise = services.getMachineById(macc.userId);
 		            promise.success(function (result) {
 		                if(result.status_code == 200){
@@ -49,7 +49,6 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 		                Utility.stopAnimation();
 		            });	
 				}	
-
 			}else{
 				macc.deviceList = [];
                 toastr.error(result.message, 'Sorry!');
@@ -57,10 +56,10 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 	    })	
 	}
 
+	/*Function to fetch device list */
 	macc.getDeviceList = function () {
 		var promise = services.getNotEngageDeviceList();
         promise.success(function (result) {
-			// console.log(result);
             Utility.stopAnimation();
             if(result.status_code == 200){
                 macc.deviceList = result.data;
@@ -68,31 +67,30 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 				macc.deviceList = [];
                 toastr.error(result.message, 'Sorry!');
             }
-        })
+        });
 	}
 
 	macc.init();
 
+	/*Function to save machine */
 	$scope.saveMachine = function(){
 		if ($("#machineAddForm").valid()) {
 			var req = {
 				"name":macc.machine_name,
 				"email_ids":macc.machine_email_ids,
 			}
-			// console.log(req);
-			 if (macc.userId != 'Unknown') { 
+			if (macc.userId != 'Unknown') { 
             	req.id = macc.userId;	
 				req.old_device_list = macc.oldDevice.length > 0 ? macc.oldDevice : null;
 				req.new_device_list = macc.device;    
                 var operationMessage = " updated ";
                 var promise = services.updateMachine(req);
-             } else {
+            } else {
              	req.device_list = macc.device;  
                 var promise = services.saveMachine(req);
                 operationMessage = " created ";
             }
 			promise.then(function mySuccess(result) {
-				// console.log(result);
 				Utility.stopAnimation();
                 if(result.data.status_code == 200){
                 	$location.url('/machine/machine_list', false);
@@ -104,13 +102,11 @@ app.controller('createMachineCtrl', function ($scope,menuService,services,$cooki
 		}
 	}
 
+	/*Function to reset form */
 	$scope.resetForm = function () {
-		// $("#machineAddForm")[0].reset();
-		// macc.deviceList = '';
 		macc.device ='';
 		macc.machine_email_ids ='';
 		macc.machine_name ='';
-		 // macc.getDeviceList();
         $("div.form-group").each(function () {
             $(this).removeClass('has-error');
             $('span.help-block-error').remove();

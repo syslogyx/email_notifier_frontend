@@ -7,7 +7,7 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
 
 	anx.init = function () {	
     if(anx.logInUSerRoleID == 1){	
-      /* TO fetch machine list*/
+      /* To fetch machine list*/
   		var promise = services.getALLMachineList();
   		promise.success(function (result) {
     			if(result.status_code == 200){
@@ -20,7 +20,7 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
     			}
   		});
     }else{
-      /* TO fetch login user all assigned machine list*/
+      /* To fetch login user all assigned machine list*/
       var promise = services.getAllAssignedMachinesRecordByUserId(anx.logInUSerID);
       promise.success(function (result) {
         if(result.status_code == 200){

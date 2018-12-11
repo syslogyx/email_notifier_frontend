@@ -6,11 +6,11 @@ app.controller('deviceCtrl', function ($scope,menuService,services,$cookieStore,
 	dev.userId=$location.search()['id'];
 	dev.userDeviceId=null;
 	dev.userDeviceName=null;
-	// console.log('userId',dev.userId);
+
     var loggedInUser = JSON.parse(services.getIdentity());
-    //dev.userName = loggedInUser.identity.name;
 
 	if(dev.userId!=undefined && loggedInUser.identity.role==1){
+        /*to fetch devices by user id */
 		var promise = services.getDeviceIdByUserId(dev.userId);
 		promise.success(function (result) {
 			if(result.status_code == 200){
@@ -25,7 +25,6 @@ app.controller('deviceCtrl', function ($scope,menuService,services,$cookieStore,
 				Utility.stopAnimation();
 				dev.userDeviceId='';
 				dev.userId=loggedInUser.id.toString();
-				// toastr.error(result.message, 'Sorry!');
 			}
 		});
 	}else{
@@ -33,6 +32,7 @@ app.controller('deviceCtrl', function ($scope,menuService,services,$cookieStore,
 	}
 
 	dev.init = function () {
+        /*to fetch all user list */
 		var promise = services.getAllUserList();
 		promise.success(function (result) {
 			if(result.status_code == 200){
@@ -49,6 +49,7 @@ app.controller('deviceCtrl', function ($scope,menuService,services,$cookieStore,
 
 	dev.init();
 
+    /*to fetch device list*/
     var promise = services.getAllDeviceList();
     promise.success(function (result) {
     	if(result.status_code == 200){
@@ -70,6 +71,7 @@ app.controller('deviceCtrl', function ($scope,menuService,services,$cookieStore,
     	}
     });
 
+    /*Function to assign device */
     dev.assignDevice = function(){
         var req = {
             "device_id":dev.deviceId,
@@ -92,13 +94,13 @@ app.controller('deviceCtrl', function ($scope,menuService,services,$cookieStore,
             }else{
                 toastr.error(result.data.message, 'Sorry!');
             }
-            // $location.url('/user/user_list', false);
         }, function myError(r) {
             toastr.error(r.data.errors.email[0], 'Sorry!');
             Utility.stopAnimation();
         });
     }
 
+    /*Function to assign device */
     $scope.resetDevice=function(){
         swal({
             title: 'Rset Device',
@@ -110,7 +112,6 @@ app.controller('deviceCtrl', function ($scope,menuService,services,$cookieStore,
             cancelButtonText: "No",
             confirmButtonText: "Yes",
         }).then(function () {
-            // alert("yes");
             var promise = services.restDevice(dev.deviceId);
             promise.success(function (result) {
                 if(result.status_code == 200){
@@ -131,7 +132,8 @@ app.controller('deviceCtrl', function ($scope,menuService,services,$cookieStore,
              // alert("no");
         })
     }
-	
+
+	/*Function to reset form */
     dev.clearForm=function(){
 		dev.deviceId='';
 	}

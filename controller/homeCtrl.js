@@ -12,26 +12,22 @@ app.controller('homeCtrl', function ($scope,menuService,services,$cookieStore,$r
             $scope.name  =  loggedInUser.identity.name;
             $scope.logInUserID = loggedInUser.id; 
             $scope.logInUserRole = loggedInUser.identity.role;
-            // console.log($scope.logInUserRole);
         }
 	}
 
+    /*Function give machine estimation*/
 	$scope.addEstimationStatus = function(){
-        console.log($rootScope.deviceStatusDataList.id);
-		// $scope.machineStatusId = $rootScope.deviceStatusDataList.id;
 		if($("#deviceEstimationForm").valid()){
             $("#changeStatusBtn").attr("disabled","disabled");
             var hr=$scope.estimationHr<10?('0'+$scope.estimationHr):$scope.estimationHr;
             var min=$scope.estimationMin<10?('0'+$scope.estimationMin):$scope.estimationMin;
             var estimationTime= hr+':'+min;
-            // console.log('estimationTime', estimationTime);
 			var req ={
 				"user_id":$scope.logInUserID,
 				"machine_status_id":$rootScope.deviceStatusDataList.id,
 				"msg":$scope.comment,
 				"hour":estimationTime
 			}
-			 // console.log(req);
             Utility.startAnimation();
 			var promise = services.saveUserEstimation(req);
 			promise.then(function mySuccess(result) {
@@ -49,10 +45,10 @@ app.controller('homeCtrl', function ($scope,menuService,services,$cookieStore,$r
                 toastr.error(r.data.message, 'Sorry!');
                 Utility.stopAnimation();
             });
-
 		}
 	}
 
+    /*Function to open machine estimation modal and reset modal*/
     $scope.pagelink = function(){
         $("#deviceEstimationModal").modal("show");
         setTimeout(function(){
@@ -60,6 +56,7 @@ app.controller('homeCtrl', function ($scope,menuService,services,$cookieStore,$r
         }, 500);
     }
 
+    /*Function to reset form*/
 	$scope.resetForm = function() { 
         $('#deviceEstimationForm')[0].reset();
         $("#deviceEstimationForm").validate().resetForm();
