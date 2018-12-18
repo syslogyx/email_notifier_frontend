@@ -5,6 +5,7 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
 	rep.pageno = 0;
     rep.limit = 0;
     rep.req ={};
+    rep.machineId = null;
 
 	var loggedInUser = JSON.parse(services.getIdentity());
     rep.logInUSerID = loggedInUser.id;
@@ -62,8 +63,9 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
             limit:pagination.getpaginationLimit()
         }
 
-        var fromDate = Utility.formatDate(rep.fromDate,'Y/m/d');
-		var toDate = Utility.formatDate(rep.toDate,'Y/m/d');
+        fromDate = (rep.fromDate ? Utility.formatDate(rep.fromDate,'Y/m/d') : null);
+        toDate = (rep.toDate ? Utility.formatDate(rep.toDate,'Y/m/d') : null);
+
 		rep.req ={
 			'machine_id':rep.machineId,
 			'from_date':fromDate,
@@ -97,11 +99,15 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
 
     /*Function to fetch filtered report data */
 	rep.getEstimationReportFilter = function(){
-		if($("#reportForm").valid()){
+		// if($("#reportForm").valid()){
 			rep.SearchStatus = true;
-			rep.fetchList(-1);
+            if(rep.machineId !=null || rep.fromDate != '' || rep.toDate != '' ){
+			     rep.fetchList(-1);
+            }else{
+               toastr.error("Please select atleast one field."); 
+            }
 			rep.limit = pagination.getpaginationLimit();	
-	    }
+	   // }
 	}
 
     /*Function to calculate actual hour(machine stop time) */
@@ -126,12 +132,18 @@ app.controller('reportCtrl', function ($scope,menuService,services,$cookieStore,
 
     /*Function to refresh filter */
 	rep.refreshfilter = function(){
+        $('#rtoDate').datepicker('setDate', '');
+        $('#rfromDate').datepicker('setEndDate', new Date());
+        $('#rfromDate').datepicker('setDate', ''); 
+
+        setTimeout(function(){setTime();},10);     
+
 		$("div.form-group").each(function () {
             $(this).removeClass('has-error');
             $('span.help-block-error').remove();
         });
         
-        rep.machineId = '';
+        rep.machineId = null;
         rep.fromDate = '';
         rep.toDate = '';
         rep.allEstimationRecord = null;

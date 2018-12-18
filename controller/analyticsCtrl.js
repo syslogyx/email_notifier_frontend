@@ -23,14 +23,14 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
       /* To fetch login user all assigned machine list*/
       var promise = services.getAllAssignedMachinesRecordByUserId(anx.logInUSerID);
       promise.success(function (result) {
-        if(result.status_code == 200){
-          Utility.stopAnimation();
-          anx.machineList = result.data;   
-        }else{
-          Utility.stopAnimation();
-          anx.machineList = [];
-          toastr.error(result.message, 'Sorry!');
-        }
+          if(result.status_code == 200){
+            Utility.stopAnimation();
+            anx.machineList = result.data;   
+          }else{
+            Utility.stopAnimation();
+            anx.machineList = [];
+            toastr.error(result.message, 'Sorry!');
+          }
       });
     }
 	}
@@ -39,6 +39,10 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
 
   /* Function to reset analytics*/
 	anx.refreshforEachMachine = function(){
+      $('#rtoDate').datepicker('setDate', '');
+      $('#rfromDate').datepicker('setEndDate', new Date());
+      $('#rfromDate').datepicker('setDate', '');
+      setTimeout(function(){setTime();},10);
 		  $("div.form-group").each(function () {
             $(this).removeClass('has-error');
             $('span.help-block-error').remove();
@@ -70,11 +74,12 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
     	            		var dayDifference = anx.calculateDaysDifference(fromDate,toDate);
     	            		anx.allEstimationRecord = anx.calculateTotalUpDownTime(anx.allEstimationRecord,dayDifference);
 	                    anx.drawPieChartForEachMachine(anx.allEstimationRecord );
-	                    toastr.success('Analytix drawn successfully.');
+	                    toastr.success('Analytics drawn successfully.');
 	                }
 	                else{  
 	                	  anx.allEstimationRecord = [];  
 	                    toastr.error(response.data.message,'Sorry!');
+                      $('#chartContainer').hide();
 	                }
 	            } catch (e) { 
 	                toastr.error('Sorry!');
@@ -127,11 +132,16 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
   		if(dayDifference <=0){
   			  totalTimeInHour = 1 * 24;
   		}else{
-  			  totalTimeInHour = dayDifference * 24;
+        /* +24 for one day extra if machine is worked for 
+        6/102018 to 7/10/2018 day diff is 1 but machine actually worked for 2 day*/
+  			  totalTimeInHour = (dayDifference * 24)+24;
   		}
   		for(var i = 0;i<allEstimationRecord.length;i++){
   			  totalDownSecondsTime = totalDownSecondsTime + allEstimationRecord[i].actualSeconds;
   		}
+      // console.log('totalDownseconds',totalDownSecondsTime);
+      // console.log('totalseconds',totalTimeInHour*3600);
+
   		totalDownHourTime = totalDownSecondsTime / 3600;
   		allEstimationRecord['total_time'] = totalTimeInHour;
   		allEstimationRecord['total_down_time'] = totalDownHourTime;

@@ -1,4 +1,4 @@
-app.controller('assignMachineCtrl', function ($scope,menuService,services,$cookieStore,$location) {
+app.controller('assignMachineCtrl', function ($scope,menuService,services,$cookieStore,$location,$rootScope) {
 
 	var amc = this;
 	amc.userList = [];
@@ -7,10 +7,16 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     amc.userMachineName=null;
     amc.userMachineId = '';
 
+    /* brodcasting event to select assign machine menu*/
+    if(amc.userId!=undefined){ 
+        $rootScope.$broadcast("callmenuclickfunction",'/machine/assign_machine');
+    }
+
     var loggedInUser = JSON.parse(services.getIdentity());
     amc.logInuserMachineId = loggedInUser.identity.machine_id;
 
 	if(amc.userId!=undefined){ 
+
         /* To fetch assign machine data to user*/ 
 		var promise = services.getMachineIdByUserId(amc.userId);
 		promise.success(function (result) {

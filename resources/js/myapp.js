@@ -1,6 +1,6 @@
 var Utility = {
-       apiBaseUrl: "http://172.16.1.97:9000/api/",
-      // apiBaseUrl: " http://enfapi.syslogyx.com/api/",
+        // apiBaseUrl: "http://172.16.1.97:9000/api/",
+        apiBaseUrl: " http://enfapi.syslogyx.com/api/",
 
    
     imgBaseUrl: "http://172.16.1.97:9000/img/",
@@ -101,7 +101,10 @@ app.factory("menuService", ["$rootScope", function ($rootScope) {
         },
         setMenu: function (menu) {
             $rootScope.globalMenu = menu;
-        }
+        },
+        getMenu: function () {
+            return $rootScope.globalMenu;
+        },
     };
 }])
 
@@ -674,9 +677,10 @@ app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$ro
         promise.success(function (result) {
             if(result.status_code ==200){
                $rootScope.deviceStatusDataList = result.data; 
-                var statusCol= $rootScope.deviceStatusDataList['port']+'_'+$rootScope.deviceStatusDataList['status']+'_status';
-                $rootScope.machineStatus =$rootScope.deviceStatusDataList['device'][statusCol];
-               // console.log($rootScope.machineStatus);
+                // var statusCol= $rootScope.deviceStatusDataList['port']+'_'+$rootScope.deviceStatusDataList['status']+'_status';
+                // $rootScope.machineStatus =$rootScope.deviceStatusDataList['device'][statusCol];
+                $rootScope.machineStatus = $rootScope.deviceStatusDataList['machineCurrStatus'];
+                // console.log($rootScope.deviceStatusDataList);
                 Utility.stopAnimation();
             }else{
                 $rootScope.deviceStatusDataList = null;

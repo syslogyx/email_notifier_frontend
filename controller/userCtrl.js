@@ -1,4 +1,4 @@
-app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$routeParams,pagination) {
+app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$routeParams,pagination,$location,$rootScope) {
 
 	var usc = this;
     usc.id = null;
@@ -97,6 +97,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
     /*Function to create user */
     usc.saveUser = function () {
         if ($("#addUserForm").valid()) {
+            $("#updateUserBtn").attr("disabled","disabled");
             var req = {
                 "name": usc.userName,
                 "email": usc.userEmail,
@@ -115,6 +116,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
             }
             promise.then(function mySuccess(result) {
                 Utility.stopAnimation();
+                $('#updateUserBtn').removeAttr("disabled");
                 if(result.data.status_code == 200){
                     $("#addUserModal").modal("toggle");
                     usc.init();
@@ -124,6 +126,7 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
                 }
             }, function myError(r) {
                 toastr.error(r.data.errors.email[0], 'Sorry!');
+                $('#updateUserBtn').removeAttr("disabled");
                 Utility.stopAnimation();
             });
         }
@@ -147,6 +150,8 @@ app.controller('userCtrl', function ($scope,menuService,services,$cookieStore,$r
         usc.getRoleList();
         applySelect2();
     };
+
+   
 
     /*Function to open add user modal */
     $scope.openAddUserModal=function(){

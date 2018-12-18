@@ -19,6 +19,8 @@ app.controller('homeCtrl', function ($scope,menuService,services,$cookieStore,$r
 	$scope.addEstimationStatus = function(){
 		if($("#deviceEstimationForm").valid()){
             $("#changeStatusBtn").attr("disabled","disabled");
+            $scope.estimationHr = $scope.estimationHr.replace(/^0+/, '');
+            $scope.estimationMin = $scope.estimationMin.replace(/^0+/, '');
             var hr=$scope.estimationHr<10?('0'+$scope.estimationHr):$scope.estimationHr;
             var min=$scope.estimationMin<10?('0'+$scope.estimationMin):$scope.estimationMin;
             var estimationTime= hr+':'+min;
@@ -36,7 +38,7 @@ app.controller('homeCtrl', function ($scope,menuService,services,$cookieStore,$r
                
                 Utility.stopAnimation();
                 if(result.data.status_code == 200){
-                    toastr.success('User estimation added successfully..');
+                    toastr.success('Estimation submitted successfully.');
                 }else{
                     toastr.error(result.data.message);
                 }

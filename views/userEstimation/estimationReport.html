@@ -20,7 +20,7 @@
 					<div class="row">
 						<div class="col-md-3">
 							<div class="form-group">
-				                <label class="mandatory" for="">Machine</label>
+				                <label class="" for="">Machine</label>
 				                <select id="machineId" ng-model="rep.machineId" name="machineId" class="form-control s2mn" style="width:100%;">
 				                <option value="">Select Machine</option>
 				                 <option value="{{mach.id}}" ng-repeat="mach in rep.machineList">{{mach.name}}</option>
@@ -29,7 +29,7 @@
 						</div>
 						<div class="col-md-3">
 				            <div class="form-group">
-				                <label class="mandatory" for="">From Date</label>
+				                <label class="" for="">From Date</label>
 				                <div>
 				                    <div class="input-group date">
 				                        <div class="input-group-addon">
@@ -42,7 +42,7 @@
 				        </div>
 				        <div class="col-md-3">
 				        	<div class="form-group">
-				                <label class="mandatory" for="">To Date</label>
+				                <label class="" for="">To Date</label>
 				                <div>
 				                    <div class="input-group date">
 				                        <div class="input-group-addon">
@@ -53,22 +53,25 @@
 				                </div>
 				            </div>
 				        </div>
-				        <div class="col-md-2 " style="margin-top: 23px;">
-				            <button type="button" class="btn btn-block btn-primary" ng-click="rep.getEstimationReportFilter()">Search</button>
+				        <div class="col-md-1 " style="margin-top: 23px;">
+				            <button type="button" class="btn btn-block btn-primary" ng-click="rep.getEstimationReportFilter()" title="Search">Search</button>
 				        </div>
 				        <div class="col-md-1 " style="margin-top: 23px;">
-				            <button type="button" class="btn btn-block btn-primary fa fa-refresh" ng-click="rep.refreshfilter()"></button>
-				        </div>    
+				            <button type="button" class="btn btn-block btn-primary fa fa-refresh" ng-click="rep.refreshfilter()" title="Refresh"></button>
+				        </div>  
+                        <div class="col-md-1" ng-if="rep.allEstimationRecord.length > 0" style="margin-top: 23px;">
+                            <button type="button" class="btn btn-block btn-danger" ng-click="rep.downloadReportDataPDF()" title='PDF'><i class=" fa  fa-file-pdf-o" aria-hidden="true" style="color:white;font-weight: bolder;font-size: medium;"></i></button>
+                        </div>  
 				    </div>
 				</div>
 			</div>
 		</form>
-		<br>
-	    <div class="row" ng-if="rep.allEstimationRecord.length > 0">
+		<!-- <br> -->
+	    <!-- <div class="row" ng-if="rep.allEstimationRecord.length > 0">
 			<div class="col-md-3 pull-right">
 				<button type="button" id='pdfBtn' class="btn btn-block btn-default" ng-click="rep.downloadReportDataPDF()" style="font-size:15px"><i class=" fa  fa-file-pdf-o" aria-hidden="true" style="padding-right:10px;color:red"></i> PDF</button>
 			</div>
-	    </div>
+	    </div> -->
 		<br>
 	    <div class="table-responsive no-padding">
             <table class="table table-hover ">
@@ -80,18 +83,19 @@
                         <th style="text-align: center;">Off Time</th>
                         <th style="text-align: center;">On Time</th>
                         <th style="text-align: center;">Estimation Hour</th>
-                        <th style="text-align: center;">Actual Hour</th>
+                        <th style="text-align: center;">Down Time</th>
                         <th>Reason</th>
                         <th>Message</th>
                     </tr>
                 </thead>
+                <!-- <pre>{{rep.allEstimationRecord.length |json}}</pre> -->
                 <tbody>
-                    <tr ng-if="rep.allEstimationRecord.length > 0" ng-repeat="data in rep.allEstimationRecord">
+                    <tr ng-if="rep.allEstimationRecord.length > 0 " ng-repeat="data in rep.allEstimationRecord">
                         <td style="text-align: center;" ng-bind="(rep.pageno - 1) * rep.limit + ($index + 1)"></td>
                         <td>{{data.machine.name}}</td>
                          <td>{{data.machine.user.name}}</td>
                         <td style="text-align: center;">{{data.created_at}}</td>
-                        <td style="text-align: center;">{{data.on_time?data.on_time:'--'}}</td>
+                        <td style="text-align: center;">{{data.on_time}}</td>
                         
                         <td style="text-align: center;">{{data.user_estimation.length <= 0 ? '--':data.user_estimation[0].hour}}</td>
                         <td style="text-align: center;">{{data.actual_hour?data.actual_hour :'--'}}</td>
@@ -110,32 +114,54 @@
 	</div>
 </section>
 <script>
-    $(document).ready(function () {
-        $("html, body").animate({scrollTop: 0}, "fast");   
-    });
-
+    
     function setTime(){
     	//Date picker
 	    $('#rfromDate').datepicker({
 	        autoclose: true,
-	        todayHighlight: true
+	        todayHighlight: true,
+            endDate: "today"
 	    }).on("changeDate", function(){
 	    	var selected = $(this).val();
 	        $('#rtoDate').datepicker('setStartDate', selected); 
-	        $(this).valid();
+	        // $(this).valid();
 	    });
 
 	    $('#rtoDate').datepicker({
 	        autoclose: true,
-	        todayHighlight: true
+	        todayHighlight: true,
+            endDate: "today"
 	    }).on("changeDate", function(){
 	    	var selected = $(this).val();
 	        $('#rfromDate').datepicker('setEndDate', selected);
-	        $(this).valid();
+	        // $(this).valid();
 	    });
     }
 
     setTimeout(function(){setTime();},10);
+
+    $(document).ready(function () {
+        $("html, body").animate({scrollTop: 0}, "fast"); 
+        /* Function to restrict keyboard enter key on datepicker*/
+        $('#rfromDate').bind('keydown',function(e){
+            if (e.which == 13) //13 is Enter/Return key.
+                e.stopImmediatePropagation();
+        }).datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            endDate: "today"
+        });  
+
+        $('#rtoDate').bind('keydown',function(e){
+            if (e.which == 13) //13 is Enter/Return key.
+                e.stopImmediatePropagation();
+        }).datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            endDate: "today"
+        }); 
+    });
+
 </script>
 <script>
     $("#reportForm").validate({

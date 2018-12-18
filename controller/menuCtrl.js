@@ -1,4 +1,4 @@
-app.controller("menuCtrl", function ($scope, services, $http, $location, $cookieStore, RESOURCES,menuService) {
+app.controller("menuCtrl", function ($scope, services, $http, $location, $cookieStore, RESOURCES,menuService,$rootScope) {
 
     if(services.getIdentity()==undefined){
       return false;
@@ -40,6 +40,11 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
       }
     }
 
+   
+    $scope.$on('callmenuclickfunction', function (event, args) {
+            $scope.menuClick(args);
+    });
+
     /*Function to initialise controller */
     $scope.init = function () {
         $scope.token = services.getAuthKey();
@@ -59,7 +64,8 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
     $scope.clearToken = function () {
         // $.removeCookie("authKey", { path: '/' });
         $cookieStore.remove('authkey');
-        //$cookieStore.remove('identity');
+        $cookieStore.remove('identity');
+
         $scope.init();
         window.location.href = "/site/login";
     }
@@ -94,6 +100,7 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
     /*Function to update profile */
     $scope.saveUser = function () {
         if ($("#updateUserForm").valid()) {
+            $("#saveProfileBtn").attr("disabled","disabled");
             var req = {
                 "name": $scope.userName,
                 "email": $scope.userEmail,
@@ -106,13 +113,15 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
             var promise = services.updateUser(req);
             promise.then(function mySuccess(result) {
                 Utility.stopAnimation();
+                $('#saveProfileBtn').removeAttr("disabled");
                 if(result.data.status_code == 200){
                     $("#updateUserModal").modal("toggle");
-                    toastr.success('User profile updated successfully..');
+                    toastr.success('User profile updated successfully..');  
                 }else{
                     toastr.error(result.data.errors.email[0], 'Sorry!');
                 }
             }, function myError(r) {
+                $("#saveProfileBtn").attr("disabled","disabled");
                 toastr.error(r.data.errors.email[0], 'Sorry!');
                 Utility.stopAnimation();
             });

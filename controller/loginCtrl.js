@@ -44,7 +44,8 @@ app.controller("loginCtrl", function (services, AclService, $scope, $http, $loca
                     $cookieStore.put('identity', JSON.stringify(identity));
 
                     //AclService.attachRole(role);
-                    location.reload();
+                     location.reload();
+                    $location.path('/home');
                     Utility.stopAnimation();
                 } else {
                     /*console.log("Status code is not 200");*/

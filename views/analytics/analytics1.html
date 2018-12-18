@@ -1,3 +1,8 @@
+<style>
+/*.jqx-chart-legend-text{
+	display:none;
+}*/
+</style>
 <section class="content">
 	<div class="container-fluid">
         <br>
@@ -72,15 +77,12 @@
 	</div>
 </section>
 <script>
-    $(document).ready(function () {
-        $("html, body").animate({scrollTop: 0}, "fast");   
-    });
-
     function setTime(){
     	//Date picker
 	    $('#rfromDate').datepicker({
 	        autoclose: true,
-	        todayHighlight: true
+	        todayHighlight: true,
+	        endDate: "today"
 	    }).on("changeDate", function(){
 	    	var selected = $(this).val();
 	        $('#rtoDate').datepicker('setStartDate', selected); 
@@ -89,7 +91,8 @@
 
 	    $('#rtoDate').datepicker({
 	        autoclose: true,
-	        todayHighlight: true
+	        todayHighlight: true,
+	        endDate: "today"
 	    }).on("changeDate", function(){
 	    	var selected = $(this).val();
 	        $('#rfromDate').datepicker('setEndDate', selected);
@@ -98,6 +101,29 @@
     }
 
     setTimeout(function(){setTime();},10);
+
+    $(document).ready(function () {
+        $("html, body").animate({scrollTop: 0}, "fast");  
+
+        /* Function to restrict keyboard enter key on datepicker*/
+        $('#rfromDate').bind('keydown',function(e){
+            if (e.which == 13) //13 is Enter/Return key.
+                e.stopImmediatePropagation();
+        }).datepicker({
+        	autoclose: true,
+        	todayHighlight: true,
+	        endDate: "today"
+	    });  
+
+        $('#rtoDate').bind('keydown',function(e){
+            if (e.which == 13) //13 is Enter/Return key.
+                e.stopImmediatePropagation();
+        }).datepicker({
+        	autoclose: true,
+        	todayHighlight: true,
+	        endDate: "today"
+	    });  
+    });
 </script>
 <script>
     $("#analytics1Form").validate({

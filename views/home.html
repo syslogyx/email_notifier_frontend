@@ -176,10 +176,15 @@
                 required: true
             }
         },
-        messages: {
+       messages: {
             estimationHr: {
                 required: "Estimation hour is required.",
-                number:"Estimation hour is in number."
+                digits:"Enter estimation hours in digits."
+            },
+            estimationMin: {
+                required: "Estimation minute is required.",
+                digits:"Enter estimation minutes in digits.",
+                range:"Enter minute in between 0 to 59."
             },
             comment: {
                 required: "Comment is required."

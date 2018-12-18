@@ -86,6 +86,20 @@
                 outline:0;
                 text-decoration: none;
             }
+            #userSection:hover {
+                background-color: #005998 !important;
+            }
+            #userSection{
+                background-color: #005998 !important;
+            }
+            @media (max-width: 1200px) {
+                #logoutDiv{
+                    margin-top: 0% !important;
+                }   
+            }
+            #logoutDiv{
+                    margin-top: 18%;
+                }
         </style>
     </head>
 
@@ -124,8 +138,8 @@
                                         <!-- inner menu: contains the actual data -->
                                             <ul class="menu" >
                                                 <li ng-if='deviceStatusDataList.flag=="True"'>
-                                                    <a href="" ng-click="pagelink();">
-                                                        <i class="fa fa-cogs text-aqua"></i>Machine '<b>{{deviceStatusDataList.machine.name}}</b>' is turned 'OFF'. <br> Please give time estimation.
+                                                    <a href="" ng-click="pagelink();" style="white-space: inherit;">
+                                                        <i class="fa fa-cogs text-aqua"></i>Machine '<b>{{deviceStatusDataList.machine.name}}</b>' is turned '<b>OFF</b>'. Please give time estimation.
                                                     </a>
                                                 </li>
                                             </ul>
@@ -133,10 +147,10 @@
                                     </ul>
                                 </li>
                                 <li class="dropdown user user-menu">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="userSection">
                                         <img src="resources/img/default_profile.png" class="user-image" alt="User Image">
                                     </a>
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu" id="logoutDiv">
                                       <!-- User image -->
                                         <li class="user-header">
                                             <img src="resources/img/default_profile.png" class="img-circle" alt="User Image">
@@ -196,9 +210,9 @@
                     <div class="modal-dialog modal-md">
                         <form role="form" name="updateUserForm" id="updateUserForm">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Update User Profile</h4>
+                                <div class="modal-header" id="popUpModalHeader">
+                                    <button type="button" class="close" data-dismiss="modal" style="margin-right: 5px;">&times;</button>
+                                    <h4 class="modal-title popUpModalTitle">Update User Profile</h4>
                                 </div>
 
                                 <div class="modal-body">
@@ -243,8 +257,8 @@
 
                                 <div class="modal-footer">
                                     <div class="pull pull-right">
-                                        <input type="submit" value="Save" data-ng-click="saveUser()" class="btn btn-success"/>
-                                        <input ng-if="tec.title == 'Add New Technology'" type="reset" value="Reset" ng-click="resetForm()" class="btn" />
+                                        <input type="submit" id="saveProfileBtn" value="Save" data-ng-click="saveUser()" class="btn btn-success"/>
+                                        <!-- <input ng-if="tec.title == 'Add New Technology'" type="reset" value="Reset" ng-click="resetForm()" class="btn" /> -->
                                     </div>
                                 </div>
                             </div>
@@ -304,7 +318,7 @@
             <div ng-controller="menuCtrl" >
                 <footer class="main-footer">
                     <div class="pull-right hidden-xs">
-                      <b>Version</b> 0.1
+                      <b>Version</b> 0.2
                     </div>
                     <strong>Copyright &copy; 2018 <a href="http://www.syslogyx.com/">Syslogyx Technologies Pvt. Ltd.</a></strong> All rights
                     reserved.
@@ -482,6 +496,12 @@
                     return this.optional(element) || regexp.test(value);
                 }, 'Please enter a valid Email Address.');
 
+                $.validator.addMethod("number", function (phone_number, element){
+                    phone_number = phone_number.replace(/\s+/g, "");
+                    return this.optional(element) || phone_number.length > 9 &&
+                            phone_number.match(/^((\+[1-9]{1,4}[ \-]*)|(\([0-9]{2,3}\)[ \-]*)|([0-9]{2,4})[ \-]*)*?[0-9]{3,4}?[ \-]*[0-9]{3,4}?$/);
+                }, 'Please enter a valid mobile number.');
+
                 $("#updateUserForm").validate({
                     errorElement: 'span', //default input error message container
                     errorClass: 'help-block help-block-error',
@@ -508,7 +528,10 @@
                         },
 
                         mobileNo: {
-                            required: true
+                            required:true,
+                            number: true,
+                            minlength: 10,
+                            maxlength: 12,
                         }
                     },
                     messages: {
@@ -522,7 +545,8 @@
                             required: "Password is required."
                         },
                         mobileNo: {
-                            required: "Mobile No. is required"
+                            required: "Mobile No. is required",
+                            maxlength:"Please enter at least 12 digits"
                         }
                     },
                     highlight: function (element) { // hightlight error inputs
@@ -578,11 +602,11 @@
                 messages: {
                     estimationHr: {
                         required: "Estimation hour is required.",
-                        digits:"Estimation hour is in number."
+                        digits:"Enter estimation hours in digits."
                     },
                     estimationMin: {
                         required: "Estimation minute is required.",
-                        digits:"Estimation minute is in number.",
+                        digits:"Enter estimation minutes in digits.",
                         range:"Enter minute in between 0 to 59."
                     },
                     comment: {

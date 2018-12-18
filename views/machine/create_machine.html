@@ -28,8 +28,8 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="mandatory">Email Ids</label>
-                            <input type="text" class="form-control" id="machine_email_ids" name="machine_email_ids" ng-model="macc.machine_email_ids" placeholder="Enter comma seperated Email Ids">
+                            <label class="mandatory">Email IDs</label>
+                            <input type="text" class="form-control" id="machine_email_ids" name="machine_email_ids" ng-model="macc.machine_email_ids" placeholder="Enter comma seperated Email IDs">
                         </div>
                     </div>
                 </div>
@@ -141,14 +141,33 @@
 
                 $.each($.trim(value).replace(/,$/, '').split(','), $.proxy(function (index, email) {
                     ec++;
-                    if( email === "" || !regex.test(email.replace(/\s/g, ""))){
-                        valid = false;
-                    }
+                    // if( email === "" || !regex.test(email.replace(/\s/g, ""))){
+                    //     valid = false;
+                    // }
                 }, this));
                 if (ec<1 || ec>10) valid = false;
                 return valid; 
             }
-        }, 'Please add maximum 10 valid email ids.');
+        }, 'Please add maximum 10 valid email IDs.');
+
+        $.validator.addMethod('commaEmails', function(value, element) {
+            if (this.optional(element)) {
+                return true;
+            } else {
+                var valid = true;
+                var ec = 0;
+                var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+                $.each($.trim(value).replace(/,$/, '').split(','), $.proxy(function (index, email) {
+                    ec++;
+                    if( email === "" || !regex.test(email.replace(/\s/g, ""))){
+                        valid = false;
+                    }
+                }, this));
+                
+                return valid; 
+            }
+        }, 'Please enter comma separated email IDs.');
 
         $("#machineAddForm").validate({
             errorElement: 'span', 
@@ -177,6 +196,7 @@
                     required: true,
                     regex: /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i,
                     multiEmails:true,
+                    commaEmails:true,
                 }, 
                 "device[]": {
                     required: true
@@ -187,7 +207,7 @@
                     required: "Machine name is required."
                 },
                 machine_email_ids: {
-                    required: "Email Ids are required."
+                    required: "Email IDs are required."
                 },
                 "device[]": {
                     required: "Devices are required."
