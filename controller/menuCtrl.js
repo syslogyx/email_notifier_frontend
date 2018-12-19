@@ -19,7 +19,7 @@ app.controller("menuCtrl", function ($scope, services, $http, $location, $cookie
     }else if (loggedInUser.identity.role==2) {
       $scope.menuList = [
           {"Title": "Dashboard", "Link": "/home", "icon": "fa fa-dashboard", "active":"active"},
-          {"Title": "Assign Machine", "Link": "/machine/assign_machine", "icon": "fa fa fa-check-square-o", "active":"deactive"},
+          // {"Title": "Assign Machine", "Link": "/machine/assign_machine", "icon": "fa fa fa-check-square-o", "active":"deactive"},
           {"Title": "Reports", "Link": "/report", "icon": "fa fa-file-code-o", "active":"deactive"},
           {"Title": "Analytics", "Link": "/analytics", "icon": "fa  fa-pie-chart", "active":"deactive"}
       ];
