@@ -157,7 +157,7 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
   		var machineUpPercentageData = (100 - machineDownPercentageData);
   		var machineUpPercentage = (machineUpPercentageData).toFixed(2) + '%';
       var machineName = allEstimationRecord[0].machine.name;
-      var operatorName = allEstimationRecord[0].machine.user.name;
+      var operatorName = allEstimationRecord[0].machine.user != null ? allEstimationRecord[0].machine.user.name : '--';
       
       if(allEstimationRecord != null){
         	var PieData = [];

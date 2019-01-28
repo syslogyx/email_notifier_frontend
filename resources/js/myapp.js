@@ -230,37 +230,56 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
-
-    this.getAllDeviceList = function () {
+    /*Role List service*/
+    this.getAllRoleList = function () {
         Utility.startAnimation();
         return $http({
             method: 'GET',
-            url: RESOURCES.SERVER_API + "get/devices",
+            url: RESOURCES.SERVER_API + "get/roles",
             dataType: 'json',
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
             }
         })
     };
-    this.getDeviceList = function (request) {
-        if(request == undefined){
-            page = -1;
-            limit = -1;
-        }else{
-            page = request.page;
-            limit = request.limit;
-        }
+    /*Create New User service*/
+    this.saveUser = function (request) {
+        Utility.startAnimation();
+        return $http({
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "create/user",
+            dataType: 'json',
+            data: $.param(request),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+    /*Update User service*/
+    this.updateUser = function (request) {
+        Utility.startAnimation();
+        return $http({
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "update/user",
+            data: $.param(request),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+    /*Get User Info By User ID service*/
+    this.getUserById = function (id) {
         Utility.startAnimation();
         return $http({
             method: 'GET',
-            url: RESOURCES.SERVER_API + "get/all/devices?page=" + page + "&limit=" + limit,
+            url: RESOURCES.SERVER_API + "get/user/"+id,
             dataType: 'json',
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
             }
         })
     };
-
+    /*Get All User List service*/
     this.getAllUserList = function (request) {
         if(request == undefined){
             page = -1;
@@ -280,35 +299,24 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         })
     };
 
-    this.getDeviceIdByUserId= function (id) {
+    /*Get All Device Reason List service*/
+    this.getOffReasonList = function(){
         Utility.startAnimation();
         return $http({
             method: 'GET',
-            url: RESOURCES.SERVER_API + "get/deviceIdByUserId/"+id,
+            url: RESOURCES.SERVER_API + "get/reasons",
             dataType: 'json',
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
             }
         })
-    };
-
-    this.getAllRoleList = function () {
-        Utility.startAnimation();
-        return $http({
-            method: 'GET',
-            url: RESOURCES.SERVER_API + "get/roles",
-            dataType: 'json',
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
-    this.saveUser = function (request) {
+    }
+    /*Save Reason service Which are Not used in Code*/
+    this.saveReason = function (request) {
         Utility.startAnimation();
         return $http({
             method: 'POST',
-            url: RESOURCES.SERVER_API + "create/user",
+            url: RESOURCES.SERVER_API + "add/reason",
             dataType: 'json',
             data: $.param(request),
             headers: {
@@ -317,6 +325,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         })
     };
 
+    /*Create New Device service*/
     this.saveDevice = function (request) {
         Utility.startAnimation();
         return $http({
@@ -329,19 +338,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
-
-    this.updateUser = function (request) {
-        Utility.startAnimation();
-        return $http({
-            method: 'POST',
-            url: RESOURCES.SERVER_API + "update/user",
-            data: $.param(request),
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
+    /*Update Device service*/
     this.updateDevice = function (request) {
         Utility.startAnimation();
         return $http({
@@ -354,19 +351,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
-
-    this.getUserById = function (id) {
-        Utility.startAnimation();
-        return $http({
-            method: 'GET',
-            url: RESOURCES.SERVER_API + "get/user/"+id,
-            dataType: 'json',
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
+    /*Get Device By ID service*/
     this.getDeviceById = function (id) {
         Utility.startAnimation();
         return $http({
@@ -378,7 +363,38 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
-
+    /*Get All Device List service*/
+    this.getAllDeviceList = function () {
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/devices",
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+    /*Get Not Engage Device List service*/
+    this.getDeviceList = function (request) {
+        if(request == undefined){
+            page = -1;
+            limit = -1;
+        }else{
+            page = request.page;
+            limit = request.limit;
+        }
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/all/devices?page=" + page + "&limit=" + limit,
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+    /*Reset Device By Device ID service*/
     this.restDevice = function (id) {
         Utility.startAnimation();
         return $http({
@@ -390,19 +406,70 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
-
-    this.resetMachine = function (id) {
+    /*Get Not Engage Device List service*/
+    this.getNotEngageDeviceList = function(){
         Utility.startAnimation();
         return $http({
             method: 'GET',
-            url: RESOURCES.SERVER_API + "reset/machineByUserId/"+id,
+            url: RESOURCES.SERVER_API + "get/devices",
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    }
+    /*Get Assign Device By User ID service Which are not in used*/
+    this.getDeviceIdByUserId= function (id) {
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/deviceIdByUserId/"+id,
             dataType: 'json',
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
             }
         })
     };
-    
+ 
+    /*Create New Machine service*/
+    this.saveMachine = function (request) {
+        Utility.startAnimation();
+        return $http({
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "create/machine",
+            dataType: 'json',
+            data: $.param(request),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+    /*Update Machine service*/
+    this.updateMachine = function (request) {
+        Utility.startAnimation();
+        return $http({
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "update/machine",
+            dataType: 'json',
+            data: $.param(request),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+    /*Get Machine By Machine ID service*/
+    this.getMachineById = function (id) {
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/machine/"+id,
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+    /*Get Not Engage Machine List service*/
     this.getMachineList = function () {
         Utility.startAnimation();
         return $http({
@@ -414,7 +481,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
-
+    /*Get Machine List service*/
     this.getALLMachineList = function (request) {
         if(request == undefined){
             page = -1;
@@ -433,44 +500,31 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
-
-    this.getOffReasonList = function(){
+    /*Reset Machine By User ID service*/
+    this.resetMachine = function (id) {
         Utility.startAnimation();
         return $http({
             method: 'GET',
-            url: RESOURCES.SERVER_API + "get/reasons",
+            url: RESOURCES.SERVER_API + "reset/machineByUserId/"+id,
             dataType: 'json',
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    }
-
-    this.getNotEngageDeviceList = function(){
-        Utility.startAnimation();
-        return $http({
-            method: 'GET',
-            url: RESOURCES.SERVER_API + "get/devices",
-            dataType: 'json',
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    }
-
-    this.saveReason = function (request) {
-        Utility.startAnimation();
-        return $http({
-            method: 'POST',
-            url: RESOURCES.SERVER_API + "add/reason",
-            dataType: 'json',
-            data: $.param(request),
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
             }
         })
     };
-
+    /*Reset All Assigned Devices to Machine By Machine ID service*/
+    this.resetALLDevicesByMachineID = function (id) {
+        Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "reset/devicesByMachineId/"+id,
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+    /*Assigned Machine To User service*/
     this.assignMachineToUser = function (request) {
         Utility.startAnimation();
         return $http({
@@ -483,45 +537,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
-
-    this.saveMachine = function (request) {
-        Utility.startAnimation();
-        return $http({
-            method: 'POST',
-            url: RESOURCES.SERVER_API + "create/machine",
-            dataType: 'json',
-            data: $.param(request),
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
-    this.updateMachine = function (request) {
-        Utility.startAnimation();
-        return $http({
-            method: 'POST',
-            url: RESOURCES.SERVER_API + "update/machine",
-            dataType: 'json',
-            data: $.param(request),
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
-    this.getMachineById = function (id) {
-        Utility.startAnimation();
-        return $http({
-            method: 'GET',
-            url: RESOURCES.SERVER_API + "get/machine/"+id,
-            dataType: 'json',
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
+    /*Reset Machine By Machine ID service*/
     this.restMachineByMachineID = function (id) {
         Utility.startAnimation();
         return $http({
@@ -532,57 +548,20 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
                 'Content-Type': RESOURCES.CONTENT_TYPE
             }
         })
-    };
-
-    this.resetALLDevicesByMachineID = function (id) {
+    }; 
+    /*Get All assigned Machine List Till Current Date To Login User service*/
+    this.getAllAssignedMachinesRecordByUserId= function (user_id) {
         Utility.startAnimation();
         return $http({
             method: 'GET',
-            url: RESOURCES.SERVER_API + "reset/devicesByMachineId/"+id,
+            url: RESOURCES.SERVER_API + "get/all_assigned_machine_list/"+user_id,
             dataType: 'json',
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
             }
         })
     };
-
-    this.getMachineIdByUserId= function (id) {
-        // Utility.startAnimation();
-        return $http({
-            method: 'GET',
-            url: RESOURCES.SERVER_API + "get/machineIdByUserId/"+id,
-            dataType: 'json',
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
-    this.getDeviceStatusDataByMachineID= function (id) {
-        //Utility.startAnimation();
-        return $http({
-            method: 'GET',
-            url: RESOURCES.SERVER_API + "get/devicePortStatusByMdchineId/"+id,
-            dataType: 'json',
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
-    this.saveUserEstimation = function (request) {
-        Utility.startAnimation();
-        return $http({
-            method: 'POST',
-            url: RESOURCES.SERVER_API + "create/user_estimation",
-            dataType: 'json',
-            data: $.param(request),
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
+    /*Get Assign machine to login user service Which is not in used*/
     this.getAllAssignMachinesByUserId= function (user_id) {
         Utility.startAnimation();
         return $http({
@@ -595,19 +574,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         })
     };
 
-    this.findAnalytixMachineEstimationDtata = function (req) {
-        Utility.startAnimation();
-        return $http({
-            method: 'POST',
-            url: RESOURCES.SERVER_API + "filterUserEstimation",
-            dataType: 'json',
-            data: $.param(req),
-            headers: {
-                'Content-Type': RESOURCES.CONTENT_TYPE
-            }
-        })
-    };
-
+    /*Get Machine Working Record For Report Section*/
     this.findestimationRecordFilter = function (req,request) {
         if(request == undefined){
             page = -1;
@@ -627,7 +594,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
             }
         })
     };
-
+    /*Download PDF Machine Working Record For Report Section*/
     this.downloadReportPDF = function (req) {
         //window.open(RESOURCES.SERVER_API +"generate_pdf/" + $.param(req));
         var encReq = window.btoa(JSON.stringify(req));
@@ -637,17 +604,58 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
         window.open(url);
     };
 
-    this.getAllAssignedMachinesRecordByUserId= function (user_id) {
+    /*Get Machine Working Record For Analytic Section*/
+    this.findAnalytixMachineEstimationDtata = function (req) {
         Utility.startAnimation();
         return $http({
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "filterUserEstimation",
+            dataType: 'json',
+            data: $.param(req),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+
+    /*Get Login User Assigned Machine Data For Dashbaord Section*/
+    this.getMachineIdByUserId= function (id) {
+        // Utility.startAnimation();
+        return $http({
             method: 'GET',
-            url: RESOURCES.SERVER_API + "get/all_assigned_machine_list/"+user_id,
+            url: RESOURCES.SERVER_API + "get/machineIdByUserId/"+id,
             dataType: 'json',
             headers: {
                 'Content-Type': RESOURCES.CONTENT_TYPE
             }
         })
     };
+    /*Get Login User Assigned Machine Working status and Data In Dashbaord Section*/
+    this.getDeviceStatusDataByMachineID= function (id) {
+        //Utility.startAnimation();
+        return $http({
+            method: 'GET',
+            url: RESOURCES.SERVER_API + "get/devicePortStatusByMdchineId/"+id,
+            dataType: 'json',
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+    /*Save Login User Assigned off Machine Estimation In Dashbaord Section*/
+    this.saveUserEstimation = function (request) {
+        Utility.startAnimation();
+        return $http({
+            method: 'POST',
+            url: RESOURCES.SERVER_API + "create/user_estimation",
+            dataType: 'json',
+            data: $.param(request),
+            headers: {
+                'Content-Type': RESOURCES.CONTENT_TYPE
+            }
+        })
+    };
+  
 });
 
 app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$rootScope,services) {
@@ -697,7 +705,7 @@ app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$ro
 app.config(function ($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
     $routeProvider
-    .when('/', {
+            .when('/', {
                 templateUrl: 'views/home.html',
                 controller: 'homeCtrl',
                 controllerAs: 'hme',
@@ -894,14 +902,11 @@ app.run(function ($rootScope, AclService, $cookieStore, $location, services,noti
          var loggedInUser = JSON.parse($cookieStore.get('identity'));
          var logInUserId = loggedInUser.id;
          var machineID = loggedInUser.identity.machine_id;
-         // console.log("logInUserId",logInUserId);
          
          setInterval(function(){ 
             var currentAuthKey = $cookieStore.get('authkey');
-              // console.log($rootScope.logInUserMachineId);
             if(currentAuthKey != undefined){
                 notificationServices.getLogInUserMachineData(logInUserId);
-                 // console.log("machineID",$rootScope.logInUserMachineId);
                  if($rootScope.logInUserMachineId != undefined || $rootScope.logInUserMachineId != null){
                     notificationServices.getNotification($rootScope.logInUserMachineId);               
                  }
