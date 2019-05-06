@@ -1,6 +1,6 @@
 var Utility = {
-         apiBaseUrl: "http://172.16.1.97:9000/api/",
-        // apiBaseUrl: " http://enfapi.syslogyx.com/api/",
+    apiBaseUrl: "http://172.16.1.97:9000/api/",
+    // apiBaseUrl: " http://enfapi.syslogyx.com/api/",
 
    
     imgBaseUrl: "http://172.16.1.97:9000/img/",
@@ -50,47 +50,43 @@ var app = angular.module("myapp", ['ngRoute', 'mm.acl', 'ngCookies' ]);
 
 //export html table to pdf, excel and doc format directive
 app.factory('Excel',function($window){
-        var uri = 'data:application/vnd.ms-excel;base64,'
-                , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office"xmlns:x="urn:schemas-microsoft-com:office:excel"xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-                , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
-                , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
-        return {
-            tableToExcel:function(tableId,worksheetName){
-                var table=$(tableId),
-                    ctx={worksheet:worksheetName,table:table.html()},
-                    href=uri+base64(format(template,ctx));
-                return href;
-            }
-        };
-    })
+    var uri = 'data:application/vnd.ms-excel;base64,'
+            , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office"xmlns:x="urn:schemas-microsoft-com:office:excel"xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+            , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+            , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+    return {
+        tableToExcel:function(tableId,worksheetName){
+            var table=$(tableId),
+                ctx={worksheet:worksheetName,table:table.html()},
+                href=uri+base64(format(template,ctx));
+            return href;
+        }
+    };
+})
 
 app.directive('exportToPdf', function(){
-
-   return {
+    return {
        restrict: 'E',
        scope: {
             elemId: '@'
        },
        template: '<button data-ng-click="exportToPdf()">Export to PDF</button>',
        link: function(scope, elem, attr){
+            scope.exportToPdf = function() {
 
-          scope.exportToPdf = function() {
+                var doc = new jsPDF('landscape');
 
-              var doc = new jsPDF('landscape');
+                // console.log('elemId 12312321', scope.elemId);
 
-              console.log('elemId 12312321', scope.elemId);
+                doc.fromHTML(
+                document.getElementById(scope.elemId).innerHTML, 15, 15, {
+                    'width': 170
+                });
 
-              doc.fromHTML(
-              document.getElementById(scope.elemId).innerHTML, 15, 15, {
-                     'width': 170
-              });
-
-              doc.save('a4.pdf')
-
-           }
-       }
-   }
-
+                doc.save('a4.pdf')
+            }
+        }
+    }
 });
 
 app.factory("menuService", ["$rootScope", function ($rootScope) {
@@ -147,7 +143,6 @@ app.directive('ngFiles', ['$parse', function ($parse) {
 } ])
 
 
-
 app.service('checkAuthentication', function (RESOURCES, $http, $cookieStore, $filter,services,AclService) {
     this.checkPermission=function(q,permission){
         if(services.getAuthKey() !== undefined){
@@ -178,7 +173,7 @@ app.service('pagination', function (RESOURCES, $http, $cookieStore, $filter) {
             first: '',
             last: '',
             onPageClick: function (event, page) {
-                console.log('Page: ' + page);
+                // console.log('Page: ' + page);
                 if (ctrlscope.skip) {
                     ctrlscope.skip = false;
                     return;
@@ -598,9 +593,7 @@ app.service('services', function (RESOURCES, $http, $cookieStore, $filter) {
     this.downloadReportPDF = function (req) {
         //window.open(RESOURCES.SERVER_API +"generate_pdf/" + $.param(req));
         var encReq = window.btoa(JSON.stringify(req));
-        // console.log(encReq);
         var url = RESOURCES.SERVER_API +"generate_pdf?req=" + encReq;
-        // console.log(url);
         window.open(url);
     };
 
@@ -688,7 +681,6 @@ app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$ro
                 // var statusCol= $rootScope.deviceStatusDataList['port']+'_'+$rootScope.deviceStatusDataList['status']+'_status';
                 // $rootScope.machineStatus =$rootScope.deviceStatusDataList['device'][statusCol];
                 $rootScope.machineStatus = $rootScope.deviceStatusDataList['machineCurrStatus'];
-                // console.log($rootScope.deviceStatusDataList);
                 Utility.stopAnimation();
             }else{
                 $rootScope.deviceStatusDataList = null;
@@ -705,183 +697,183 @@ app.service('notificationServices', function (RESOURCES, $http, $cookieStore,$ro
 app.config(function ($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
     $routeProvider
-            .when('/', {
-                templateUrl: 'views/home.html',
-                controller: 'homeCtrl',
-                controllerAs: 'hme',
-                resolve: {
-                    'acl': ['$q', 'AclService', function ($q, AclService) {
-                            return true;
-                            //console.log(AclService.getRoles());
-                            if (AclService.can('view_dash')) {
-                                // Has proper permissions
-                                return true;
-                            } else {
-                                // Does not have permission
-                                return $q.reject('LoginRequired');
-                            }
-                        }]
-                }
-            })
-            .when('/home', {
-                templateUrl: 'views/home.html',
-                controller: 'homeCtrl',
-                controllerAs: 'hme',
-                resolve: {
-                    'acl': ['$q', 'AclService', function ($q, AclService) {
+        .when('/', {
+            templateUrl: 'views/home.html',
+            controller: 'homeCtrl',
+            controllerAs: 'hme',
+            resolve: {
+                'acl': ['$q', 'AclService', function ($q, AclService) {
                         return true;
+                        //console.log(AclService.getRoles());
                         if (AclService.can('view_dash')) {
+                            // Has proper permissions
                             return true;
                         } else {
+                            // Does not have permission
                             return $q.reject('LoginRequired');
                         }
                     }]
-                }
-            })
-            .when('/site/login', {
-                templateUrl: 'views/site/login.html',
-                controller: 'loginCtrl',
-                controllerAs: 'lgc',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
-                            var authKey = $cookieStore.get('authkey');
-                            if (authKey !== undefined) {
-                                $location.path('/');
-                                return true;
-                            }
-                        }]
-                }
-            })
-            .when('/user/user_list', {
-                templateUrl: 'views/users/user_list.html',
-                controller: 'userCtrl',
-                controllerAs: 'usc',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+            }
+        })
+        .when('/home', {
+            templateUrl: 'views/home.html',
+            controller: 'homeCtrl',
+            controllerAs: 'hme',
+            resolve: {
+                'acl': ['$q', 'AclService', function ($q, AclService) {
+                    return true;
+                    if (AclService.can('view_dash')) {
+                        return true;
+                    } else {
+                        return $q.reject('LoginRequired');
+                    }
+                }]
+            }
+        })
+        .when('/site/login', {
+            templateUrl: 'views/site/login.html',
+            controller: 'loginCtrl',
+            controllerAs: 'lgc',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+                    var authKey = $cookieStore.get('authkey');
+                    if (authKey !== undefined) {
+                        $location.path('/');
+                        return true;
+                    }
+                }]
+            }
+        })
+        .when('/user/user_list', {
+            templateUrl: 'views/users/user_list.html',
+            controller: 'userCtrl',
+            controllerAs: 'usc',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
-                    }]
-                }
-            })
-            .when('/device/device_list', {
-                templateUrl: 'views/devices/device_list.html',
-                controller: 'deviceCtrl',
-                controllerAs: 'dev',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+                }]
+            }
+        })
+        .when('/device/device_list', {
+            templateUrl: 'views/devices/device_list.html',
+            controller: 'deviceCtrl',
+            controllerAs: 'dev',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
-                    }]
-                }
-            })
-            .when('/machine/machine_list', {
-                templateUrl: 'views/machine/machine_list.html',
-                controller: 'machineCtrl',
-                controllerAs: 'mac',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+                }]
+            }
+        })
+        .when('/machine/machine_list', {
+            templateUrl: 'views/machine/machine_list.html',
+            controller: 'machineCtrl',
+            controllerAs: 'mac',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
-                    }]
-                }
-            })
-            .when('/machine/create_machine', {
-                templateUrl: 'views/machine/create_machine.html',
-                controller: 'createMachineCtrl',
-                controllerAs: 'macc',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+                }]
+            }
+        })
+        .when('/machine/create_machine', {
+            templateUrl: 'views/machine/create_machine.html',
+            controller: 'createMachineCtrl',
+            controllerAs: 'macc',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
-                    }]
-                }
-            })
-            .when('/machine/assign_machine', {
-                templateUrl: 'views/machine/assign_machine.html',
-                controller: 'assignMachineCtrl',
-                controllerAs: 'amc',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+                }]
+            }
+        })
+        .when('/machine/assign_machine', {
+            templateUrl: 'views/machine/assign_machine.html',
+            controller: 'assignMachineCtrl',
+            controllerAs: 'amc',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
-                    }]
-                }
-            })
-            .when('/device/assign_device', {
-                templateUrl: 'views/device/assign_device.html',
-                controller: 'deviceCtrl',
-                controllerAs: 'dev',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+                }]
+            }
+        })
+        .when('/device/assign_device', {
+            templateUrl: 'views/device/assign_device.html',
+            controller: 'deviceCtrl',
+            controllerAs: 'dev',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
-                    }]
-                }
-            })
-            .when('/device/device_list', {
-                templateUrl: 'views/devices/device_list.html',
-                controller: 'deviceManagmentCtrl',
-                controllerAs: 'dmc',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+                }]
+            }
+        })
+        .when('/device/device_list', {
+            templateUrl: 'views/devices/device_list.html',
+            controller: 'deviceManagmentCtrl',
+            controllerAs: 'dmc',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
-                    }]
-                }
-            })
-            .when('/device/create_device', {
-                templateUrl: 'views/devices/create_device.html',
-                controller: 'createDeviceCtrl',
-                controllerAs: 'dmcc',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+                }]
+            }
+        })
+        .when('/device/create_device', {
+            templateUrl: 'views/devices/create_device.html',
+            controller: 'createDeviceCtrl',
+            controllerAs: 'dmcc',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
-                    }]
-                }
-            })
-            .when('/device/update_device/:id', {
-                templateUrl: 'views/devices/create_device.html',
-                controller: 'createDeviceCtrl',
-                controllerAs: 'dmcc',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+                }]
+            }
+        })
+        .when('/device/update_device/:id', {
+            templateUrl: 'views/devices/create_device.html',
+            controller: 'createDeviceCtrl',
+            controllerAs: 'dmcc',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
-                    }]
-                }
-            })
-            .when('/machine/update_machine/:id', {
-                templateUrl: 'views/machine/create_machine.html',
-                controller: 'createMachineCtrl',
-                controllerAs: 'macc',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+                }]
+            }
+        })
+        .when('/machine/update_machine/:id', {
+            templateUrl: 'views/machine/create_machine.html',
+            controller: 'createMachineCtrl',
+            controllerAs: 'macc',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
-                    }]
-                }
-            })
-            .when('/report', {
-                templateUrl: 'views/userEstimation/estimationReport.html',
-                controller: 'reportCtrl',
-                controllerAs: 'rep',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+                }]
+            }
+        })
+        .when('/report', {
+            templateUrl: 'views/userEstimation/estimationReport.html',
+            controller: 'reportCtrl',
+            controllerAs: 'rep',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
-                    }]
-                }
-            })
-            .when('/analytics', {
-                templateUrl: 'views/analytics/analytics1.html',
-                controller: 'analyticsCtrl',
-                controllerAs: 'anx',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+                }]
+            }
+        })
+        .when('/analytics', {
+            templateUrl: 'views/analytics/analytics1.html',
+            controller: 'analyticsCtrl',
+            controllerAs: 'anx',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
-                    }]
-                }
-            })
-            .when('/analytics2', {
-                templateUrl: 'views/analytics/analytics2.html',
-                controller: 'analyticsCtrl',
-                controllerAs: 'anx',
-                resolve: {
-                    'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
+                }]
+            }
+        })
+        .when('/analytics2', {
+            templateUrl: 'views/analytics/analytics2.html',
+            controller: 'analyticsCtrl',
+            controllerAs: 'anx',
+            resolve: {
+                'acl': ['$q', 'AclService', '$cookieStore', '$location', function ($q, AclService, $cookieStore, $location) {
 
-                    }]
-                }
-            })
+                }]
+            }
+        })
 
     $locationProvider.html5Mode(true);
 });

@@ -16,7 +16,6 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
     amc.logInuserMachineId = loggedInUser.identity.machine_id;
 
 	if(amc.userId!=undefined){ 
-
         /* To fetch assign machine data to user*/ 
 		var promise = services.getMachineIdByUserId(amc.userId);
 		promise.success(function (result) {
@@ -107,8 +106,7 @@ app.controller('assignMachineCtrl', function ($scope,menuService,services,$cooki
 				if(req.user_id==loggedInUser.id){
 					services.setIdentity(loggedInUser);
 				}
-                amc.userMachineId = amc.machineId;
-               
+                amc.userMachineId = amc.machineId;  
             }else{
                 toastr.error(result.data.message, 'Sorry!');
             }

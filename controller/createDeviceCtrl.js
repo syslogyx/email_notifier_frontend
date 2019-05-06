@@ -7,9 +7,9 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
 
     dmcc.pf1 = {
                     Port_1 : {
-                                0: ['ON','OFF'],
-                                1: ['ON','OFF']
-                            },
+                            0: ['ON','OFF'],
+                            1: ['ON','OFF']
+                        },
                     Port_2 : {
                             0: ['ON','OFF'],
                             1: ['ON','OFF']
@@ -233,7 +233,6 @@ app.controller('createDeviceCtrl', function (RESOURCES,$scope,menuService,servic
                 listLocation: "data"
             }],
             getValue: function(element) {
-                // console.log(element);
                 return element.reason;
             },
             list: {

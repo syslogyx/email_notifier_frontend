@@ -44,8 +44,8 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
       $('#rfromDate').datepicker('setDate', '');
       setTimeout(function(){setTime();},10);
 		  $("div.form-group").each(function () {
-            $(this).removeClass('has-error');
-            $('span.help-block-error').remove();
+          $(this).removeClass('has-error');
+          $('span.help-block-error').remove();
       });
       anx.machineId = '';
       anx.fromDate = '';
@@ -56,40 +56,40 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
 	
    /* Function to draw analytics*/
 	anx.getPieChartforEachMachine = function(){
-		if($("#analytics1Form").valid()){
-  			var fromDate = Utility.formatDate(anx.fromDate,'Y/m/d');
-  			var toDate = Utility.formatDate(anx.toDate,'Y/m/d');
-  			var req ={
-    				'machine_id':anx.machineId,
-    				'from_date':fromDate,
-    				'to_date':toDate
-  			}
-  			var promise = services.findAnalytixMachineEstimationDtata(req);
-	          promise.then(function mySuccess(response) {  
-	        	Utility.stopAnimation();
-	            try {
-	                if(response.data.status_code == 200){
-	                    anx.allEstimationRecord = response.data.data.data;
-	                    anx.allEstimationRecord = anx.calculateActualHourForEachRecord(anx.allEstimationRecord);
+  		if($("#analytics1Form").valid()){
+    			var fromDate = Utility.formatDate(anx.fromDate,'Y/m/d');
+    			var toDate = Utility.formatDate(anx.toDate,'Y/m/d');
+    			var req ={
+      				'machine_id':anx.machineId,
+      				'from_date':fromDate,
+      				'to_date':toDate
+    			}
+    			var promise = services.findAnalytixMachineEstimationDtata(req);
+  	      promise.then(function mySuccess(response) {  
+  	        	Utility.stopAnimation();
+              try {
+                  if(response.data.status_code == 200){
+                      anx.allEstimationRecord = response.data.data.data;
+                      anx.allEstimationRecord = anx.calculateActualHourForEachRecord(anx.allEstimationRecord);
     	            		var dayDifference = anx.calculateDaysDifference(fromDate,toDate);
     	            		anx.allEstimationRecord = anx.calculateTotalUpDownTime(anx.allEstimationRecord,dayDifference);
-	                    anx.drawPieChartForEachMachine(anx.allEstimationRecord );
-	                    toastr.success('Analytics drawn successfully.');
-	                }
-	                else{  
-	                	  anx.allEstimationRecord = [];  
-	                    toastr.error(response.data.message,'Sorry!');
+                      anx.drawPieChartForEachMachine(anx.allEstimationRecord );
+                      toastr.success('Analytics drawn successfully.');
+                  }
+                  else{  
+                  	  anx.allEstimationRecord = [];  
+                      toastr.error(response.data.message,'Sorry!');
                       $('#chartContainer').hide();
-	                }
-	            } catch (e) { 
-	                toastr.error('Sorry!');
-	                Raven.captureException(e)
-	            }
-	        }, function myError(r) {
-	            toastr.error(r.data.errors);
-	            Utility.stopAnimation();
-	        });
-	    }
+                  }
+              } catch (e) { 
+                  toastr.error('Sorry!');
+                  Raven.captureException(e)
+              }
+  	      }, function myError(r) {
+  	          toastr.error(r.data.errors);
+  	          Utility.stopAnimation();
+  	      });
+  	  }
 	}
 
  /* Function to calculate actual working hour*/
@@ -105,7 +105,7 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
       				minutes = String(minutes).padStart(2, "0");
       				hours = String(hours).padStart(2, "0");
       				seconds = String(seconds).padStart(2, "0");
-      				allEstimationRecord[i].actual_hour=hours + ":" + minutes + ":" + seconds;                    		
+      				allEstimationRecord[i].actual_hour = hours + ":" + minutes + ":" + seconds;                    		
         	}else{
           		allEstimationRecord[i].actual_hour = null;
           		allEstimationRecord[i].actualSeconds = 0;
@@ -139,8 +139,6 @@ app.controller('analyticsCtrl', function ($scope,menuService,services,$cookieSto
   		for(var i = 0;i<allEstimationRecord.length;i++){
   			  totalDownSecondsTime = totalDownSecondsTime + allEstimationRecord[i].actualSeconds;
   		}
-      // console.log('totalDownseconds',totalDownSecondsTime);
-      // console.log('totalseconds',totalTimeInHour*3600);
 
   		totalDownHourTime = totalDownSecondsTime / 3600;
   		allEstimationRecord['total_time'] = totalTimeInHour;
